@@ -8,7 +8,7 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome -->
-  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
   <!-- 自定义样式 -->
   <script>
@@ -63,7 +63,7 @@
         <div class="flex items-center">
           <a href="homepage.html" class="flex items-center"
             onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/homepage.html'); return false; } else { window.location.href = 'homepage.html'; }">
-            <i class="fa fa-plane text-primary text-2xl mr-2"></i>
+            <i class="fas fa-plane text-primary text-2xl mr-2"></i>
             <span class="text-xl font-bold text-primary">SEUAirline</span>
           </a>
         </div>
@@ -82,10 +82,10 @@
             onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/user_center.html'); } else { window.location.href = 'user_center.html'; }">
             <img src="https://picsum.photos/32/32" alt="用户头像" class="w-8 h-8 rounded-full">
             <span class="text-gray-700"><span id="username">游客</span> <i
-                class="fa fa-vip-card text-yellow-500"></i></span>
+                class="fas fa-id-card text-yellow-500"></i></span>
           </div>
           <button class="md:hidden text-gray-600">
-            <i class="fa fa-bars text-xl"></i>
+            <i class="fas fa-bars text-xl"></i>
           </button>
         </div>
       </div>
@@ -98,28 +98,28 @@
       <div class="flex items-center justify-between max-w-4xl mx-auto">
         <div class="flex flex-col items-center">
           <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center step-success">
-            <i class="fa fa-check"></i>
+            <i class="fas fa-check"></i>
           </div>
           <span class="text-xs mt-1 text-success font-medium">选择航班</span>
         </div>
         <div class="step-line step-line-success flex-grow mx-2"></div>
         <div class="flex flex-col items-center">
           <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center step-success">
-            <i class="fa fa-check"></i>
+            <i class="fas fa-check"></i>
           </div>
           <span class="text-xs mt-1 text-success font-medium">填写信息</span>
         </div>
         <div class="step-line step-line-success flex-grow mx-2"></div>
         <div class="flex flex-col items-center">
           <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center step-success">
-            <i class="fa fa-check"></i>
+            <i class="fas fa-check"></i>
           </div>
           <span class="text-xs mt-1 text-success font-medium">支付订单</span>
         </div>
         <div class="step-line step-line-success flex-grow mx-2"></div>
         <div class="flex flex-col items-center">
           <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center step-success">
-            <i class="fa fa-check"></i>
+            <i class="fas fa-check"></i>
           </div>
           <span class="text-xs mt-1 text-success font-medium">完成预订</span>
         </div>
@@ -136,17 +136,17 @@
         <div class="success-card p-6 mb-6 bg-green-50 border border-green-100">
           <div class="flex flex-col items-center text-center">
             <div class="w-16 h-16 rounded-full bg-success/20 flex items-center justify-center mb-4">
-              <i class="fa fa-check text-3xl text-success"></i>
+              <i class="fas fa-check text-3xl text-success"></i>
             </div>
             <h2 class="text-2xl font-bold text-success mb-2">预订成功！</h2>
             <p class="text-gray-600 mb-4">您的航班已成功预订，祝您旅途愉快！</p>
             <div class="flex flex-wrap justify-center gap-4 text-sm">
               <div class="flex items-center">
-                <i class="fa fa-file-invoice text-success mr-2"></i>
+                <i class="fas fa-file-invoice text-success mr-2"></i>
                 <span>订单号：<strong class="text-gray-800">SA20240120001</strong></span>
               </div>
               <div class="flex items-center">
-                <i class="fa fa-clock-o text-success mr-2"></i>
+                <i class="fas fa-clock text-success mr-2"></i>
                 <span>支付时间：<strong class="text-gray-800">2024-01-20 14:30:45</strong></span>
               </div>
             </div>
@@ -156,7 +156,7 @@
         <!-- 航班信息卡片 -->
         <div class="success-card p-6 mb-6">
           <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
-            <i class="fa fa-plane-departure text-primary mr-2"></i>
+            <i class="fas fa-plane-departure text-primary mr-2"></i>
             航班信息
           </h2>
 
@@ -174,7 +174,7 @@
                     <div class="absolute left-0 right-0 top-0 flex justify-between items-center">
                       <div class="w-2 h-2 bg-primary rounded-full -mt-1"></div>
                       <div class="absolute left-1/2 transform -translate-x-1/2 hidden md:block"><i
-                          class="fa fa-plane text-primary transform rotate-45"></i></div>
+                          class="fas fa-plane text-primary transform rotate-45"></i></div>
                       <div class="w-2 h-2 bg-primary rounded-full -mt-1"></div>
                     </div>
                   </div>
@@ -245,29 +245,29 @@
         <!-- 温馨提示 -->
         <div class="success-card p-6">
           <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
-            <i class="fa fa-info-circle text-warning mr-2"></i>
+            <i class="fas fa-info-circle text-warning mr-2"></i>
             温馨提示
           </h2>
 
           <div class="space-y-3 text-sm text-gray-600">
             <div class="flex items-start">
-              <i class="fa fa-check-circle text-success mt-0.5 mr-2 flex-shrink-0"></i>
+              <i class="fas fa-check-circle text-success mt-0.5 mr-2 flex-shrink-0"></i>
               <p>订单已出票，请至少提前90分钟到达机场办理登机手续。</p>
             </div>
             <div class="flex items-start">
-              <i class="fa fa-check-circle text-success mt-0.5 mr-2 flex-shrink-0"></i>
+              <i class="fas fa-check-circle text-success mt-0.5 mr-2 flex-shrink-0"></i>
               <p>请携带有效身份证件原件（与订单信息一致）前往机场，经济舱旅客可免费托运行李20kg。</p>
             </div>
             <div class="flex items-start">
-              <i class="fa fa-check-circle text-success mt-0.5 mr-2 flex-shrink-0"></i>
+              <i class="fas fa-check-circle text-success mt-0.5 mr-2 flex-shrink-0"></i>
               <p>您可在「我的订单」中查看完整订单详情，并进行值机、退票或改签操作。</p>
             </div>
             <div class="flex items-start">
-              <i class="fa fa-check-circle text-success mt-0.5 mr-2 flex-shrink-0"></i>
+              <i class="fas fa-check-circle text-success mt-0.5 mr-2 flex-shrink-0"></i>
               <p>航班动态可能随时更新，建议出发前通过官网或APP查看最新航班状态。</p>
             </div>
             <div class="flex items-start">
-              <i class="fa fa-check-circle text-success mt-0.5 mr-2 flex-shrink-0"></i>
+              <i class="fas fa-check-circle text-success mt-0.5 mr-2 flex-shrink-0"></i>
               <p>如有疑问，请拨打客服热线：400-888-8888，我们将竭诚为您服务。</p>
             </div>
           </div>
@@ -278,7 +278,7 @@
       <div class="lg:col-span-1">
         <div class="bg-white rounded-lg shadow-md p-6 sticky top-20">
           <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
-            <i class="fa fa-tasks text-primary mr-2"></i>
+            <i class="fas fa-tasks text-primary mr-2"></i>
             后续操作
           </h2>
 
@@ -288,14 +288,14 @@
               <div class="flex items-center justify-between">
                 <div class="flex items-center">
                   <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                    <i class="fa fa-qrcode text-primary"></i>
+                    <i class="fas fa-qrcode text-primary"></i>
                   </div>
                   <div>
                     <h3 class="font-medium text-gray-800">查看电子客票</h3>
                     <p class="text-xs text-gray-500 mt-0.5">获取电子客票二维码</p>
                   </div>
                 </div>
-                <i class="fa fa-chevron-right text-gray-400"></i>
+                <i class="fas fa-chevron-right text-gray-400"></i>
               </div>
             </a>
 
@@ -304,14 +304,14 @@
               <div class="flex items-center justify-between">
                 <div class="flex items-center">
                   <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                    <i class="fa fa-user-secret text-primary"></i>
+                    <i class="fas fa-user-secret text-primary"></i>
                   </div>
                   <div>
                     <h3 class="font-medium text-gray-800">在线值机</h3>
                     <p class="text-xs text-gray-500 mt-0.5">提前24小时选择座位</p>
                   </div>
                 </div>
-                <i class="fa fa-chevron-right text-gray-400"></i>
+                <i class="fas fa-chevron-right text-gray-400"></i>
               </div>
             </a>
 
@@ -320,14 +320,14 @@
               <div class="flex items-center justify-between">
                 <div class="flex items-center">
                   <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                    <i class="fa fa-hotel text-primary"></i>
+                    <i class="fas fa-hotel text-primary"></i>
                   </div>
                   <div>
                     <h3 class="font-medium text-gray-800">预订酒店</h3>
                     <p class="text-xs text-gray-500 mt-0.5">享首单9折优惠</p>
                   </div>
                 </div>
-                <i class="fa fa-chevron-right text-gray-400"></i>
+                <i class="fas fa-chevron-right text-gray-400"></i>
               </div>
             </a>
 
@@ -336,14 +336,14 @@
               <div class="flex items-center justify-between">
                 <div class="flex items-center">
                   <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                    <i class="fa fa-car text-primary"></i>
+                    <i class="fas fa-car text-primary"></i>
                   </div>
                   <div>
                     <h3 class="font-medium text-gray-800">预约用车</h3>
                     <p class="text-xs text-gray-500 mt-0.5">接送机享85折</p>
                   </div>
                 </div>
-                <i class="fa fa-chevron-right text-gray-400"></i>
+                <i class="fas fa-chevron-right text-gray-400"></i>
               </div>
             </a>
           </div>
@@ -356,7 +356,7 @@
                 <p class="text-lg font-bold text-primary mt-1">400-888-8888</p>
               </div>
               <button class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white">
-                <i class="fa fa-phone"></i>
+                <i class="fas fa-phone"></i>
               </button>
             </div>
           </div>

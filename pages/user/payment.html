@@ -8,7 +8,7 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome -->
-  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
   <!-- 自定义样式 -->
   <script>
@@ -72,7 +72,7 @@
         <div class="flex items-center">
           <a href="homepage.html" class="flex items-center"
             onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/homepage.html'); return false; } else { window.location.href = 'homepage.html'; }">
-            <i class="fa fa-plane text-primary text-2xl mr-2"></i>
+            <i class="fas fa-plane text-primary text-2xl mr-2"></i>
             <span class="text-xl font-bold text-primary">SEUAirline</span>
           </a>
         </div>
@@ -91,10 +91,10 @@
             onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/user_center.html'); } else { window.location.href = 'user_center.html'; }">
             <img src="https://picsum.photos/32/32" alt="用户头像" class="w-8 h-8 rounded-full">
             <span class="text-gray-700"><span id="username">游客</span> <i
-                class="fa fa-vip-card text-yellow-500"></i></span>
+                class="fas fa-id-card text-yellow-500"></i></span>
           </div>
           <button class="md:hidden text-gray-600">
-            <i class="fa fa-bars text-xl"></i>
+            <i class="fas fa-bars text-xl"></i>
           </button>
         </div>
       </div>
@@ -107,28 +107,28 @@
       <div class="flex items-center justify-between max-w-4xl mx-auto">
         <div class="flex flex-col items-center">
           <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center bg-gray-100 text-gray-400">
-            <i class="fa fa-search"></i>
+            <i class="fas fa-search"></i>
           </div>
           <span class="text-xs mt-1 text-gray-500">选择航班</span>
         </div>
         <div class="step-line step-line-active flex-grow mx-2"></div>
         <div class="flex flex-col items-center">
           <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center bg-gray-100 text-gray-400">
-            <i class="fa fa-user"></i>
+            <i class="fas fa-user"></i>
           </div>
           <span class="text-xs mt-1 text-gray-500">填写信息</span>
         </div>
         <div class="step-line step-line-active flex-grow mx-2"></div>
         <div class="flex flex-col items-center">
           <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center step-active">
-            <i class="fa fa-credit-card"></i>
+            <i class="fas fa-credit-card"></i>
           </div>
           <span class="text-xs mt-1 text-primary font-medium">支付订单</span>
         </div>
         <div class="step-line flex-grow mx-2"></div>
         <div class="flex flex-col items-center">
           <div class="w-10 h-10 rounded-full border-2 border-gray-300 bg-white flex items-center justify-center">
-            <i class="fa fa-check text-gray-400"></i>
+            <i class="fas fa-check text-gray-400"></i>
           </div>
           <span class="text-xs mt-1 text-gray-500">完成预订</span>
         </div>
@@ -140,10 +140,10 @@
   <div class="bg-yellow-50 border border-yellow-200 py-3 px-4 mb-4">
     <div class="container mx-auto">
       <div class="flex items-center justify-center space-x-3 text-yellow-700">
-        <i class="fa fa-clock-o text-yellow-500"></i>
+        <i class="fas fa-clock text-yellow-500"></i>
         <span class="text-sm">订单支付剩余时间：<span class="countdown" id="payment-countdown">30:00</span></span>
         <button class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded hover:bg-yellow-200 transition-all">
-          <i class="fa fa-volume-up mr-1"></i>开启提醒
+          <i class="fas fa-volume-up mr-1"></i>开启提醒
         </button>
       </div>
     </div>
@@ -158,7 +158,7 @@
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
           <div class="flex items-center justify-between mb-4">
             <h2 class="text-xl font-bold text-gray-800 flex items-center">
-              <i class="fa fa-file-invoice text-primary mr-2"></i>
+              <i class="fas fa-file-invoice text-primary mr-2"></i>
               订单信息
             </h2>
             <div class="text-sm text-gray-500">订单号：<span class="text-gray-700 font-medium">SA20240120001</span></div>
@@ -178,7 +178,8 @@
                   <div class="relative w-40 h-0.5 my-2">
                     <div class="absolute left-0 right-0 top-0 flex justify-between items-center">
                       <div class="w-2 h-2 bg-primary rounded-full -mt-1"></div>
-                      <div class="absolute left-1/2 transform -translate-x-1/2 hidden md:block"><i class="fa fa-plane text-primary transform rotate-45"></i></div>
+                      <div class="absolute left-1/2 transform -translate-x-1/2 hidden md:block"><i
+                          class="fas fa-plane text-primary transform rotate-45"></i></div>
                       <div class="w-2 h-2 bg-primary rounded-full -mt-1"></div>
                     </div>
                   </div>
@@ -249,7 +250,7 @@
         <!-- 支付方式 -->
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
           <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
-            <i class="fa fa-credit-card text-primary mr-2"></i>
+            <i class="fas fa-credit-card text-primary mr-2"></i>
             支付方式
           </h2>
 
@@ -258,7 +259,7 @@
             <div class="payment-card payment-card-active" data-payment-type="alipay">
               <div class="flex items-center">
                 <div class="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center mr-3">
-                  <i class="fa fa-alipay text-blue-500 text-2xl"></i>
+                  <i class="fab fa-alipay text-blue-500 text-2xl"></i>
                 </div>
                 <div class="flex-1">
                   <div class="font-medium text-gray-800">支付宝</div>
@@ -274,7 +275,7 @@
             <div class="payment-card" data-payment-type="wechat">
               <div class="flex items-center">
                 <div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center mr-3">
-                  <i class="fa fa-weixin text-green-500 text-2xl"></i>
+                  <i class="fab fa-weixin text-green-500 text-2xl"></i>
                 </div>
                 <div class="flex-1">
                   <div class="font-medium text-gray-800">微信支付</div>
@@ -289,7 +290,7 @@
             <div class="payment-card" data-payment-type="bankcard">
               <div class="flex items-center">
                 <div class="w-10 h-10 bg-purple-50 rounded-full flex items-center justify-center mr-3">
-                  <i class="fa fa-credit-card text-purple-500 text-xl"></i>
+                  <i class="fas fa-credit-card text-purple-500 text-xl"></i>
                 </div>
                 <div class="flex-1">
                   <div class="font-medium text-gray-800">银行卡支付</div>
@@ -306,7 +307,7 @@
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
           <div class="flex justify-between items-center mb-4">
             <h2 class="text-xl font-bold text-gray-800 flex items-center">
-              <i class="fa fa-receipt text-primary mr-2"></i>
+              <i class="fas fa-receipt text-primary mr-2"></i>
               发票信息
             </h2>
             <label class="inline-flex items-center">
@@ -341,7 +342,7 @@
       <div class="lg:col-span-1">
         <div class="bg-white rounded-lg shadow-md p-6 sticky top-20">
           <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
-            <i class="fa fa-money-bill-wave text-primary mr-2"></i>
+            <i class="fas fa-money-bill-wave-alt text-primary mr-2"></i>
             支付详情
           </h2>
 
@@ -396,7 +397,7 @@
             <button
               class="w-full flex items-center justify-between border border-gray-300 rounded-md px-4 py-2 hover:border-primary transition-all">
               <span class="text-gray-600 flex items-center">
-                <i class="fa fa-ticket-alt text-primary mr-2"></i>
+                <i class="fas fa-ticket-alt text-primary mr-2"></i>
                 优惠券/积分
               </span>
               <span class="text-gray-500">可用 2 张</span>
@@ -410,7 +411,7 @@
 
           <div class="mt-4 text-center">
             <span class="text-xs text-gray-500">
-              <i class="fa fa-lock mr-1"></i>
+              <i class="fas fa-lock mr-1"></i>
               支付安全由 <a href="#" class="text-primary hover:underline">SEUAirline安全支付中心</a> 提供保障
             </span>
           </div>
@@ -425,7 +426,7 @@
     <div class="relative bg-white rounded-lg shadow-xl p-6 max-w-md w-full mx-4 transform transition-all">
       <div class="text-center">
         <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 mb-4">
-          <i class="fa fa-alipay text-blue-500 text-3xl"></i>
+          <i class="fab fa-alipay text-blue-500 text-3xl"></i>
         </div>
         <h3 class="text-lg font-medium text-gray-900 mb-2">请使用支付宝扫码支付</h3>
         <p class="text-sm text-gray-500 mb-4">订单金额：¥1,150.00</p>

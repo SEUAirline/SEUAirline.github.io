@@ -8,7 +8,7 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome -->
-  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
   <!-- 自定义样式 -->
   <script>
@@ -61,7 +61,7 @@
         <div class="flex items-center">
           <a href="homepage.html" class="flex items-center"
             onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/homepage.html'); return false; } else { window.location.href = 'homepage.html'; }">
-            <i class="fa fa-plane text-primary text-2xl mr-2"></i>
+            <i class="fas fa-plane text-primary text-2xl mr-2"></i>
             <span class="text-xl font-bold text-primary">SEUAirline</span>
           </a>
         </div>
@@ -80,10 +80,10 @@
             onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/user_center.html'); } else { window.location.href = 'user_center.html'; }">
             <img src="https://picsum.photos/32/32" alt="用户头像" class="w-8 h-8 rounded-full">
             <span class="text-gray-700"><span id="username">游客</span> <i
-                class="fa fa-vip-card text-yellow-500"></i></span>
+                class="fas fa-id-card text-yellow-500"></i></span>
           </div>
           <button class="md:hidden text-gray-600">
-            <i class="fa fa-bars text-xl"></i>
+            <i class="fas fa-bars text-xl"></i>
           </button>
         </div>
       </div>
@@ -96,28 +96,28 @@
       <div class="flex items-center justify-between max-w-4xl mx-auto">
         <div class="flex flex-col items-center">
           <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center step-active">
-            <i class="fa fa-search"></i>
+            <i class="fas fa-search"></i>
           </div>
           <span class="text-xs mt-1 text-primary font-medium">选择航班</span>
         </div>
         <div class="step-line step-line-active flex-grow mx-2"></div>
         <div class="flex flex-col items-center">
           <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center step-active">
-            <i class="fa fa-user"></i>
+            <i class="fas fa-user"></i>
           </div>
           <span class="text-xs mt-1 text-primary font-medium">填写信息</span>
         </div>
         <div class="step-line flex-grow mx-2"></div>
         <div class="flex flex-col items-center">
           <div class="w-10 h-10 rounded-full border-2 border-gray-300 bg-white flex items-center justify-center">
-            <i class="fa fa-credit-card text-gray-400"></i>
+            <i class="fas fa-credit-card text-gray-400"></i>
           </div>
           <span class="text-xs mt-1 text-gray-500">支付订单</span>
         </div>
         <div class="step-line flex-grow mx-2"></div>
         <div class="flex flex-col items-center">
           <div class="w-10 h-10 rounded-full border-2 border-gray-300 bg-white flex items-center justify-center">
-            <i class="fa fa-check text-gray-400"></i>
+            <i class="fas fa-check text-gray-400"></i>
           </div>
           <span class="text-xs mt-1 text-gray-500">完成预订</span>
         </div>
@@ -133,7 +133,7 @@
         <!-- 航班信息卡片 -->
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
           <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
-            <i class="fa fa-plane-arrival text-primary mr-2"></i>
+            <i class="fas fa-plane-arrival text-primary mr-2"></i>
             航班信息
           </h2>
 
@@ -151,7 +151,7 @@
                     <div class="absolute left-0 right-0 top-0 flex justify-between items-center">
                       <div class="w-2 h-2 bg-primary rounded-full -mt-1"></div>
                       <div class="absolute left-1/2 transform -translate-x-1/2 hidden md:block"><i
-                          class="fa fa-plane text-primary transform rotate-45"></i></div>
+                          class="fas fa-plane text-primary transform rotate-45"></i></div>
                       <div class="w-2 h-2 bg-primary rounded-full -mt-1"></div>
                     </div>
                   </div>
@@ -177,11 +177,11 @@
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
           <div class="flex justify-between items-center mb-4">
             <h2 class="text-xl font-bold text-gray-800 flex items-center">
-              <i class="fa fa-users text-primary mr-2"></i>
+              <i class="fas fa-users text-primary mr-2"></i>
               乘客信息
             </h2>
             <button id="add-passenger" class="btn-secondary text-sm">
-              <i class="fa fa-plus mr-1"></i> 添加乘客
+              <i class="fas fa-plus mr-1"></i> 添加乘客
             </button>
           </div>
 
@@ -239,7 +239,7 @@
           <!-- 常用乘客提示 -->
           <div class="bg-blue-50 rounded-md p-3 mb-4">
             <div class="flex items-start">
-              <i class="fa fa-info-circle text-blue-500 mt-0.5 mr-2"></i>
+              <i class="fas fa-info-circle text-blue-500 mt-0.5 mr-2"></i>
               <p class="text-sm text-blue-700">添加常用乘客后，下次预订时可直接选择，无需重复填写信息</p>
             </div>
           </div>
@@ -249,7 +249,7 @@
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
           <div class="flex justify-between items-center mb-4">
             <h2 class="text-xl font-bold text-gray-800 flex items-center">
-              <i class="fa fa-headphones text-primary mr-2"></i>
+              <i class="fas fa-headphones text-primary mr-2"></i>
               联系人信息
             </h2>
             <label class="inline-flex items-center">
@@ -278,7 +278,7 @@
         <!-- 附加服务 -->
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
           <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
-            <i class="fa fa-star text-primary mr-2"></i>
+            <i class="fas fa-star text-primary mr-2"></i>
             附加服务
           </h2>
 
@@ -290,7 +290,7 @@
                   <input type="radio" name="seat_service" class="h-4 w-4 text-primary border-gray-300 rounded-full"
                     checked>
                   <div class="flex items-center mt-2">
-                    <i class="fa fa-th text-primary mr-2"></i>
+                    <i class="fas fa-th text-primary mr-2"></i>
                     <span class="text-sm text-gray-700">标准座位（免费）</span>
                   </div>
                 </label>
@@ -298,7 +298,7 @@
                   <input type="radio" name="seat_service" class="h-4 w-4 text-primary border-gray-300 rounded-full">
                   <div class="flex items-center justify-between mt-2">
                     <div class="flex items-center">
-                      <i class="fa fa-th-large text-primary mr-2"></i>
+                      <i class="fas fa-th-large text-primary mr-2"></i>
                       <span class="text-sm text-gray-700">紧急出口座位</span>
                     </div>
                     <span class="text-sm font-medium text-primary">¥120</span>
@@ -308,7 +308,7 @@
                   <input type="radio" name="seat_service" class="h-4 w-4 text-primary border-gray-300 rounded-full">
                   <div class="flex items-center justify-between mt-2">
                     <div class="flex items-center">
-                      <i class="fa fa-th text-primary mr-2"></i>
+                      <i class="fas fa-th text-primary mr-2"></i>
                       <span class="text-sm text-gray-700">前排座位</span>
                     </div>
                     <span class="text-sm font-medium text-primary">¥80</span>
@@ -324,7 +324,7 @@
                   <input type="radio" name="baggage_service" class="h-4 w-4 text-primary border-gray-300 rounded-full"
                     checked>
                   <div class="flex items-center mt-2">
-                    <i class="fa fa-suitcase text-primary mr-2"></i>
+                    <i class="fas fa-suitcase text-primary mr-2"></i>
                     <span class="text-sm text-gray-700">标准行李额（免费）</span>
                   </div>
                 </label>
@@ -332,7 +332,7 @@
                   <input type="radio" name="baggage_service" class="h-4 w-4 text-primary border-gray-300 rounded-full">
                   <div class="flex items-center justify-between mt-2">
                     <div class="flex items-center">
-                      <i class="fa fa-suitcase text-primary mr-2"></i>
+                      <i class="fas fa-suitcase text-primary mr-2"></i>
                       <span class="text-sm text-gray-700">+10kg行李额</span>
                     </div>
                     <span class="text-sm font-medium text-primary">¥100</span>
@@ -342,7 +342,7 @@
                   <input type="radio" name="baggage_service" class="h-4 w-4 text-primary border-gray-300 rounded-full">
                   <div class="flex items-center justify-between mt-2">
                     <div class="flex items-center">
-                      <i class="fa fa-suitcase text-primary mr-2"></i>
+                      <i class="fas fa-suitcase text-primary mr-2"></i>
                       <span class="text-sm text-gray-700">+20kg行李额</span>
                     </div>
                     <span class="text-sm font-medium text-primary">¥180</span>
@@ -358,7 +358,7 @@
                   <input type="radio" name="meal_service" class="h-4 w-4 text-primary border-gray-300 rounded-full"
                     checked>
                   <div class="flex items-center mt-2">
-                    <i class="fa fa-utensils text-primary mr-2"></i>
+                    <i class="fas fa-utensils text-primary mr-2"></i>
                     <span class="text-sm text-gray-700">标准餐食（免费）</span>
                   </div>
                 </label>
@@ -366,7 +366,7 @@
                   <input type="radio" name="meal_service" class="h-4 w-4 text-primary border-gray-300 rounded-full">
                   <div class="flex items-center justify-between mt-2">
                     <div class="flex items-center">
-                      <i class="fa fa-leaf text-primary mr-2"></i>
+                      <i class="fas fa-leaf text-primary mr-2"></i>
                       <span class="text-sm text-gray-700">素食餐</span>
                     </div>
                     <span class="text-sm font-medium text-primary">¥40</span>
@@ -376,7 +376,7 @@
                   <input type="radio" name="meal_service" class="h-4 w-4 text-primary border-gray-300 rounded-full">
                   <div class="flex items-center justify-between mt-2">
                     <div class="flex items-center">
-                      <i class="fa fa-utensils text-primary mr-2"></i>
+                      <i class="fas fa-utensils text-primary mr-2"></i>
                       <span class="text-sm text-gray-700">儿童餐</span>
                     </div>
                     <span class="text-sm font-medium text-primary">¥50</span>
@@ -392,7 +392,7 @@
       <div class="lg:col-span-1">
         <div class="bg-white rounded-lg shadow-md p-6 sticky top-20">
           <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
-            <i class="fa fa-file-invoice text-primary mr-2"></i>
+            <i class="fas fa-file-invoice text-primary mr-2"></i>
             订单摘要
           </h2>
 
@@ -452,10 +452,10 @@
             <button
               class="w-full flex items-center justify-between border border-gray-300 rounded-md px-4 py-2 hover:border-primary transition-all">
               <span class="text-gray-600 flex items-center">
-                <i class="fa fa-ticket-alt text-primary mr-2"></i>
+                <i class="fas fa-ticket-alt text-primary mr-2"></i>
                 优惠券/积分
               </span>
-              <i class="fa fa-chevron-right text-gray-400"></i>
+              <i class="fas fa-chevron-right text-gray-400"></i>
             </button>
           </div>
 
@@ -561,8 +561,8 @@
     function validateForm() {
       // 使用更简洁的选择器获取表单元素
       const passengerNameInput = document.querySelector('.passenger-form .input-form[type="text"]');
-      const passengerIdCardInput = document.querySelector('.passenger-form .input-form[placeholder="请输入证件号码"]') || 
-                                  document.querySelectorAll('.passenger-form .input-form[type="text"]')[1];
+      const passengerIdCardInput = document.querySelector('.passenger-form .input-form[placeholder="请输入证件号码"]') ||
+        document.querySelectorAll('.passenger-form .input-form[type="text"]')[1];
       const passengerPhoneInput = document.querySelector('.passenger-form .input-form[type="tel"]');
       const contactNameInput = document.getElementById('contact-name');
       const contactPhoneInput = document.getElementById('contact-phone');
@@ -625,7 +625,7 @@
 
       // 获取值
       const selectedFlightId = localStorage.getItem('selectedFlightId') || 'CA1234';
-      
+
       return {
         flightId: selectedFlightId,
         flightDate: '2024-01-20',

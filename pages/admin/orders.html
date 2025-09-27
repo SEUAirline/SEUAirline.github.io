@@ -8,7 +8,7 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome -->
-  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
   <!-- 自定义样式 -->
   <script>
@@ -77,11 +77,11 @@
       <div class="flex justify-between items-center h-16">
         <div class="flex items-center">
           <button id="sidebar-toggle" class="mr-4 text-gray-500 hover:text-primary">
-            <i class="fa fa-bars text-xl"></i>
+            <i class="fas fa-bars text-xl"></i>
           </button>
           <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/dashboard.html')"
             class="flex items-center">
-            <i class="fa fa-cube text-primary text-2xl mr-2"></i>
+            <i class="fas fa-cube text-primary text-2xl mr-2"></i>
             <span class="text-xl font-bold text-primary">SEUAirline 管理系统</span>
           </a>
         </div>
@@ -90,7 +90,7 @@
           <!-- 通知图标 -->
           <div class="relative">
             <button class="text-gray-500 hover:text-primary focus:outline-none">
-              <i class="fa fa-bell-o text-xl"></i>
+              <i class="fas fa-bell-o text-xl"></i>
               <span
                 class="absolute top-0 right-0 h-4 w-4 rounded-full bg-red-500 text-xs text-white flex items-center justify-center">5</span>
             </button>
@@ -104,7 +104,7 @@
               <div class="text-xs text-gray-500">系统管理员</div>
             </div>
             <button id="logout-btn" class="text-gray-500 hover:text-primary">
-              <i class="fa fa-sign-out"></i>
+              <i class="fas fa-sign-out"></i>
             </button>
           </div>
         </div>
@@ -122,24 +122,24 @@
           <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">主菜单</h3>
           <div class="space-y-2">
             <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/dashboard.html')" class="sidebar-link">
-              <i class="fa fa-tachometer w-5 mr-3"></i>
+              <i class="fas fa-tachometer w-5 mr-3"></i>
               <span>仪表盘</span>
             </a>
             <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/flights.html')" class="sidebar-link">
-              <i class="fa fa-plane w-5 mr-3"></i>
+              <i class="fas fa-plane w-5 mr-3"></i>
               <span>航班管理</span>
             </a>
             <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/orders.html')"
               class="sidebar-link active">
-              <i class="fa fa-file-text-o w-5 mr-3"></i>
+              <i class="fas fa-file-text-o w-5 mr-3"></i>
               <span>订单管理</span>
             </a>
             <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/users.html')" class="sidebar-link">
-              <i class="fa fa-users w-5 mr-3"></i>
+              <i class="fas fa-users w-5 mr-3"></i>
               <span>用户管理</span>
             </a>
             <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/airports.html')" class="sidebar-link">
-              <i class="fa fa-building-o w-5 mr-3"></i>
+              <i class="fas fa-building-o w-5 mr-3"></i>
               <span>机场管理</span>
             </a>
           </div>
@@ -150,16 +150,16 @@
           <div class="space-y-2">
             <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/system-settings.html')"
               class="sidebar-link">
-              <i class="fa fa-cog w-5 mr-3"></i>
+              <i class="fas fa-cog w-5 mr-3"></i>
               <span>系统设置</span>
             </a>
             <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/admin-accounts.html')"
               class="sidebar-link">
-              <i class="fa fa-user-circle-o w-5 mr-3"></i>
+              <i class="fas fa-user-circle-o w-5 mr-3"></i>
               <span>管理员账户</span>
             </a>
             <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/logs.html')" class="sidebar-link">
-              <i class="fa fa-history w-5 mr-3"></i>
+              <i class="fas fa-history w-5 mr-3"></i>
               <span>系统日志</span>
             </a>
           </div>
@@ -169,11 +169,11 @@
           <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">帮助与支持</h3>
           <div class="space-y-2">
             <a href="#" class="sidebar-link">
-              <i class="fa fa-question-circle-o w-5 mr-3"></i>
+              <i class="fas fa-question-circle-o w-5 mr-3"></i>
               <span>帮助中心</span>
             </a>
             <a href="#" class="sidebar-link">
-              <i class="fa fa-file-text w-5 mr-3"></i>
+              <i class="fas fa-file-text w-5 mr-3"></i>
               <span>文档中心</span>
             </a>
           </div>
@@ -209,10 +209,10 @@
             </div>
             <div class="flex items-end space-x-3">
               <button id="search-order-btn" class="btn-primary">
-                <i class="fa fa-search mr-1"></i> 搜索
+                <i class="fas fa-search mr-1"></i> 搜索
               </button>
               <button id="reset-search-btn" class="btn-outline">
-                <i class="fa fa-refresh mr-1"></i> 重置
+                <i class="fas fa-refresh mr-1"></i> 重置
               </button>
             </div>
           </div>
@@ -237,7 +237,7 @@
                   <option value="refunded">已退款</option>
                 </select>
                 <i
-                  class="fa fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-400 pointer-events-none"></i>
+                  class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-400 pointer-events-none"></i>
               </div>
               <div class="text-sm text-gray-500">共 <span id="total-orders" class="font-medium text-primary">248</span>
                 个订单</div>
@@ -280,13 +280,13 @@
                 <td class="px-5 py-4 whitespace-nowrap text-sm">
                   <div class="flex space-x-2">
                     <button class="text-primary hover:text-primary/80 transition-colors" title="查看详情">
-                      <i class="fa fa-eye"></i>
+                      <i class="fas fa-eye"></i>
                     </button>
                     <button class="text-success hover:text-success/80 transition-colors" title="查看客票">
-                      <i class="fa fa-ticket"></i>
+                      <i class="fas fa-ticket"></i>
                     </button>
                     <button class="text-gray-600 hover:text-gray-800 transition-colors" title="联系客户">
-                      <i class="fa fa-phone"></i>
+                      <i class="fas fa-phone"></i>
                     </button>
                   </div>
                 </td>
@@ -312,13 +312,13 @@
                 <td class="px-5 py-4 whitespace-nowrap text-sm">
                   <div class="flex space-x-2">
                     <button class="text-primary hover:text-primary/80 transition-colors" title="查看详情">
-                      <i class="fa fa-eye"></i>
+                      <i class="fas fa-eye"></i>
                     </button>
                     <button class="text-success hover:text-success/80 transition-colors" title="提醒支付">
-                      <i class="fa fa-bell"></i>
+                      <i class="fas fa-bell"></i>
                     </button>
                     <button class="text-danger hover:text-danger/80 transition-colors" title="取消订单">
-                      <i class="fa fa-times-circle"></i>
+                      <i class="fas fa-times-circle"></i>
                     </button>
                   </div>
                 </td>
@@ -344,13 +344,13 @@
                 <td class="px-5 py-4 whitespace-nowrap text-sm">
                   <div class="flex space-x-2">
                     <button class="text-primary hover:text-primary/80 transition-colors" title="查看详情">
-                      <i class="fa fa-eye"></i>
+                      <i class="fas fa-eye"></i>
                     </button>
                     <button class="text-success hover:text-success/80 transition-colors" title="出票">
-                      <i class="fa fa-ticket"></i>
+                      <i class="fas fa-ticket"></i>
                     </button>
                     <button class="text-danger hover:text-danger/80 transition-colors" title="取消订单">
-                      <i class="fa fa-times-circle"></i>
+                      <i class="fas fa-times-circle"></i>
                     </button>
                   </div>
                 </td>
@@ -376,10 +376,10 @@
                 <td class="px-5 py-4 whitespace-nowrap text-sm">
                   <div class="flex space-x-2">
                     <button class="text-primary hover:text-primary/80 transition-colors" title="查看详情">
-                      <i class="fa fa-eye"></i>
+                      <i class="fas fa-eye"></i>
                     </button>
                     <button class="text-gray-400 cursor-not-allowed" title="已取消">
-                      <i class="fa fa-times-circle"></i>
+                      <i class="fas fa-times-circle"></i>
                     </button>
                   </div>
                 </td>
@@ -405,10 +405,10 @@
                 <td class="px-5 py-4 whitespace-nowrap text-sm">
                   <div class="flex space-x-2">
                     <button class="text-primary hover:text-primary/80 transition-colors" title="查看详情">
-                      <i class="fa fa-eye"></i>
+                      <i class="fas fa-eye"></i>
                     </button>
                     <button class="text-success hover:text-success/80 transition-colors" title="查看退款记录">
-                      <i class="fa fa-credit-card"></i>
+                      <i class="fas fa-credit-card"></i>
                     </button>
                   </div>
                 </td>
@@ -434,10 +434,10 @@
                 <td class="px-5 py-4 whitespace-nowrap text-sm">
                   <div class="flex space-x-2">
                     <button class="text-primary hover:text-primary/80 transition-colors" title="查看详情">
-                      <i class="fa fa-eye"></i>
+                      <i class="fas fa-eye"></i>
                     </button>
                     <button class="text-gray-400 cursor-not-allowed" title="已完成">
-                      <i class="fa fa-check-circle"></i>
+                      <i class="fas fa-check-circle"></i>
                     </button>
                   </div>
                 </td>
@@ -454,7 +454,7 @@
           <nav class="inline-flex rounded-md shadow">
             <a href="#"
               class="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-              <i class="fa fa-chevron-left"></i>
+              <i class="fas fa-chevron-left"></i>
             </a>
             <a href="#"
               class="px-3 py-2 border-t border-b border-gray-300 bg-primary text-sm font-medium text-white">1</a>
@@ -468,7 +468,7 @@
               class="px-3 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">42</a>
             <a href="#"
               class="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-              <i class="fa fa-chevron-right"></i>
+              <i class="fas fa-chevron-right"></i>
             </a>
           </nav>
         </div>
@@ -484,7 +484,7 @@
         <div class="flex justify-between items-center">
           <h3 class="text-lg font-medium">订单详情</h3>
           <button id="close-order-details-btn" class="text-gray-400 hover:text-gray-500">
-            <i class="fa fa-times text-xl"></i>
+            <i class="fas fa-times text-xl"></i>
           </button>
         </div>
       </div>
@@ -557,7 +557,7 @@
                 <div class="relative">
                   <div class="border-t-2 border-primary border-dashed w-full"></div>
                   <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    <i class="fa fa-plane text-primary rotate-90"></i>
+                    <i class="fas fa-plane text-primary rotate-90"></i>
                   </div>
                   <div class="absolute top-0 right-0">
                     <span class="text-xs bg-blue-50 text-primary px-2 py-1 rounded" id="detail-flight-duration">2h
@@ -726,7 +726,7 @@
           case '待支付':
             const remindBtn = document.createElement('button');
             remindBtn.className = 'btn-secondary mr-3';
-            remindBtn.innerHTML = '<i class="fa fa-bell mr-1"></i> 提醒支付';
+            remindBtn.innerHTML = '<i class="fas fa-bell mr-1"></i> 提醒支付';
             remindBtn.addEventListener('click', () => {
               alert('已发送支付提醒');
             });
@@ -734,7 +734,7 @@
 
             const cancelBtn = document.createElement('button');
             cancelBtn.className = 'btn-danger mr-3';
-            cancelBtn.innerHTML = '<i class="fa fa-times-circle mr-1"></i> 取消订单';
+            cancelBtn.innerHTML = '<i class="fas fa-times-circle mr-1"></i> 取消订单';
             cancelBtn.addEventListener('click', () => {
               if (confirm('确定要取消该订单吗？')) {
                 alert('订单已取消');
@@ -747,7 +747,7 @@
           case '已支付':
             const issueBtn = document.createElement('button');
             issueBtn.className = 'btn-primary mr-3';
-            issueBtn.innerHTML = '<i class="fa fa-ticket mr-1"></i> 出票';
+            issueBtn.innerHTML = '<i class="fas fa-ticket mr-1"></i> 出票';
             issueBtn.addEventListener('click', () => {
               if (confirm('确定要为该订单出票吗？')) {
                 alert('出票成功');
@@ -760,7 +760,7 @@
           case '已出票':
             const ticketBtn = document.createElement('button');
             ticketBtn.className = 'btn-secondary mr-3';
-            ticketBtn.innerHTML = '<i class="fa fa-file-text-o mr-1"></i> 打印客票';
+            ticketBtn.innerHTML = '<i class="fas fa-file-text-o mr-1"></i> 打印客票';
             ticketBtn.addEventListener('click', () => {
               alert('客票已打印');
             });
@@ -770,7 +770,7 @@
           case '已退款':
             const refundDetailBtn = document.createElement('button');
             refundDetailBtn.className = 'btn-secondary mr-3';
-            refundDetailBtn.innerHTML = '<i class="fa fa-credit-card mr-1"></i> 退款详情';
+            refundDetailBtn.innerHTML = '<i class="fas fa-credit-card mr-1"></i> 退款详情';
             refundDetailBtn.addEventListener('click', () => {
               alert('查看退款详情');
             });
@@ -810,10 +810,10 @@
           actionCell.innerHTML = `
             <div class="flex space-x-2">
               <button class="text-primary hover:text-primary/80 transition-colors" title="查看详情">
-                <i class="fa fa-eye"></i>
+                <i class="fas fa-eye"></i>
               </button>
               <button class="text-gray-400 cursor-not-allowed" title="已取消">
-                <i class="fa fa-times-circle"></i>
+                <i class="fas fa-times-circle"></i>
               </button>
             </div>
           `;
@@ -842,13 +842,13 @@
           actionCell.innerHTML = `
             <div class="flex space-x-2">
               <button class="text-primary hover:text-primary/80 transition-colors" title="查看详情">
-                <i class="fa fa-eye"></i>
+                <i class="fas fa-eye"></i>
               </button>
               <button class="text-success hover:text-success/80 transition-colors" title="查看客票">
-                <i class="fa fa-ticket"></i>
+                <i class="fas fa-ticket"></i>
               </button>
               <button class="text-gray-600 hover:text-gray-800 transition-colors" title="联系客户">
-                <i class="fa fa-phone"></i>
+                <i class="fas fa-phone"></i>
               </button>
             </div>
           `;

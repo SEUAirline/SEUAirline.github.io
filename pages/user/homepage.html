@@ -8,7 +8,7 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome -->
-  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
   <!-- 自定义样式 -->
   <script>
@@ -58,7 +58,7 @@
         <div class="flex items-center">
           <a href="homepage.html" class="flex items-center"
             onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/homepage.html'); return false; } else { window.location.href = 'homepage.html'; }">
-            <i class="fa fa-plane text-primary text-2xl mr-2"></i>
+            <i class="fas fa-plane text-primary text-2xl mr-2"></i>
             <span class="text-xl font-bold text-primary">SEUAirline</span>
           </a>
         </div>
@@ -74,19 +74,19 @@
 
         <div class="flex items-center space-x-4">
           <button id="login-btn" class="btn-secondary hidden md:block">
-            <i class="fa fa-user-circle mr-2"></i>登录
+            <i class="fas fa-user-circle mr-2"></i>登录
           </button>
           <button id="register-btn" class="btn-primary hidden md:block">
-            <i class="fa fa-user-plus mr-2"></i>注册
+            <i class="fas fa-user-plus mr-2"></i>注册
           </button>
           <div id="user-info" class="hidden items-center space-x-2 cursor-pointer"
             onclick="if(parent && parent.switchPage){parent.switchPage('pages/user/user_center.html');}">
             <img src="https://picsum.photos/32/32" alt="用户头像" class="w-8 h-8 rounded-full">
             <span class="text-gray-700"><span id="username">游客</span> <i
-                class="fa fa-vip-card text-yellow-500"></i></span>
+                class="fas fa-id-card text-yellow-500"></i></span>
           </div>
           <button class="md:hidden text-gray-600">
-            <i class="fa fa-bars text-xl"></i>
+            <i class="fas fa-bars text-xl"></i>
           </button>
         </div>
       </div>
@@ -120,7 +120,7 @@
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">出发城市</label>
                 <div class="relative">
-                  <i class="fa fa-map-marker absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                  <i class="fas fa-map-marker absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                   <select id="departure" class="input-field pl-10">
                     <option value="PEK">北京 (PEK)</option>
                     <option value="PVG">上海浦东 (PVG)</option>
@@ -134,14 +134,14 @@
               <div class="flex items-end">
                 <button type="button" id="swap-cities"
                   class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-5">
-                  <i class="fa fa-exchange text-primary"></i>
+                  <i class="fas fa-exchange-alt text-primary"></i>
                 </button>
               </div>
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">到达城市</label>
                 <div class="relative">
-                  <i class="fa fa-map-marker absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                  <i class="fas fa-map-marker absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                   <select id="arrival" class="input-field pl-10">
                     <option value="PVG">上海浦东 (PVG)</option>
                     <option value="PEK">北京 (PEK)</option>
@@ -157,7 +157,7 @@
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">出发日期</label>
                 <div class="relative">
-                  <i class="fa fa-calendar absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                  <i class="fas fa-calendar absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                   <input type="date" id="departure-date" class="input-field pl-10" min="" max="">
                 </div>
               </div>
@@ -166,7 +166,7 @@
               <div id="return-date-container" class="hidden md:block">
                 <label class="block text-sm font-medium text-gray-700 mb-1">返程日期</label>
                 <div class="relative">
-                  <i class="fa fa-calendar absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                  <i class="fas fa-calendar absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                   <input type="date" id="return-date" class="input-field pl-10" min="" max="">
                 </div>
               </div>
@@ -174,7 +174,7 @@
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">乘客数量</label>
                 <div class="relative">
-                  <i class="fa fa-users absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                  <i class="fas fa-users absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                   <select id="passenger-count" class="input-field pl-10">
                     <option value="1">1成人</option>
                     <option value="2">2成人</option>
@@ -187,7 +187,7 @@
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">舱位类型</label>
                 <div class="relative">
-                  <i class="fa fa-suitcase absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                  <i class="fas fa-suitcase absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                   <select id="cabin-type" class="input-field pl-10">
                     <option value="economy">经济舱</option>
                     <option value="business">商务舱</option>
@@ -197,7 +197,7 @@
             </div>
 
             <button type="submit" class="w-full btn-primary">
-              <i class="fa fa-search mr-2"></i>搜索航班
+              <i class="fas fa-search mr-2"></i>搜索航班
             </button>
           </form>
         </div>
@@ -211,7 +211,7 @@
       <div class="flex justify-between items-center mb-10">
         <h2 class="text-2xl md:text-3xl font-bold text-gray-800">热门目的地</h2>
         <a href="#" class="text-primary hover:underline flex items-center">
-          查看更多 <i class="fa fa-arrow-right ml-2"></i>
+          查看更多 <i class="fas fa-arrow-right ml-2"></i>
         </a>
       </div>
 
@@ -286,7 +286,7 @@
       <div class="flex justify-between items-center mb-10">
         <h2 class="text-2xl md:text-3xl font-bold text-gray-800">特惠航班</h2>
         <a href="#" class="text-primary hover:underline flex items-center">
-          全部特惠 <i class="fa fa-arrow-right ml-2"></i>
+          全部特惠 <i class="fas fa-arrow-right ml-2"></i>
         </a>
       </div>
 
@@ -331,7 +331,7 @@
                   <span class="text-sm text-gray-500">每周一、三、五</span>
                 </div>
                 <button class="text-primary hover:text-primary/80 font-medium">
-                  立即预订 <i class="fa fa-angle-right ml-1"></i>
+                  立即预订 <i class="fas fa-angle-right ml-1"></i>
                 </button>
               </div>
             </div>
@@ -377,7 +377,7 @@
                   <span class="text-sm text-gray-500">每日直飞</span>
                 </div>
                 <button class="text-primary hover:text-primary/80 font-medium">
-                  立即预订 <i class="fa fa-angle-right ml-1"></i>
+                  立即预订 <i class="fas fa-angle-right ml-1"></i>
                 </button>
               </div>
             </div>
@@ -423,7 +423,7 @@
                   <span class="text-sm text-gray-500">每周二、四、日</span>
                 </div>
                 <button class="text-primary hover:text-primary/80 font-medium">
-                  立即预订 <i class="fa fa-angle-right ml-1"></i>
+                  立即预订 <i class="fas fa-angle-right ml-1"></i>
                 </button>
               </div>
             </div>
@@ -444,7 +444,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <div class="text-center">
           <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <i class="fa fa-clock-o text-2xl text-primary"></i>
+            <i class="fas fa-clock text-2xl text-primary"></i>
           </div>
           <h3 class="text-xl font-semibold text-gray-800 mb-2">准点率高</h3>
           <p class="text-gray-600">我们的航班准点率高达95%，让您的行程更加可靠</p>
@@ -452,7 +452,7 @@
 
         <div class="text-center">
           <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <i class="fa fa-money text-2xl text-primary"></i>
+            <i class="fas fa-money-bill-alt text-2xl text-primary"></i>
           </div>
           <h3 class="text-xl font-semibold text-gray-800 mb-2">价格透明</h3>
           <p class="text-gray-600">透明的价格体系，无隐藏费用，让您的消费更加放心</p>
@@ -460,7 +460,7 @@
 
         <div class="text-center">
           <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <i class="fa fa-headphones text-2xl text-primary"></i>
+            <i class="fas fa-headphones text-2xl text-primary"></i>
           </div>
           <h3 class="text-xl font-semibold text-gray-800 mb-2">24/7客服</h3>
           <p class="text-gray-600">全天候客户服务，随时为您解决旅途中的各种问题</p>
@@ -468,7 +468,7 @@
 
         <div class="text-center">
           <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <i class="fa fa-star text-2xl text-primary"></i>
+            <i class="fas fa-star text-2xl text-primary"></i>
           </div>
           <h3 class="text-xl font-semibold text-gray-800 mb-2">优质服务</h3>
           <p class="text-gray-600">专业的空乘团队，为您提供舒适贴心的飞行体验</p>
@@ -483,19 +483,19 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
           <div class="flex items-center mb-4">
-            <i class="fa fa-plane text-blue-400 text-xl mr-2"></i>
+            <i class="fas fa-plane text-blue-400 text-xl mr-2"></i>
             <span class="font-bold text-xl">SEUAirline</span>
           </div>
           <p class="text-gray-400 mb-4">企业级航空订票系统，为您提供便捷的机票预订服务</p>
           <div class="flex space-x-4">
             <a href="#" class="text-gray-400 hover:text-white">
-              <i class="fa fa-weibo" style="color: #ffffff;"></i>
+              <i class="fab fa-weibo" style="color: #ffffff;"></i>
             </a>
             <a href="#" class="text-gray-400 hover:text-white">
-              <i class="fa fa-weixin" style="color: #ffffff;"></i>
+              <i class="fab fa-weixin" style="color: #ffffff;"></i>
             </a>
             <a href="#" class="text-gray-400 hover:text-white">
-              <i class="fa fa-twitter" style="color: #ffffff;"></i>
+              <i class="fab fa-twitter" style="color: #ffffff;"></i>
             </a>
           </div>
         </div>
@@ -530,13 +530,13 @@
           <h4 class="text-lg font-semibold mb-4">联系方式</h4>
           <ul class="space-y-2">
             <li class="flex items-center text-gray-400">
-              <i class="fa fa-phone mr-2"></i> 400-888-8888
+              <i class="fas fa-phone mr-2"></i> 400-888-8888
             </li>
             <li class="flex items-center text-gray-400">
-              <i class="fa fa-envelope mr-2"></i> service@seuairline.com
+              <i class="fas fa-envelope mr-2"></i> service@seuairline.com
             </li>
             <li class="flex items-center text-gray-400">
-              <i class="fa fa-map-marker mr-2"></i> 南京市鼓楼区
+              <i class="fas fa-map-marker mr-2"></i> 南京市鼓楼区
             </li>
           </ul>
         </div>

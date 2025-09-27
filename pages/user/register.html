@@ -8,7 +8,7 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome -->
-  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
   <!-- 自定义样式 -->
   <script>
@@ -66,7 +66,7 @@
       <div class="flex justify-between items-center h-16">
         <div class="flex items-center">
           <a href="homepage.html" class="flex items-center">
-            <i class="fa fa-plane text-primary text-2xl mr-2"></i>
+            <i class="fas fa-plane text-primary text-2xl mr-2"></i>
             <span class="text-xl font-bold text-primary">SEUAirline</span>
           </a>
         </div>
@@ -82,7 +82,7 @@
 
         <div class="flex items-center">
           <button class="md:hidden text-gray-600">
-            <i class="fa fa-bars text-xl"></i>
+            <i class="fas fa-bars text-xl"></i>
           </button>
         </div>
       </div>
@@ -124,7 +124,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">手机号码</label>
             <div class="relative">
-              <i class="fa fa-mobile absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl"></i>
+              <i class="fas fa-mobile absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl"></i>
               <input type="tel" id="phone" class="input-field pl-10" placeholder="请输入手机号码">
               <span id="phone-status" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm hidden"></span>
             </div>
@@ -135,7 +135,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">验证码</label>
             <div class="flex space-x-2">
               <div class="relative flex-1">
-                <i class="fa fa-shield absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <i class="fas fa-shield absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                 <input type="text" id="verify-code" class="input-field pl-10" placeholder="请输入验证码">
               </div>
               <button type="button" id="send-verify-code"
@@ -148,12 +148,12 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">设置密码</label>
             <div class="relative">
-              <i class="fa fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+              <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
               <input type="password" id="set-password" class="input-field pl-10" placeholder="请设置6-20位密码"
                 autocomplete="new-password">
               <button type="button" id="toggle-password-visibility"
                 class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                <i class="fa fa-eye"></i>
+                <i class="fas fa-eye"></i>
               </button>
             </div>
             <div class="flex space-x-1 mt-1">
@@ -174,7 +174,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">真实姓名</label>
             <div class="relative">
-              <i class="fa fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+              <i class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
               <input type="text" id="real-name" class="input-field pl-10" placeholder="请输入真实姓名">
             </div>
           </div>
@@ -182,7 +182,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">身份证号码</label>
             <div class="relative">
-              <i class="fa fa-id-card absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+              <i class="fas fa-id-card absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
               <input type="text" id="id-card" class="input-field pl-10" placeholder="请输入身份证号码">
             </div>
           </div>
@@ -190,7 +190,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">电子邮箱（选填）</label>
             <div class="relative">
-              <i class="fa fa-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+              <i class="fas fa-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
               <input type="email" id="email" class="input-field pl-10" placeholder="请输入电子邮箱">
             </div>
           </div>
@@ -214,14 +214,14 @@
         <!-- 步骤3：设置完成 (默认隐藏) -->
         <div id="step3" class="text-center py-8 hidden">
           <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <i class="fa fa-check text-3xl text-green-500"></i>
+            <i class="fas fa-check text-3xl text-green-500"></i>
           </div>
           <h2 class="text-2xl font-bold text-gray-800 mb-2">注册成功！</h2>
           <p class="text-gray-600 mb-8">欢迎加入SEUAirline，您的账号已成功创建</p>
 
           <div class="bg-blue-50 rounded-lg p-4 mb-6">
             <p class="text-blue-700 text-sm">
-              <i class="fa fa-info-circle mr-2"></i>
+              <i class="fas fa-info-circle mr-2"></i>
               新用户专享：首次预订可获得<span class="font-bold">1000积分</span>奖励
             </p>
           </div>
@@ -275,7 +275,7 @@
         phoneInput.classList.add('input-success');
         phoneInput.classList.remove('input-error');
         phoneError.classList.add('hidden');
-        phoneStatus.innerHTML = '<i class="fa fa-check-circle text-green-500"></i>';
+        phoneStatus.innerHTML = '<i class="fas fa-check-circle text-green-500"></i>';
         phoneStatus.classList.remove('hidden');
       } else if (phone) {
         phoneInput.classList.add('input-error');
@@ -344,7 +344,7 @@
     togglePassword.addEventListener('click', () => {
       const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
       passwordInput.setAttribute('type', type);
-      togglePassword.innerHTML = type === 'password' ? '<i class="fa fa-eye"></i>' : '<i class="fa fa-eye-slash"></i>';
+      togglePassword.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
     });
 
     // 发送验证码
@@ -401,7 +401,7 @@
       // 更新步骤指示器
       step1Circle.classList.remove('step-active');
       step1Circle.classList.add('step-completed');
-      step1Circle.innerHTML = '<i class="fa fa-check"></i>';
+      step1Circle.innerHTML = '<i class="fas fa-check"></i>';
       step2Circle.classList.remove('bg-gray-200', 'text-gray-500');
       step2Circle.classList.add('step-active');
       line12.classList.add('step-line-active');
@@ -461,10 +461,10 @@
         // 更新步骤指示器
         step2Circle.classList.remove('step-active');
         step2Circle.classList.add('step-completed');
-        step2Circle.innerHTML = '<i class="fa fa-check"></i>';
+        step2Circle.innerHTML = '<i class="fas fa-check"></i>';
         step3Circle.classList.remove('bg-gray-200', 'text-gray-500');
         step3Circle.classList.add('step-completed');
-        step3Circle.innerHTML = '<i class="fa fa-check"></i>';
+        step3Circle.innerHTML = '<i class="fas fa-check"></i>';
         line23.classList.add('step-line-active');
 
         // 切换到步骤3

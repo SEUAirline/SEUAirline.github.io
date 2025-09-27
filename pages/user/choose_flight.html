@@ -8,7 +8,7 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome -->
-  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
   <!-- 自定义样式 -->
   <script>
@@ -55,7 +55,7 @@
         <div class="flex items-center">
           <a href="homepage.html" class="flex items-center"
             onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/homepage.html'); return false; } else { window.location.href = 'homepage.html'; }">
-            <i class="fa fa-plane text-primary text-2xl mr-2"></i>
+            <i class="fas fa-plane text-primary text-2xl mr-2"></i>
             <span class="text-xl font-bold text-primary">SEUAirline</span>
           </a>
         </div>
@@ -74,10 +74,10 @@
             onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/user_center.html'); } else { window.location.href = 'user_center.html'; }">
             <img src="https://picsum.photos/32/32" alt="用户头像" class="w-8 h-8 rounded-full">
             <span class="text-gray-700"><span id="username">游客</span> <i
-                class="fa fa-vip-card text-yellow-500"></i></span>
+                class="fas fa-id-card text-yellow-500"></i></span>
           </div>
           <button class="md:hidden text-gray-600">
-            <i class="fa fa-bars text-xl"></i>
+            <i class="fas fa-bars text-xl"></i>
           </button>
         </div>
       </div>
@@ -92,23 +92,23 @@
           <div class="flex items-center">
             <span class="text-lg font-bold text-gray-800">PEK</span>
             <div class="mx-3 flex items-center">
-              <i class="fa fa-long-arrow-right text-primary"></i>
+              <i class="fas fa-long-arrow-alt-right text-primary"></i>
             </div>
             <span class="text-lg font-bold text-gray-800">PVG</span>
           </div>
           <div class="text-gray-500">
-            <i class="fa fa-calendar mr-1"></i> 2024-01-20
+            <i class="fas fa-calendar mr-1"></i> 2024-01-20
           </div>
           <div class="text-gray-500">
-            <i class="fa fa-users mr-1"></i> 1成人
+            <i class="fas fa-users mr-1"></i> 1成人
           </div>
           <div class="text-gray-500">
-            <i class="fa fa-suitcase mr-1"></i> 经济舱
+            <i class="fas fa-suitcase mr-1"></i> 经济舱
           </div>
         </div>
         <div>
           <button id="modify-search" class="btn-secondary">
-            <i class="fa fa-pencil mr-2"></i>修改搜索
+            <i class="fas fa-pencil-alt mr-2"></i>修改搜索
           </button>
         </div>
       </div>
@@ -229,15 +229,15 @@
           <div class="flex flex-wrap justify-between items-center">
             <div class="flex space-x-4 mb-2 md:mb-0">
               <button class="text-primary font-medium">推荐排序</button>
-              <button class="text-gray-500 hover:text-primary">价格 <i class="fa fa-sort"></i></button>
-              <button class="text-gray-500 hover:text-primary">时间 <i class="fa fa-sort"></i></button>
-              <button class="text-gray-500 hover:text-primary">耗时 <i class="fa fa-sort"></i></button>
+              <button class="text-gray-500 hover:text-primary">价格 <i class="fas fa-sort"></i></button>
+              <button class="text-gray-500 hover:text-primary">时间 <i class="fas fa-sort"></i></button>
+              <button class="text-gray-500 hover:text-primary">耗时 <i class="fas fa-sort"></i></button>
             </div>
             <div class="flex items-center space-x-2">
               <span class="text-sm text-gray-500">共找到 <strong>12</strong> 个航班</span>
               <div class="flex border border-gray-200 rounded">
-                <button class="px-3 py-1 bg-gray-100 text-primary"><i class="fa fa-list"></i></button>
-                <button class="px-3 py-1 text-gray-500 hover:bg-gray-50"><i class="fa fa-th-large"></i></button>
+                <button class="px-3 py-1 bg-gray-100 text-primary"><i class="fas fa-list"></i></button>
+                <button class="px-3 py-1 text-gray-500 hover:bg-gray-50"><i class="fas fa-th-large"></i></button>
               </div>
             </div>
           </div>
@@ -271,7 +271,7 @@
                     <div class="absolute left-0 right-0 top-0 flex justify-between items-center">
                       <div class="w-2 h-2 bg-primary rounded-full -mt-1"></div>
                       <div class="absolute left-1/2 transform -translate-x-1/2 hidden md:block"><i
-                          class="fa fa-plane text-primary transform rotate-45"></i></div>
+                          class="fas fa-plane text-primary transform rotate-45"></i></div>
                       <div class="w-2 h-2 bg-primary rounded-full -mt-1"></div>
                     </div>
                   </div>
@@ -297,8 +297,8 @@
 
               <div class="mt-4 flex justify-between items-center">
                 <div class="text-sm text-gray-500">
-                  <span class="mr-3"><i class="fa fa-plane text-primary mr-1"></i> Boeing 737-800</span>
-                  <span><i class="fa fa-suitcase text-primary mr-1"></i> 20kg行李额</span>
+                  <span class="mr-3"><i class="fas fa-plane text-primary mr-1"></i> Boeing 737-800</span>
+                  <span><i class="fas fa-suitcase text-primary mr-1"></i> 20kg行李额</span>
                 </div>
                 <div class="text-sm">
                   <a href="#" class="text-primary hover:underline">查看详情</a>
@@ -332,7 +332,8 @@
                   <div class="relative w-40 h-0.5 my-2">
                     <div class="absolute left-0 right-0 top-0 flex justify-between items-center">
                       <div class="w-2 h-2 bg-primary rounded-full -mt-1"></div>
-                      <div class="absolute left-1/2 transform -translate-x-1/2 hidden md:block"><i class="fa fa-plane text-primary transform rotate-45"></i></div>
+                      <div class="absolute left-1/2 transform -translate-x-1/2 hidden md:block"><i
+                          class="fas fa-plane text-primary transform rotate-45"></i></div>
                       <div class="w-2 h-2 bg-primary rounded-full -mt-1"></div>
                     </div>
                   </div>
@@ -358,8 +359,8 @@
 
               <div class="mt-4 flex justify-between items-center">
                 <div class="text-sm text-gray-500">
-                  <span class="mr-3"><i class="fa fa-plane text-primary mr-1"></i> Airbus A320</span>
-                  <span><i class="fa fa-suitcase text-primary mr-1"></i> 20kg行李额</span>
+                  <span class="mr-3"><i class="fas fa-plane text-primary mr-1"></i> Airbus A320</span>
+                  <span><i class="fas fa-suitcase text-primary mr-1"></i> 20kg行李额</span>
                 </div>
                 <div class="text-sm">
                   <a href="#" class="text-primary hover:underline">查看详情</a>
@@ -393,7 +394,8 @@
                   <div class="relative w-40 h-0.5 my-2">
                     <div class="absolute left-0 right-0 top-0 flex justify-between items-center">
                       <div class="w-2 h-2 bg-primary rounded-full -mt-1"></div>
-                      <div class="absolute left-1/2 transform -translate-x-1/2 hidden md:block"><i class="fa fa-exchange text-primary"></i></div>
+                      <div class="absolute left-1/2 transform -translate-x-1/2 hidden md:block"><i
+                          class="fas fa-exchange-alt text-primary"></i></div>
                       <div class="w-2 h-2 bg-primary rounded-full -mt-1"></div>
                     </div>
                   </div>
@@ -419,8 +421,8 @@
 
               <div class="mt-4 flex justify-between items-center">
                 <div class="text-sm text-gray-500">
-                  <span class="mr-3"><i class="fa fa-plane text-primary mr-1"></i> Boeing 737-700</span>
-                  <span><i class="fa fa-suitcase text-primary mr-1"></i> 20kg行李额</span>
+                  <span class="mr-3"><i class="fas fa-plane text-primary mr-1"></i> Boeing 737-700</span>
+                  <span><i class="fas fa-suitcase text-primary mr-1"></i> 20kg行李额</span>
                 </div>
                 <div class="text-sm">
                   <a href="#" class="text-primary hover:underline">查看详情</a>
@@ -454,7 +456,8 @@
                   <div class="relative w-40 h-0.5 my-2">
                     <div class="absolute left-0 right-0 top-0 flex justify-between items-center">
                       <div class="w-2 h-2 bg-primary rounded-full -mt-1"></div>
-                      <div class="absolute left-1/2 transform -translate-x-1/2 hidden md:block"><i class="fa fa-plane text-primary transform rotate-45"></i></div>
+                      <div class="absolute left-1/2 transform -translate-x-1/2 hidden md:block"><i
+                          class="fas fa-plane text-primary transform rotate-45"></i></div>
                       <div class="w-2 h-2 bg-primary rounded-full -mt-1"></div>
                     </div>
                   </div>
@@ -480,8 +483,8 @@
 
               <div class="mt-4 flex justify-between items-center">
                 <div class="text-sm text-gray-500">
-                  <span class="mr-3"><i class="fa fa-plane text-primary mr-1"></i> Airbus A321neo</span>
-                  <span><i class="fa fa-suitcase text-primary mr-1"></i> 15kg行李额</span>
+                  <span class="mr-3"><i class="fas fa-plane text-primary mr-1"></i> Airbus A321neo</span>
+                  <span><i class="fas fa-suitcase text-primary mr-1"></i> 15kg行李额</span>
                 </div>
                 <div class="text-sm">
                   <a href="#" class="text-primary hover:underline">查看详情</a>
@@ -495,7 +498,7 @@
             <nav class="inline-flex rounded-md shadow">
               <a href="#"
                 class="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                <i class="fa fa-chevron-left"></i>
+                <i class="fas fa-chevron-left"></i>
               </a>
               <a href="#"
                 class="px-3 py-2 border-t border-b border-gray-300 bg-primary text-sm font-medium text-white">1</a>
@@ -509,7 +512,7 @@
                 class="px-3 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">12</a>
               <a href="#"
                 class="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                <i class="fa fa-chevron-right"></i>
+                <i class="fas fa-chevron-right"></i>
               </a>
             </nav>
           </div>

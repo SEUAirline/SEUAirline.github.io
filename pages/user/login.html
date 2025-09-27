@@ -8,7 +8,7 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome -->
-  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
   <!-- 自定义样式 -->
   <script>
@@ -52,7 +52,7 @@
       <div class="flex justify-between items-center h-16">
         <div class="flex items-center">
           <a href="homepage.html" class="flex items-center">
-            <i class="fa fa-plane text-primary text-2xl mr-2"></i>
+            <i class="fas fa-plane text-primary text-2xl mr-2"></i>
             <span class="text-xl font-bold text-primary">SEUAirline</span>
           </a>
         </div>
@@ -68,7 +68,7 @@
 
         <div class="flex items-center">
           <button class="md:hidden text-gray-600">
-            <i class="fa fa-bars text-xl"></i>
+            <i class="fas fa-bars text-xl"></i>
           </button>
         </div>
       </div>
@@ -103,7 +103,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">用户名/邮箱</label>
             <div class="relative">
-              <i class="fa fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+              <i class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
               <input type="text" id="username" class="input-field pl-10" placeholder="请输入用户名或邮箱"
                 autocomplete="username">
             </div>
@@ -112,12 +112,12 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">密码</label>
             <div class="relative">
-              <i class="fa fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+              <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
               <input type="password" id="password" class="input-field pl-10" placeholder="请输入密码"
                 autocomplete="current-password">
               <button type="button" id="toggle-password"
                 class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                <i class="fa fa-eye"></i>
+                <i class="fas fa-eye"></i>
               </button>
             </div>
           </div>
@@ -142,7 +142,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">手机号码</label>
             <div class="relative">
-              <i class="fa fa-mobile absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl"></i>
+              <i class="fas fa-mobile absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl"></i>
               <input type="tel" id="phone-number" class="input-field pl-10" placeholder="请输入手机号码">
             </div>
           </div>
@@ -151,7 +151,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">验证码</label>
             <div class="flex space-x-2">
               <div class="relative flex-1">
-                <i class="fa fa-shield absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <i class="fas fa-shield absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                 <input type="text" id="sms-code" class="input-field pl-10" placeholder="请输入验证码">
               </div>
               <button type="button" id="send-code"
@@ -171,7 +171,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">身份证号</label>
             <div class="relative">
-              <i class="fa fa-id-card absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+              <i class="fas fa-id-card absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
               <input type="text" id="idcard-number" class="input-field pl-10" placeholder="请输入身份证号">
             </div>
           </div>
@@ -180,7 +180,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">验证码</label>
             <div class="flex space-x-2">
               <div class="relative flex-1">
-                <i class="fa fa-shield absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <i class="fas fa-shield absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                 <input type="text" id="idcard-sms-code" class="input-field pl-10" placeholder="请输入验证码">
               </div>
               <button type="button" id="send-idcard-code"
@@ -216,15 +216,15 @@
           <div class="flex justify-center space-x-6 mt-4">
             <button
               class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-500 hover:bg-red-100 transition-colors">
-              <i class="fa fa-weibo text-lg"></i>
+              <i class="fab fa-weibo text-lg"></i>
             </button>
             <button
               class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-green-500 hover:bg-green-100 transition-colors">
-              <i class="fa fa-weixin text-lg"></i>
+              <i class="fab fa-weixin text-lg"></i>
             </button>
             <button
               class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-500 hover:bg-blue-100 transition-colors">
-              <i class="fa fa-qq text-lg"></i>
+              <i class="fas fa-qq text-lg"></i>
             </button>
           </div>
         </div>
@@ -301,7 +301,7 @@
     togglePassword.addEventListener('click', () => {
       const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
       passwordInput.setAttribute('type', type);
-      togglePassword.innerHTML = type === 'password' ? '<i class="fa fa-eye"></i>' : '<i class="fa fa-eye-slash"></i>';
+      togglePassword.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
     });
 
     // 密码登录表单提交

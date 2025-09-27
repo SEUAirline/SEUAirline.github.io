@@ -8,7 +8,7 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome -->
-  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
   <!-- 自定义样式 -->
   <script>
@@ -119,10 +119,10 @@
       <div class="flex justify-between items-center h-16">
         <div class="flex items-center">
           <button id="sidebar-toggle" class="mr-4 text-gray-500 hover:text-primary">
-            <i class="fa fa-bars text-xl"></i>
+            <i class="fas fa-bars text-xl"></i>
           </button>
           <a href="dashboard.html" class="flex items-center">
-            <i class="fa fa-cube text-primary text-2xl mr-2"></i>
+            <i class="fas fa-cube text-primary text-2xl mr-2"></i>
             <span class="text-xl font-bold text-primary">SEUAirline 管理系统</span>
           </a>
         </div>
@@ -131,7 +131,7 @@
           <!-- 通知图标 -->
           <div class="relative">
             <button class="text-gray-500 hover:text-primary focus:outline-none">
-              <i class="fa fa-bell-o text-xl"></i>
+              <i class="fas fa-bell-o text-xl"></i>
               <span
                 class="absolute top-0 right-0 h-4 w-4 rounded-full bg-red-500 text-xs text-white flex items-center justify-center">3</span>
             </button>
@@ -145,7 +145,7 @@
               <div class="text-xs text-gray-500">系统管理员</div>
             </div>
             <button id="logout-btn" class="text-gray-500 hover:text-primary">
-              <i class="fa fa-sign-out"></i>
+              <i class="fas fa-sign-out"></i>
             </button>
           </div>
         </div>
@@ -163,23 +163,23 @@
           <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">主菜单</h3>
           <div class="space-y-2">
             <a href="dashboard.html" class="sidebar-link">
-              <i class="fa fa-tachometer w-5 mr-3"></i>
+              <i class="fas fa-tachometer w-5 mr-3"></i>
               <span>仪表盘</span>
             </a>
             <a href="flights.html" class="sidebar-link">
-              <i class="fa fa-plane w-5 mr-3"></i>
+              <i class="fas fa-plane w-5 mr-3"></i>
               <span>航班管理</span>
             </a>
             <a href="orders.html" class="sidebar-link">
-              <i class="fa fa-file-text-o w-5 mr-3"></i>
+              <i class="fas fa-file-text-o w-5 mr-3"></i>
               <span>订单管理</span>
             </a>
             <a href="users.html" class="sidebar-link">
-              <i class="fa fa-users w-5 mr-3"></i>
+              <i class="fas fa-users w-5 mr-3"></i>
               <span>用户管理</span>
             </a>
             <a href="airports.html" class="sidebar-link">
-              <i class="fa fa-building-o w-5 mr-3"></i>
+              <i class="fas fa-building-o w-5 mr-3"></i>
               <span>机场管理</span>
             </a>
           </div>
@@ -189,15 +189,15 @@
           <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">系统设置</h3>
           <div class="space-y-2">
             <a href="system-settings.html" class="sidebar-link">
-              <i class="fa fa-cog w-5 mr-3"></i>
+              <i class="fas fa-cog w-5 mr-3"></i>
               <span>系统设置</span>
             </a>
             <a href="admin-accounts.html" class="sidebar-link">
-              <i class="fa fa-user-circle-o w-5 mr-3"></i>
+              <i class="fas fa-user-circle-o w-5 mr-3"></i>
               <span>管理员账户</span>
             </a>
             <a href="logs.html" class="sidebar-link">
-              <i class="fa fa-history w-5 mr-3"></i>
+              <i class="fas fa-history w-5 mr-3"></i>
               <span>系统日志</span>
             </a>
           </div>
@@ -207,11 +207,11 @@
           <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">帮助与支持</h3>
           <div class="space-y-2">
             <a href="help-center.html" class="sidebar-link active">
-              <i class="fa fa-question-circle-o w-5 mr-3"></i>
+              <i class="fas fa-question-circle-o w-5 mr-3"></i>
               <span>帮助中心</span>
             </a>
             <a href="#" class="sidebar-link">
-              <i class="fa fa-file-text w-5 mr-3"></i>
+              <i class="fas fa-file-text w-5 mr-3"></i>
               <span>文档中心</span>
             </a>
           </div>
@@ -230,7 +230,7 @@
       <!-- 搜索框 -->
       <div class="search-container mb-10">
         <div class="relative">
-          <i class="fa fa-search search-icon"></i>
+          <i class="fas fa-search search-icon"></i>
           <input type="text" id="help-search" class="search-input" placeholder="搜索帮助内容、常见问题或操作指南...">
         </div>
       </div>
@@ -238,21 +238,21 @@
       <!-- 快速访问功能区 -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
         <div class="feature-card">
-          <i class="fa fa-life-ring text-4xl text-gray-400 mb-4"></i>
+          <i class="fas fa-life-ring text-4xl text-gray-400 mb-4"></i>
           <h3 class="text-lg font-semibold mb-2">常见问题</h3>
           <p class="text-gray-600 mb-4">浏览最常见的问题和解答，快速解决您的疑问</p>
           <a href="#faq" class="btn-secondary text-sm">查看常见问题</a>
         </div>
 
         <div class="feature-card">
-          <i class="fa fa-book text-4xl text-gray-400 mb-4"></i>
+          <i class="fas fa-book text-4xl text-gray-400 mb-4"></i>
           <h3 class="text-lg font-semibold mb-2">操作指南</h3>
           <p class="text-gray-600 mb-4">详细的系统功能使用教程和最佳实践</p>
           <a href="#guides" class="btn-secondary text-sm">浏览操作指南</a>
         </div>
 
         <div class="feature-card">
-          <i class="fa fa-envelope text-4xl text-gray-400 mb-4"></i>
+          <i class="fas fa-envelope text-4xl text-gray-400 mb-4"></i>
           <h3 class="text-lg font-semibold mb-2">联系支持</h3>
           <p class="text-gray-600 mb-4">遇到问题？提交工单或联系我们的技术支持团队</p>
           <a href="#contact" class="btn-secondary text-sm">联系我们</a>
@@ -279,7 +279,7 @@
       <!-- 常见问题部分 -->
       <section id="faq" class="mb-12">
         <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-          <i class="fa fa-question-circle text-primary mr-3"></i>
+          <i class="fas fa-question-circle text-primary mr-3"></i>
           常见问题
         </h2>
 
@@ -299,7 +299,7 @@
           <div class="faq-item active">
             <div class="faq-header">
               <h3 class="text-lg font-medium text-gray-800">如何添加新航班？</h3>
-              <i class="fa fa-chevron-down text-gray-500 transition-transform"></i>
+              <i class="fas fa-chevron-down text-gray-500 transition-transform"></i>
             </div>
             <div class="faq-body">
               <p class="text-gray-700 mb-3">添加新航班的步骤如下：</p>
@@ -318,7 +318,7 @@
           <div class="faq-item">
             <div class="faq-header">
               <h3 class="text-lg font-medium text-gray-800">如何处理待支付订单？</h3>
-              <i class="fa fa-chevron-down text-gray-500 transition-transform"></i>
+              <i class="fas fa-chevron-down text-gray-500 transition-transform"></i>
             </div>
             <div class="faq-body">
               <p class="text-gray-700 mb-3">处理待支付订单的方法：</p>
@@ -343,7 +343,7 @@
           <div class="faq-item">
             <div class="faq-header">
               <h3 class="text-lg font-medium text-gray-800">如何禁用用户账户？</h3>
-              <i class="fa fa-chevron-down text-gray-500 transition-transform"></i>
+              <i class="fas fa-chevron-down text-gray-500 transition-transform"></i>
             </div>
             <div class="faq-body">
               <p class="text-gray-700 mb-3">禁用用户账户的操作步骤：</p>
@@ -362,7 +362,7 @@
           <div class="faq-item">
             <div class="faq-header">
               <h3 class="text-lg font-medium text-gray-800">如何配置系统邮件服务器？</h3>
-              <i class="fa fa-chevron-down text-gray-500 transition-transform"></i>
+              <i class="fas fa-chevron-down text-gray-500 transition-transform"></i>
             </div>
             <div class="faq-body">
               <p class="text-gray-700 mb-3">配置邮件服务器的步骤：</p>
@@ -390,7 +390,7 @@
           <div class="faq-item">
             <div class="faq-header">
               <h3 class="text-lg font-medium text-gray-800">如何导出系统日志？</h3>
-              <i class="fa fa-chevron-down text-gray-500 transition-transform"></i>
+              <i class="fas fa-chevron-down text-gray-500 transition-transform"></i>
             </div>
             <div class="faq-body">
               <p class="text-gray-700 mb-3">导出系统日志的方法：</p>
@@ -421,7 +421,7 @@
         <!-- 加载更多按钮 -->
         <div class="text-center mt-8">
           <button class="btn-secondary">
-            <i class="fa fa-refresh mr-2"></i>
+            <i class="fas fa-refresh mr-2"></i>
             加载更多问题
           </button>
         </div>
@@ -430,7 +430,7 @@
       <!-- 操作指南部分 -->
       <section id="guides" class="mb-12">
         <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-          <i class="fa fa-book text-primary mr-3"></i>
+          <i class="fas fa-book text-primary mr-3"></i>
           操作指南
         </h2>
 
@@ -444,10 +444,10 @@
             <div class="card-body">
               <p class="text-gray-700 mb-4">详细介绍如何添加、编辑、查询和管理航班信息，包括航班时刻表管理、价格调整等。</p>
               <div class="flex items-center text-gray-500 text-sm mb-3">
-                <i class="fa fa-clock-o mr-1"></i> 阅读时间：15分钟
+                <i class="fas fa-clock mr-1"></i> 阅读时间：15分钟
               </div>
               <div class="flex items-center text-gray-500 text-sm">
-                <i class="fa fa-eye mr-1"></i> 已阅读：2,345次
+                <i class="fas fa-eye mr-1"></i> 已阅读：2,345次
               </div>
             </div>
           </div>
@@ -461,10 +461,10 @@
             <div class="card-body">
               <p class="text-gray-700 mb-4">全面了解订单从创建到完成的整个生命周期，以及如何处理各类订单状态和特殊情况。</p>
               <div class="flex items-center text-gray-500 text-sm mb-3">
-                <i class="fa fa-clock-o mr-1"></i> 阅读时间：12分钟
+                <i class="fas fa-clock mr-1"></i> 阅读时间：12分钟
               </div>
               <div class="flex items-center text-gray-500 text-sm">
-                <i class="fa fa-eye mr-1"></i> 已阅读：1,876次
+                <i class="fas fa-eye mr-1"></i> 已阅读：1,876次
               </div>
             </div>
           </div>
@@ -478,10 +478,10 @@
             <div class="card-body">
               <p class="text-gray-700 mb-4">详解如何创建管理员账户、分配不同级别的权限，以及如何管理用户角色和访问控制。</p>
               <div class="flex items-center text-gray-500 text-sm mb-3">
-                <i class="fa fa-clock-o mr-1"></i> 阅读时间：10分钟
+                <i class="fas fa-clock mr-1"></i> 阅读时间：10分钟
               </div>
               <div class="flex items-center text-gray-500 text-sm">
-                <i class="fa fa-eye mr-1"></i> 已阅读：1,543次
+                <i class="fas fa-eye mr-1"></i> 已阅读：1,543次
               </div>
             </div>
           </div>
@@ -495,10 +495,10 @@
             <div class="card-body">
               <p class="text-gray-700 mb-4">提供系统关键参数配置的建议和最佳实践，包括性能优化、安全设置等重要选项说明。</p>
               <div class="flex items-center text-gray-500 text-sm mb-3">
-                <i class="fa fa-clock-o mr-1"></i> 阅读时间：18分钟
+                <i class="fas fa-clock mr-1"></i> 阅读时间：18分钟
               </div>
               <div class="flex items-center text-gray-500 text-sm">
-                <i class="fa fa-eye mr-1"></i> 已阅读：1,287次
+                <i class="fas fa-eye mr-1"></i> 已阅读：1,287次
               </div>
             </div>
           </div>
@@ -512,10 +512,10 @@
             <div class="card-body">
               <p class="text-gray-700 mb-4">学习如何导出各类系统数据、生成销售报表、乘客统计等，以及如何解读和利用这些数据。</p>
               <div class="flex items-center text-gray-500 text-sm mb-3">
-                <i class="fa fa-clock-o mr-1"></i> 阅读时间：14分钟
+                <i class="fas fa-clock mr-1"></i> 阅读时间：14分钟
               </div>
               <div class="flex items-center text-gray-500 text-sm">
-                <i class="fa fa-eye mr-1"></i> 已阅读：1,156次
+                <i class="fas fa-eye mr-1"></i> 已阅读：1,156次
               </div>
             </div>
           </div>
@@ -529,10 +529,10 @@
             <div class="card-body">
               <p class="text-gray-700 mb-4">常见系统问题的排查方法、安全漏洞的防范措施，以及系统备份与恢复的详细操作步骤。</p>
               <div class="flex items-center text-gray-500 text-sm mb-3">
-                <i class="fa fa-clock-o mr-1"></i> 阅读时间：20分钟
+                <i class="fas fa-clock mr-1"></i> 阅读时间：20分钟
               </div>
               <div class="flex items-center text-gray-500 text-sm">
-                <i class="fa fa-eye mr-1"></i> 已阅读：987次
+                <i class="fas fa-eye mr-1"></i> 已阅读：987次
               </div>
             </div>
           </div>
@@ -541,7 +541,7 @@
         <!-- 查看更多指南 -->
         <div class="text-center mt-8">
           <button class="btn-secondary">
-            <i class="fa fa-book mr-2"></i>
+            <i class="fas fa-book mr-2"></i>
             查看所有操作指南
           </button>
         </div>
@@ -550,7 +550,7 @@
       <!-- 联系支持部分 -->
       <section id="contact">
         <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-          <i class="fa fa-envelope text-primary mr-3"></i>
+          <i class="fas fa-envelope text-primary mr-3"></i>
           联系支持
         </h2>
 
@@ -564,7 +564,7 @@
               <div class="space-y-6">
                 <div class="flex items-start">
                   <div class="flex-shrink-0 bg-blue-100 p-3 rounded-full">
-                    <i class="fa fa-envelope text-primary"></i>
+                    <i class="fas fa-envelope text-primary"></i>
                   </div>
                   <div class="ml-4">
                     <h4 class="font-medium text-gray-900">邮件支持</h4>
@@ -574,7 +574,7 @@
 
                 <div class="flex items-start">
                   <div class="flex-shrink-0 bg-green-100 p-3 rounded-full">
-                    <i class="fa fa-phone text-green-600"></i>
+                    <i class="fas fa-phone text-green-600"></i>
                   </div>
                   <div class="ml-4">
                     <h4 class="font-medium text-gray-900">电话支持</h4>
@@ -584,7 +584,7 @@
 
                 <div class="flex items-start">
                   <div class="flex-shrink-0 bg-purple-100 p-3 rounded-full">
-                    <i class="fa fa-comments text-purple-600"></i>
+                    <i class="fas fa-comments text-purple-600"></i>
                   </div>
                   <div class="ml-4">
                     <h4 class="font-medium text-gray-900">在线客服</h4>
@@ -597,15 +597,15 @@
                 <h4 class="font-medium text-gray-900 mb-3">常见问题快速解答</h4>
                 <ul class="space-y-2">
                   <li class="flex items-center text-gray-700">
-                    <i class="fa fa-check-circle text-success mr-2"></i>
+                    <i class="fas fa-check-circle text-success mr-2"></i>
                     <span>系统正常工作时间：7×24小时</span>
                   </li>
                   <li class="flex items-center text-gray-700">
-                    <i class="fa fa-check-circle text-success mr-2"></i>
+                    <i class="fas fa-check-circle text-success mr-2"></i>
                     <span>紧急问题响应时间：1小时内</span>
                   </li>
                   <li class="flex items-center text-gray-700">
-                    <i class="fa fa-check-circle text-success mr-2"></i>
+                    <i class="fas fa-check-circle text-success mr-2"></i>
                     <span>定期维护时间：每周日 02:00-04:00</span>
                   </li>
                 </ul>
@@ -659,7 +659,7 @@
                   <div
                     class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                     <div class="space-y-1 text-center">
-                      <i class="fa fa-cloud-upload text-gray-400 text-3xl mb-2"></i>
+                      <i class="fas fa-cloud-upload text-gray-400 text-3xl mb-2"></i>
                       <div class="flex text-sm text-gray-600">
                         <label for="file-upload"
                           class="relative cursor-pointer bg-white rounded-md font-medium text-primary hover:text-primary/90">
@@ -674,7 +674,7 @@
                 </div>
 
                 <button type="submit" class="btn-primary w-full">
-                  <i class="fa fa-paper-plane mr-2"></i>
+                  <i class="fas fa-paper-plane mr-2"></i>
                   提交工单
                 </button>
               </form>
@@ -688,7 +688,7 @@
   <!-- 成功提示 -->
   <div id="toast"
     class="fixed bottom-6 right-6 bg-success text-white px-6 py-3 rounded-lg shadow-lg flex items-center transform translate-y-10 opacity-0 transition-all duration-300 z-50">
-    <i class="fa fa-check-circle mr-2"></i>
+    <i class="fas fa-check-circle mr-2"></i>
     <span>操作成功</span>
   </div>
 
