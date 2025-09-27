@@ -88,6 +88,16 @@ const MockAPI = {
   logout() {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('currentAdmin');
+    sessionStorage.removeItem('adminToken');
+  },
+
+  // 验证管理员token
+  validateAdminToken(token) {
+    // 在实际应用中，这里应该有更复杂的token验证逻辑
+    // 这里简单模拟验证，检查token是否存在并且是否以admin-token-开头
+    return token && typeof token === 'string' && token.startsWith('admin-token-');
   },
 
   // 创建订单
