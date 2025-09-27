@@ -64,13 +64,17 @@
         </div>
 
         <div class="hidden md:flex space-x-8">
-          <a href="homepage.html" class="text-gray-600 hover:text-primary">首页</a>
-          <a href="view_orders.html" class="text-primary font-medium border-b-2 border-primary">我的订单</a>
-          <a href="user_center.html" class="text-gray-600 hover:text-primary">个人中心</a>
+          <a href="homepage.html" class="text-gray-600 hover:text-primary"
+            onclick="event.preventDefault(); if(parent && parent.switchPage){parent.switchPage('pages/user/homepage.html');}">首页</a>
+          <a href="view_orders.html" class="text-primary font-medium border-b-2 border-primary"
+            onclick="event.preventDefault(); if(parent && parent.switchPage){parent.switchPage('pages/user/view_orders.html');}">我的订单</a>
+          <a href="user_center.html" class="text-gray-600 hover:text-primary"
+            onclick="event.preventDefault(); if(parent && parent.switchPage){parent.switchPage('pages/user/user_center.html');}">个人中心</a>
         </div>
 
         <div class="flex items-center space-x-4">
-          <div id="user-info" class="hidden items-center space-x-2">
+          <div id="user-info" class="hidden items-center space-x-2 cursor-pointer"
+            onclick="if(parent && parent.switchPage){parent.switchPage('pages/user/user_center.html');}">
             <img src="https://picsum.photos/32/32" alt="用户头像" class="w-8 h-8 rounded-full">
             <span class="text-gray-700"><span id="username">游客</span> <i
                 class="fa fa-vip-card text-yellow-500"></i></span>
@@ -168,9 +172,9 @@
                 <div class="flex flex-col items-center mr-4">
                   <div class="text-xs text-gray-500">2h20m</div>
                   <div class="relative w-24 h-0.5 my-1">
-                    <div class="absolute left-0 right-0 top-0 flex justify-between">
+                    <div class="absolute left-0 right-0 top-0 flex justify-between items-center">
                       <div class="w-1.5 h-1.5 bg-primary rounded-full -mt-0.5"></div>
-                      <div class="hidden md:block"><i class="fa fa-plane text-primary transform rotate-45"></i></div>
+                      <div class="absolute left-1/2 transform -translate-x-1/2 hidden md:block"><i class="fa fa-plane text-primary transform rotate-45"></i></div>
                       <div class="w-1.5 h-1.5 bg-primary rounded-full -mt-0.5"></div>
                     </div>
                   </div>
@@ -239,9 +243,9 @@
                 <div class="flex flex-col items-center mr-4">
                   <div class="text-xs text-gray-500">3h45m</div>
                   <div class="relative w-24 h-0.5 my-1">
-                    <div class="absolute left-0 right-0 top-0 flex justify-between">
+                    <div class="absolute left-0 right-0 top-0 flex justify-between items-center">
                       <div class="w-1.5 h-1.5 bg-primary rounded-full -mt-0.5"></div>
-                      <div class="hidden md:block"><i class="fa fa-plane text-primary transform rotate-45"></i></div>
+                      <div class="absolute left-1/2 transform -translate-x-1/2 hidden md:block"><i class="fa fa-plane text-primary transform rotate-45"></i></div>
                       <div class="w-1.5 h-1.5 bg-primary rounded-full -mt-0.5"></div>
                     </div>
                   </div>
@@ -313,9 +317,9 @@
                 <div class="flex flex-col items-center mr-4">
                   <div class="text-xs text-gray-500">1h40m</div>
                   <div class="relative w-24 h-0.5 my-1">
-                    <div class="absolute left-0 right-0 top-0 flex justify-between">
+                    <div class="absolute left-0 right-0 top-0 flex justify-between items-center">
                       <div class="w-1.5 h-1.5 bg-primary rounded-full -mt-0.5"></div>
-                      <div class="hidden md:block"><i class="fa fa-plane text-primary transform rotate-45"></i></div>
+                      <div class="absolute left-1/2 transform -translate-x-1/2 hidden md:block"><i class="fa fa-plane text-primary transform rotate-45"></i></div>
                       <div class="w-1.5 h-1.5 bg-primary rounded-full -mt-0.5"></div>
                     </div>
                   </div>
@@ -479,7 +483,11 @@
       if (payBtn) {
         payBtn.addEventListener('click', () => {
           localStorage.setItem('currentOrderId', orderId);
-          window.location.href = 'payment.html';
+          if (parent && typeof parent.switchPage === 'function') {
+            parent.switchPage('pages/user/payment.html');
+          } else {
+            window.location.href = 'payment.html';
+          }
         });
       }
     });

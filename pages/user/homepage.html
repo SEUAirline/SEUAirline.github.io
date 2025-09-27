@@ -56,16 +56,16 @@
     <div class="container mx-auto px-4">
       <div class="flex justify-between items-center h-16">
         <div class="flex items-center">
-          <a href="homepage.html" class="flex items-center">
+          <a href="homepage.html" class="flex items-center" onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/homepage.html'); return false; } else { window.location.href = 'homepage.html'; }">
             <i class="fa fa-plane text-primary text-2xl mr-2"></i>
             <span class="text-xl font-bold text-primary">SEUAirline</span>
           </a>
         </div>
 
         <div class="hidden md:flex space-x-8">
-          <a href="homepage.html" class="text-primary font-medium">首页</a>
-          <a href="view_orders.html" class="text-gray-600 hover:text-primary">我的订单</a>
-          <a href="user_center.html" class="text-gray-600 hover:text-primary">个人中心</a>
+          <a href="homepage.html" class="text-primary font-medium" onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/homepage.html'); return false; } else { window.location.href = 'homepage.html'; }">首页</a>
+          <a href="view_orders.html" class="text-gray-600 hover:text-primary" onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/view_orders.html'); return false; } else { window.location.href = 'view_orders.html'; }">我的订单</a>
+          <a href="user_center.html" class="text-gray-600 hover:text-primary" onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/user_center.html'); return false; } else { window.location.href = 'user_center.html'; }">个人中心</a>
         </div>
 
         <div class="flex items-center space-x-4">
@@ -75,7 +75,8 @@
           <button id="register-btn" class="btn-primary hidden md:block">
             <i class="fa fa-user-plus mr-2"></i>注册
           </button>
-          <div id="user-info" class="hidden items-center space-x-2">
+          <div id="user-info" class="hidden items-center space-x-2 cursor-pointer"
+            onclick="if(parent && parent.switchPage){parent.switchPage('pages/user/user_center.html');}">
             <img src="https://picsum.photos/32/32" alt="用户头像" class="w-8 h-8 rounded-full">
             <span class="text-gray-700"><span id="username">游客</span> <i
                 class="fa fa-vip-card text-yellow-500"></i></span>
@@ -498,9 +499,15 @@
         <div>
           <h4 class="text-lg font-semibold mb-4">快速链接</h4>
           <ul class="space-y-2">
-            <li><a href="homepage.html" class="text-gray-400 hover:text-white">首页</a></li>
-            <li><a href="view_orders.html" class="text-gray-400 hover:text-white">我的订单</a></li>
-            <li><a href="user_center.html" class="text-gray-400 hover:text-white">个人中心</a></li>
+            <li><a href="homepage.html" class="text-gray-400 hover:text-white"
+                onclick="event.preventDefault(); if(parent && parent.switchPage){parent.switchPage('pages/user/homepage.html');}">首页</a>
+            </li>
+            <li><a href="view_orders.html" class="text-gray-400 hover:text-white"
+                onclick="event.preventDefault(); if(parent && parent.switchPage){parent.switchPage('pages/user/view_orders.html');}">我的订单</a>
+            </li>
+            <li><a href="user_center.html" class="text-gray-400 hover:text-white"
+                onclick="event.preventDefault(); if(parent && parent.switchPage){parent.switchPage('pages/user/user_center.html');}">个人中心</a>
+            </li>
             <li><a href="#" class="text-gray-400 hover:text-white">关于我们</a></li>
           </ul>
         </div>
@@ -581,7 +588,11 @@
       }));
 
       // 跳转到航班选择页面
-      window.location.href = 'choose_flight.html';
+      if (parent && typeof parent.switchPage === 'function') {
+        parent.switchPage('pages/user/choose_flight.html');
+      } else {
+        window.location.href = 'choose_flight.html';
+      }
     });
 
     // 检查用户登录状态
@@ -598,12 +609,20 @@
 
     // 登录按钮点击
     document.getElementById('login-btn').addEventListener('click', () => {
-      window.location.href = 'login.html';
+      if (parent && typeof parent.switchPage === 'function') {
+        parent.switchPage('pages/user/login.html');
+      } else {
+        window.location.href = 'login.html';
+      }
     });
 
     // 注册按钮点击
     document.getElementById('register-btn').addEventListener('click', () => {
-      window.location.href = 'register.html';
+      if (parent && typeof parent.switchPage === 'function') {
+        parent.switchPage('pages/user/register.html');
+      } else {
+        window.location.href = 'register.html';
+      }
     });
 
     // 页面加载时检查登录状态

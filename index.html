@@ -194,6 +194,9 @@
       pageContent.src = url;
       urlDisplay.textContent = `https://www.seuairline.com/${url.replace('pages/', '').replace('.html', '')}`;
     }
+    
+    // 暴露给iframe内部页面调用
+    window.switchPage = switchPage;
 
     // 监听iframe加载完成
     pageContent.addEventListener('load', hideLoading);

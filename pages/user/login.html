@@ -28,6 +28,7 @@
   <style type="text/tailwindcss">
     @layer utilities {
       .content-auto { content-visibility: auto; }
+      .form-group { @apply mb-4; }
       .btn-primary { 
         @apply bg-primary text-white px-6 py-3 rounded-md hover:bg-primary/90 transition-all duration-300 font-medium;
       }
@@ -57,9 +58,12 @@
         </div>
 
         <div class="hidden md:flex space-x-8">
-          <a href="homepage.html" class="text-gray-600 hover:text-primary">首页</a>
-          <a href="view_orders.html" class="text-gray-600 hover:text-primary">我的订单</a>
-          <a href="user_center.html" class="text-gray-600 hover:text-primary">个人中心</a>
+          <a href="homepage.html" class="text-gray-600 hover:text-primary"
+            onclick="event.preventDefault(); if(parent && parent.switchPage){parent.switchPage('pages/user/homepage.html');}">首页</a>
+          <a href="view_orders.html" class="text-gray-600 hover:text-primary"
+            onclick="event.preventDefault(); if(parent && parent.switchPage){parent.switchPage('pages/user/view_orders.html');}">我的订单</a>
+          <a href="user_center.html" class="text-gray-600 hover:text-primary"
+            onclick="event.preventDefault(); if(parent && parent.switchPage){parent.switchPage('pages/user/user_center.html');}">个人中心</a>
         </div>
 
         <div class="flex items-center">
@@ -192,7 +196,8 @@
         <!-- 注册提示 -->
         <div class="mt-6 text-center">
           <span class="text-gray-600">还没有账号？</span>
-          <a href="register.html" class="text-primary font-medium hover:text-primary/80 ml-1">立即注册</a>
+          <a href="register.html" class="text-primary font-medium hover:text-primary/80 ml-1"
+             onclick="if (parent && parent.switchPage) { parent.switchPage('pages/user/register.html'); return false; }">立即注册</a>
         </div>
 
         <!-- 其他登录方式 -->
@@ -324,7 +329,11 @@
           }
 
           // 跳转到首页
-          window.location.href = 'homepage.html';
+          if(parent && parent.switchPage){
+            parent.switchPage('pages/user/homepage.html');
+          } else {
+            window.location.href = 'homepage.html';
+          }
         } else {
           errorMessage.textContent = result.message || '登录失败，请检查用户名和密码';
           errorMessage.classList.remove('hidden');
@@ -352,7 +361,11 @@
       const result = MockAPI.login(phoneNumber, 'phone-login');
 
       if (result.success) {
-        window.location.href = 'homepage.html';
+        if(parent && parent.switchPage){
+          parent.switchPage('pages/user/homepage.html');
+        } else {
+          window.location.href = 'homepage.html';
+        }
       } else {
         alert('登录失败，请检查验证码是否正确');
       }
@@ -375,7 +388,11 @@
       const result = MockAPI.login(idcardNumber, 'idcard-login');
 
       if (result.success) {
-        window.location.href = 'homepage.html';
+        if(parent && parent.switchPage){
+          parent.switchPage('pages/user/homepage.html');
+        } else {
+          window.location.href = 'homepage.html';
+        }
       } else {
         alert('登录失败，请检查验证码是否正确');
       }
