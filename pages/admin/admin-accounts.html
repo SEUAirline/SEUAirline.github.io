@@ -545,7 +545,7 @@
   </div>
 
   <!-- 添加/编辑管理员模态框 -->
-  <div id="admin-modal" class="modal-backdrop hidden">
+  <div id="admin-modal" class="modal-backdrop hidden" style="display: none;">
     <div class="modal-content">
       <div class="card-header">
         <h3 class="font-medium text-gray-800" id="modal-title">添加管理员</h3>
@@ -585,13 +585,13 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" id="password-fields">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">密码 <span class="text-danger">*</span></label>
-              <input type="password" id="password" class="input-field" placeholder="请输入密码" required>
+              <input type="password" id="password" class="input-field" placeholder="请输入密码" required autocomplete="new-password">
               <p class="text-xs text-gray-500 mt-1">密码至少包含8个字符，包括大小写字母、数字</p>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">确认密码 <span
                   class="text-danger">*</span></label>
-              <input type="password" id="confirm-password" class="input-field" placeholder="请确认密码" required>
+              <input type="password" id="confirm-password" class="input-field" placeholder="请确认密码" required autocomplete="new-password">
             </div>
           </div>
 
@@ -665,7 +665,7 @@
   </div>
 
   <!-- 重置密码模态框 -->
-  <div id="reset-password-modal" class="modal-backdrop hidden">
+  <div id="reset-password-modal" class="modal-backdrop hidden" style="display: none;">
     <div class="modal-content">
       <div class="card-header">
         <h3 class="font-medium text-gray-800">重置密码</h3>
@@ -785,25 +785,30 @@
       updatePermissionOptions();
 
       // 显示模态框
+      adminModal.style.display = 'flex';
       adminModal.classList.remove('hidden');
     });
 
     // 关闭添加/编辑模态框
     closeModalBtn.addEventListener('click', () => {
       adminModal.classList.add('hidden');
+      adminModal.style.display = 'none';
     });
 
     cancelModalBtn.addEventListener('click', () => {
       adminModal.classList.add('hidden');
+      adminModal.style.display = 'none';
     });
 
     // 关闭重置密码模态框
     closeResetModalBtn.addEventListener('click', () => {
       resetPasswordModal.classList.add('hidden');
+      resetPasswordModal.style.display = 'none';
     });
 
     cancelResetModalBtn.addEventListener('click', () => {
       resetPasswordModal.classList.add('hidden');
+      resetPasswordModal.style.display = 'none';
     });
 
     // 编辑管理员
@@ -846,6 +851,7 @@
         if (adminInfo) {
           document.getElementById('reset-admin-id').value = adminId;
           document.getElementById('reset-admin-info').textContent = `${adminInfo.username} - ${adminInfo.realName}`;
+          resetPasswordModal.style.display = 'flex';
           resetPasswordModal.classList.remove('hidden');
         }
       });
@@ -954,6 +960,7 @@
       // 显示成功提示并关闭模态框
       showToast(isAdd ? '管理员已成功添加' : '管理员信息已成功更新');
       adminModal.classList.add('hidden');
+      adminModal.style.display = 'none';
     });
 
     // 表单提交 - 重置密码
@@ -968,6 +975,7 @@
       // 显示成功提示并关闭模态框
       showToast('密码已成功重置为默认值');
       resetPasswordModal.classList.add('hidden');
+      resetPasswordModal.style.display = 'none';
     });
 
     // 搜索功能
@@ -1078,10 +1086,12 @@
 
       if (e.target === adminModal) {
         adminModal.classList.add('hidden');
+        adminModal.style.display = 'none';
       }
 
       if (e.target === resetPasswordModal) {
         resetPasswordModal.classList.add('hidden');
+        resetPasswordModal.style.display = 'none';
       }
     });
 
