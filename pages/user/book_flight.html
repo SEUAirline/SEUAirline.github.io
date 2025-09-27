@@ -535,61 +535,73 @@
       // 收集订单信息
       const orderData = collectOrderData();
 
-      // 调用模拟API保存订单
-      const orderId = MockAPI.createOrder(orderData);
+      try {
+        // 调用模拟API保存订单
+        const orderResult = MockAPI.createOrder(orderData);
 
-      if (orderId) {
-        // 保存订单ID到localStorage
-        localStorage.setItem('currentOrderId', orderId);
+        if (orderResult && orderResult.success && orderResult.order) {
+          // 保存订单ID到localStorage
+          localStorage.setItem('currentOrderId', orderResult.order.id);
 
-        // 跳转到支付页面
-        if (parent && typeof parent.switchPage === 'function') {
-          parent.switchPage('pages/user/payment.html');
+          // 跳转到支付页面
+          if (parent && typeof parent.switchPage === 'function') {
+            parent.switchPage('pages/user/payment.html');
+          } else {
+            window.location.href = 'payment.html';
+          }
         } else {
-          window.location.href = 'payment.html';
+          alert('订单创建失败，请稍后重试');
         }
-      } else {
-        alert('订单创建失败，请稍后重试');
+      } catch (error) {
+        alert('提交订单时发生错误，请稍后重试');
       }
     });
 
     // 表单验证函数
     function validateForm() {
-      // 这里实现表单验证逻辑
-      const passengerName = document.querySelector('.passenger-form input[type="text"]').value;
-      const passengerIdCard = document.querySelector('.passenger-form input[type="text"]:nth-of-type(2)').value;
-      const passengerPhone = document.querySelector('.passenger-form input[type="tel"]').value;
-      const contactName = document.getElementById('contact-name').value;
-      const contactPhone = document.getElementById('contact-phone').value;
-      const contactEmail = document.getElementById('contact-email').value;
+      // 使用更简洁的选择器获取表单元素
+      const passengerNameInput = document.querySelector('.passenger-form .input-form[type="text"]');
+      const passengerIdCardInput = document.querySelector('.passenger-form .input-form[placeholder="请输入证件号码"]') || 
+                                  document.querySelectorAll('.passenger-form .input-form[type="text"]')[1];
+      const passengerPhoneInput = document.querySelector('.passenger-form .input-form[type="tel"]');
+      const contactNameInput = document.getElementById('contact-name');
+      const contactPhoneInput = document.getElementById('contact-phone');
+      const contactEmailInput = document.getElementById('contact-email');
 
-      if (!passengerName) {
+      // 验证字段并聚焦到第一个空字段
+      if (passengerNameInput && !passengerNameInput.value.trim()) {
         alert('请输入乘客真实姓名');
+        passengerNameInput.focus();
         return false;
       }
 
-      if (!passengerIdCard) {
+      if (passengerIdCardInput && !passengerIdCardInput.value.trim()) {
         alert('请输入乘客证件号码');
+        passengerIdCardInput.focus();
         return false;
       }
 
-      if (!passengerPhone) {
+      if (passengerPhoneInput && !passengerPhoneInput.value.trim()) {
         alert('请输入乘客手机号码');
+        passengerPhoneInput.focus();
         return false;
       }
 
-      if (!contactName) {
+      if (!contactNameInput.value.trim()) {
         alert('请输入联系人姓名');
+        contactNameInput.focus();
         return false;
       }
 
-      if (!contactPhone) {
+      if (!contactPhoneInput.value.trim()) {
         alert('请输入联系电话');
+        contactPhoneInput.focus();
         return false;
       }
 
-      if (!contactEmail) {
+      if (!contactEmailInput.value.trim()) {
         alert('请输入联系邮箱');
+        contactEmailInput.focus();
         return false;
       }
 
@@ -598,45 +610,45 @@
 
     // 收集订单数据函数
     function collectOrderData() {
-      const passengerName = document.querySelector('.passenger-form input[type="text"]').value;
-      const passengerGender = document.querySelector('.passenger-form input[name="gender_1"]:checked').value;
-      const passengerIdType = document.querySelector('.passenger-form select').value;
-      const passengerIdCard = document.querySelector('.passenger-form input[type="text"]:nth-of-type(2)').value;
-      const passengerPhone = document.querySelector('.passenger-form input[type="tel"]').value;
-      const passengerEmail = document.querySelector('.passenger-form input[type="email"]').value;
+      // 获取表单元素
+      const passengerNameInput = document.querySelector('.passenger-form .input-form[placeholder="请输入真实姓名"]') || document.querySelector('.passenger-form .input-form[type="text"]');
+      const genderChecked = document.querySelector('.passenger-form input[name="gender_1"]:checked');
+      const idTypeSelect = document.querySelector('.passenger-form select');
+      const passengerIdCardInput = document.querySelector('.passenger-form .input-form[placeholder="请输入证件号码"]') || document.querySelector('.passenger-form .input-form[type="text"]:last-of-type');
+      const passengerPhoneInput = document.querySelector('.passenger-form .input-form[type="tel"]');
+      const passengerEmailInput = document.querySelector('.passenger-form .input-form[type="email"]');
 
-      const contactName = document.getElementById('contact-name').value;
-      const contactPhone = document.getElementById('contact-phone').value;
-      const contactEmail = document.getElementById('contact-email').value;
+      // 获取服务信息
+      const seatServiceRadio = document.querySelector('input[name="seat_service"]:checked');
+      const baggageServiceRadio = document.querySelector('input[name="baggage_service"]:checked');
+      const mealServiceRadio = document.querySelector('input[name="meal_service"]:checked');
 
-      // 收集服务信息
-      const seatService = document.querySelector('input[name="seat_service"]:checked').nextElementSibling.textContent.trim();
-      const baggageService = document.querySelector('input[name="baggage_service"]:checked').nextElementSibling.textContent.trim();
-      const mealService = document.querySelector('input[name="meal_service"]:checked').nextElementSibling.textContent.trim();
-
+      // 获取值
+      const selectedFlightId = localStorage.getItem('selectedFlightId') || 'CA1234';
+      
       return {
-        flightId: 'CA1234',
+        flightId: selectedFlightId,
         flightDate: '2024-01-20',
         cabinType: '经济舱',
+        price: 1150, // 单价
         passengers: [{
-          name: passengerName,
-          gender: passengerGender,
-          idType: passengerIdType,
-          idNumber: passengerIdCard,
-          phone: passengerPhone,
-          email: passengerEmail
+          name: passengerNameInput.value,
+          gender: genderChecked.value,
+          idType: idTypeSelect.value,
+          idNumber: passengerIdCardInput.value,
+          phone: passengerPhoneInput.value,
+          email: passengerEmailInput.value
         }],
         contact: {
-          name: contactName,
-          phone: contactPhone,
-          email: contactEmail
+          name: document.getElementById('contact-name').value,
+          phone: document.getElementById('contact-phone').value,
+          email: document.getElementById('contact-email').value
         },
         services: {
-          seat: seatService,
-          baggage: baggageService,
-          meal: mealService
+          seat: seatServiceRadio.nextElementSibling.textContent.trim(),
+          baggage: baggageServiceRadio.nextElementSibling.textContent.trim(),
+          meal: mealServiceRadio.nextElementSibling.textContent.trim()
         },
-        totalAmount: 1150,
         status: '待支付',
         createTime: new Date().toISOString()
       };
