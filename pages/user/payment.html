@@ -513,6 +513,22 @@
 
       // 启动倒计时
       startCountdown(qrCountdown, 15 * 60);
+      
+      // 直接模拟支付成功并跳转到成功页面
+      // 使用正确的payOrder函数更新订单状态
+      const orderId = localStorage.getItem('currentOrderId');
+      if (orderId) {
+        MockAPI.payOrder(orderId, selectedPaymentType || 'alipay');
+      }
+
+      // 短暂延迟后跳转到订单成功页面
+      setTimeout(() => {
+        if (parent && typeof parent.switchPage === 'function') {
+          parent.switchPage('pages/user/order_success.html');
+        } else {
+          window.location.href = 'order_success.html';
+        }
+      }, 1000);
     });
 
     // 取消支付按钮事件
@@ -522,10 +538,10 @@
 
     // 已完成支付按钮事件
     confirmPaidButton.addEventListener('click', () => {
-      // 更新订单状态
+      // 使用正确的payOrder函数更新订单状态
       const orderId = localStorage.getItem('currentOrderId');
       if (orderId) {
-        MockAPI.updateOrderStatus(orderId, '已支付');
+        MockAPI.payOrder(orderId, selectedPaymentType || 'alipay');
       }
 
       // 跳转到订单成功页面
