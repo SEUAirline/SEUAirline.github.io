@@ -1,0 +1,21 @@
+[
+  { "code": "PEK", "name": "北京首都国际机场", "city": "北京" },
+  { "code": "PVG", "name": "上海浦东国际机场", "city": "上海" },
+  { "code": "SHA", "name": "上海虹桥国际机场", "city": "上海" },
+  { "code": "CAN", "name": "广州白云国际机场", "city": "广州" },
+  { "code": "SZX", "name": "深圳宝安国际机场", "city": "深圳" },
+  { "code": "CTU", "name": "成都双流国际机场", "city": "成都" },
+  { "code": "HGH", "name": "杭州萧山国际机场", "city": "杭州" },
+  { "code": "XIY", "name": "西安咸阳国际机场", "city": "西安" },
+  { "code": "CKG", "name": "重庆江北国际机场", "city": "重庆" },
+  { "code": "NKG", "name": "南京禄口国际机场", "city": "南京" },
+  { "code": "WUH", "name": "武汉天河国际机场", "city": "武汉" },
+  { "code": "TSN", "name": "天津滨海国际机场", "city": "天津" },
+  { "code": "XMN", "name": "厦门高崎国际机场", "city": "厦门" },
+  { "code": "DLC", "name": "大连周水子国际机场", "city": "大连" },
+  { "code": "TAO", "name": "青岛流亭国际机场", "city": "青岛" },
+  { "code": "CSX", "name": "长沙黄花国际机场", "city": "长沙" },
+  { "code": "CGO", "name": "郑州新郑国际机场", "city": "郑州" },
+  { "code": "KMG", "name": "昆明长水国际机场", "city": "昆明" },
+  { "code": "HRB", "name": "哈尔滨太平国际机场", "city": "哈尔滨" }
+]

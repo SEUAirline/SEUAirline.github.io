@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEUAirline - 系统设置</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome -->
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/7.0.0/css/all.min.css" rel="stylesheet">
+
+  <!-- 自定义样式 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1E3A8A',
+            secondary: '#3B82F6',
+            accent: '#F8FAFC',
+            success: '#10B981',
+            warning: '#F59E0B',
+            danger: '#EF4444',
+            info: '#3B82F6',
+            dark: '#1E293B'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto { content-visibility: auto; }
+      .sidebar-link {
+        @apply flex items-center px-4 py-3 text-gray-600 hover:bg-blue-50 hover:text-primary transition-all duration-200 rounded-lg;
+      }
+      .sidebar-link.active {
+        @apply bg-blue-50 text-primary font-medium;
+      }
+      .btn-primary { 
+        @apply bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-all duration-300;
+      }
+      .btn-secondary { 
+        @apply bg-white text-primary border border-primary px-4 py-2 rounded-md hover:bg-blue-50 transition-all duration-300;
+      }
+      .btn-outline { 
+        @apply bg-white text-gray-600 border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50 transition-all duration-300;
+      }
+      .btn-danger { 
+        @apply bg-white text-danger border border-danger px-4 py-2 rounded-md hover:bg-red-50 transition-all duration-300;
+      }
+      .input-field {
+        @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all;
+      }
+      .card {
+        @apply bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden;
+      }
+      .card-header {
+        @apply px-5 py-4 border-b border-gray-100 flex justify-between items-center;
+      }
+      .card-body {
+        @apply px-5 py-4;
+      }
+      .setting-item {
+        @apply flex flex-col md:flex-row md:items-center justify-between py-4 border-b border-gray-100 last:border-b-0;
+      }
+      .setting-label {
+        @apply mb-2 md:mb-0 md:mr-6 md:w-1/3 font-medium text-gray-800;
+      }
+      .setting-control {
+        @apply md:w-2/3;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+  <!-- 顶部导航栏 -->
+  <header class="bg-white shadow-sm sticky top-0 z-30">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center">
+          <button id="sidebar-toggle" class="mr-4 text-gray-500 hover:text-primary">
+            <i class="fa fa-bars text-xl"></i>
+          </button>
+          <a href="dashboard.html" class="flex items-center">
+            <i class="fa fa-cube text-primary text-2xl mr-2"></i>
+            <span class="text-xl font-bold text-primary">SEUAirline 管理系统</span>
+          </a>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <!-- 通知图标 -->
+          <div class="relative">
+            <button class="text-gray-500 hover:text-primary focus:outline-none">
+              <i class="fa fa-bell-o text-xl"></i>
+              <span
+                class="absolute top-0 right-0 h-4 w-4 rounded-full bg-red-500 text-xs text-white flex items-center justify-center">3</span>
+            </button>
+          </div>
+
+          <!-- 用户信息 -->
+          <div class="flex items-center space-x-2">
+            <img id="admin-avatar" src="https://picsum.photos/32/32" alt="管理员头像" class="w-8 h-8 rounded-full">
+            <div class="hidden md:block">
+              <div class="text-sm font-medium text-gray-700" id="admin-name">管理员</div>
+              <div class="text-xs text-gray-500">系统管理员</div>
+            </div>
+            <button id="logout-btn" class="text-gray-500 hover:text-primary">
+              <i class="fa fa-sign-out"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主要内容区 -->
+  <div class="flex">
+    <!-- 侧边栏 -->
+    <aside id="sidebar"
+      class="w-64 bg-white border-r border-gray-200 h-[calc(100vh-4rem)] sticky top-16 overflow-y-auto transition-all duration-300 transform">
+      <nav class="p-4">
+        <div class="mb-6">
+          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">主菜单</h3>
+          <div class="space-y-2">
+            <a href="dashboard.html" class="sidebar-link">
+              <i class="fa fa-tachometer w-5 mr-3"></i>
+              <span>仪表盘</span>
+            </a>
+            <a href="flights.html" class="sidebar-link">
+              <i class="fa fa-plane w-5 mr-3"></i>
+              <span>航班管理</span>
+            </a>
+            <a href="orders.html" class="sidebar-link">
+              <i class="fa fa-file-text-o w-5 mr-3"></i>
+              <span>订单管理</span>
+            </a>
+            <a href="users.html" class="sidebar-link">
+              <i class="fa fa-users w-5 mr-3"></i>
+              <span>用户管理</span>
+            </a>
+            <a href="airports.html" class="sidebar-link">
+              <i class="fa fa-building-o w-5 mr-3"></i>
+              <span>机场管理</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">系统设置</h3>
+          <div class="space-y-2">
+            <a href="system-settings.html" class="sidebar-link active">
+              <i class="fa fa-cog w-5 mr-3"></i>
+              <span>系统设置</span>
+            </a>
+            <a href="admin-accounts.html" class="sidebar-link">
+              <i class="fa fa-user-circle-o w-5 mr-3"></i>
+              <span>管理员账户</span>
+            </a>
+            <a href="logs.html" class="sidebar-link">
+              <i class="fa fa-history w-5 mr-3"></i>
+              <span>系统日志</span>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">帮助与支持</h3>
+          <div class="space-y-2">
+            <a href="#" class="sidebar-link">
+              <i class="fa fa-question-circle-o w-5 mr-3"></i>
+              <span>帮助中心</span>
+            </a>
+            <a href="#" class="sidebar-link">
+              <i class="fa fa-file-text w-5 mr-3"></i>
+              <span>文档中心</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- 内容区域 -->
+    <main class="flex-1 p-6">
+      <!-- 页面标题 -->
+      <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">系统设置</h1>
+        <p class="text-gray-500 mt-1">管理系统的各项配置，包括基础设置、安全设置、服务配置等</p>
+      </div>
+
+      <!-- 设置选项卡 -->
+      <div class="mb-6">
+        <div class="flex border-b border-gray-200">
+          <button class="px-4 py-3 text-primary border-b-2 border-primary font-medium" data-tab="basic">基础设置</button>
+          <button class="px-4 py-3 text-gray-500 hover:text-gray-700" data-tab="security">安全设置</button>
+          <button class="px-4 py-3 text-gray-500 hover:text-gray-700" data-tab="service">服务配置</button>
+          <button class="px-4 py-3 text-gray-500 hover:text-gray-700" data-tab="notification">通知设置</button>
+        </div>
+      </div>
+
+      <!-- 基础设置 -->
+      <div id="basic-tab" class="tab-content">
+        <!-- 系统信息 -->
+        <div class="card mb-6">
+          <div class="card-header">
+            <h3 class="font-medium text-gray-800">系统信息</h3>
+          </div>
+          <div class="card-body">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <p class="text-sm text-gray-500">系统名称</p>
+                <p class="font-medium">SEUAirline 管理系统</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500">当前版本</p>
+                <p class="font-medium">v1.0.0</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500">更新日期</p>
+                <p class="font-medium">2023-05-20</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500">系统状态</p>
+                <p class="font-medium text-green-600">运行正常</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 站点配置 -->
+        <div class="card mb-6">
+          <div class="card-header">
+            <h3 class="font-medium text-gray-800">站点配置</h3>
+          </div>
+          <div class="card-body">
+            <form id="site-config-form">
+              <div class="setting-item">
+                <div class="setting-label">
+                  <span>站点名称</span>
+                  <p class="text-xs text-gray-500 mt-1">显示在浏览器标签页和系统标题中的名称</p>
+                </div>
+                <div class="setting-control">
+                  <input type="text" class="input-field" value="SEUAirline 航空票务系统" placeholder="请输入站点名称">
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-label">
+                  <span>站点描述</span>
+                  <p class="text-xs text-gray-500 mt-1">系统的简短描述信息</p>
+                </div>
+                <div class="setting-control">
+                  <textarea rows="2" class="input-field" placeholder="请输入站点描述">提供便捷、安全、高效的航空票务预订服务，让您的旅途更加舒适。</textarea>
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-label">
+                  <span>默认语言</span>
+                  <p class="text-xs text-gray-500 mt-1">系统默认使用的语言</p>
+                </div>
+                <div class="setting-control">
+                  <select class="input-field">
+                    <option value="zh-CN">简体中文</option>
+                    <option value="en-US">English</option>
+                    <option value="ja-JP">日本語</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-label">
+                  <span>日期格式</span>
+                  <p class="text-xs text-gray-500 mt-1">系统中显示的日期格式</p>
+                </div>
+                <div class="setting-control">
+                  <select class="input-field">
+                    <option value="YYYY-MM-DD">年-月-日 (2023-05-25)</option>
+                    <option value="DD/MM/YYYY">日/月/年 (25/05/2023)</option>
+                    <option value="MM/DD/YYYY">月/日/年 (05/25/2023)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-label">
+                  <span>联系邮箱</span>
+                  <p class="text-xs text-gray-500 mt-1">系统显示的联系邮箱地址</p>
+                </div>
+                <div class="setting-control">
+                  <input type="email" class="input-field" value="support@seuairline.com" placeholder="请输入联系邮箱">
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-label">
+                  <span>服务电话</span>
+                  <p class="text-xs text-gray-500 mt-1">系统显示的服务电话号码</p>
+                </div>
+                <div class="setting-control">
+                  <input type="text" class="input-field" value="400-888-8888" placeholder="请输入服务电话">
+                </div>
+              </div>
+
+              <div class="flex justify-end mt-6 space-x-3">
+                <button type="button" class="btn-outline">取消</button>
+                <button type="submit" class="btn-primary">保存设置</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- 安全设置 -->
+      <div id="security-tab" class="tab-content hidden">
+        <div class="card mb-6">
+          <div class="card-header">
+            <h3 class="font-medium text-gray-800">安全设置</h3>
+          </div>
+          <div class="card-body">
+            <form id="security-config-form">
+              <div class="setting-item">
+                <div class="setting-label">
+                  <span>密码复杂度要求</span>
+                  <p class="text-xs text-gray-500 mt-1">设置用户密码的最小长度和复杂度要求</p>
+                </div>
+                <div class="setting-control">
+                  <div class="flex items-center space-x-2">
+                    <input type="checkbox" id="password-length"
+                      class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                    <label for="password-length" class="text-sm text-gray-700">最小长度 8 位</label>
+                  </div>
+                  <div class="flex items-center space-x-2 mt-2">
+                    <input type="checkbox" id="password-uppercase"
+                      class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                    <label for="password-uppercase" class="text-sm text-gray-700">包含大写字母</label>
+                  </div>
+                  <div class="flex items-center space-x-2 mt-2">
+                    <input type="checkbox" id="password-lowercase"
+                      class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                    <label for="password-lowercase" class="text-sm text-gray-700">包含小写字母</label>
+                  </div>
+                  <div class="flex items-center space-x-2 mt-2">
+                    <input type="checkbox" id="password-number"
+                      class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                    <label for="password-number" class="text-sm text-gray-700">包含数字</label>
+                  </div>
+                  <div class="flex items-center space-x-2 mt-2">
+                    <input type="checkbox" id="password-symbol"
+                      class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                    <label for="password-symbol" class="text-sm text-gray-700">包含特殊字符</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-label">
+                  <span>密码有效期</span>
+                  <p class="text-xs text-gray-500 mt-1">设置用户密码的有效期，到期后需要重新设置</p>
+                </div>
+                <div class="setting-control">
+                  <div class="flex items-center space-x-4">
+                    <select class="input-field w-32">
+                      <option value="never">永不过期</option>
+                      <option value="30">30天</option>
+                      <option value="60">60天</option>
+                      <option value="90">90天</option>
+                      <option value="180">180天</option>
+                      <option value="365">365天</option>
+                    </select>
+                    <span class="text-sm text-gray-500">密码到期前7天系统会提醒用户</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-label">
+                  <span>登录失败次数限制</span>
+                  <p class="text-xs text-gray-500 mt-1">设置登录失败次数限制，超过后账户将被临时锁定</p>
+                </div>
+                <div class="setting-control">
+                  <div class="flex items-center space-x-4">
+                    <select class="input-field w-32">
+                      <option value="3">3次</option>
+                      <option value="5">5次</option>
+                      <option value="10">10次</option>
+                      <option value="20">20次</option>
+                      <option value="0">不限制</option>
+                    </select>
+                    <span class="text-sm text-gray-500">锁定时间：30分钟</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-label">
+                  <span>会话超时时间</span>
+                  <p class="text-xs text-gray-500 mt-1">设置用户登录后会话保持的时间</p>
+                </div>
+                <div class="setting-control">
+                  <select class="input-field w-32">
+                    <option value="15">15分钟</option>
+                    <option value="30">30分钟</option>
+                    <option value="60">1小时</option>
+                    <option value="120">2小时</option>
+                    <option value="240">4小时</option>
+                    <option value="480">8小时</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-label">
+                  <span>双因素认证</span>
+                  <p class="text-xs text-gray-500 mt-1">要求用户登录时进行额外的身份验证</p>
+                </div>
+                <div class="setting-control">
+                  <select class="input-field w-32">
+                    <option value="disabled">禁用</option>
+                    <option value="optional">可选</option>
+                    <option value="required">必填</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="flex justify-end mt-6 space-x-3">
+                <button type="button" class="btn-outline">取消</button>
+                <button type="submit" class="btn-primary">保存设置</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- 服务配置 -->
+      <div id="service-tab" class="tab-content hidden">
+        <div class="card mb-6">
+          <div class="card-header">
+            <h3 class="font-medium text-gray-800">服务配置</h3>
+          </div>
+          <div class="card-body">
+            <form id="service-config-form">
+              <div class="setting-item">
+                <div class="setting-label">
+                  <span>最大乘客数量</span>
+                  <p class="text-xs text-gray-500 mt-1">单次预订可添加的最大乘客数量</p>
+                </div>
+                <div class="setting-control">
+                  <input type="number" class="input-field w-32" value="9" min="1" max="99">
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-label">
+                  <span>预订时间范围</span>
+                  <p class="text-xs text-gray-500 mt-1">用户可以预订的最远日期（从今天算起）</p>
+                </div>
+                <div class="setting-control">
+                  <select class="input-field w-32">
+                    <option value="30">30天</option>
+                    <option value="60">60天</option>
+                    <option value="90">90天</option>
+                    <option value="120">120天</option>
+                    <option value="180">180天</option>
+                    <option value="365">365天</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-label">
+                  <span>支付超时时间</span>
+                  <p class="text-xs text-gray-500 mt-1">订单创建后需要完成支付的时间限制</p>
+                </div>
+                <div class="setting-control">
+                  <select class="input-field w-32">
+                    <option value="15">15分钟</option>
+                    <option value="30">30分钟</option>
+                    <option value="60">1小时</option>
+                    <option value="120">2小时</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-label">
+                  <span>订单取消手续费</span>
+                  <p class="text-xs text-gray-500 mt-1">设置航班起飞前不同时间段的取消手续费比例</p>
+                </div>
+                <div class="setting-control">
+                  <div class="space-y-3">
+                    <div class="flex items-center space-x-4">
+                      <span class="text-sm w-32">起飞前24小时以上</span>
+                      <select class="input-field w-32">
+                        <option value="0">0%</option>
+                        <option value="5">5%</option>
+                        <option value="10">10%</option>
+                      </select>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                      <span class="text-sm w-32">起飞前2-24小时</span>
+                      <select class="input-field w-32">
+                        <option value="10">10%</option>
+                        <option value="20">20%</option>
+                        <option value="30">30%</option>
+                      </select>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                      <span class="text-sm w-32">起飞前2小时内</span>
+                      <select class="input-field w-32">
+                        <option value="30">30%</option>
+                        <option value="50">50%</option>
+                        <option value="70">70%</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-label">
+                  <span>自动出票</span>
+                  <p class="text-xs text-gray-500 mt-1">订单支付成功后是否自动出票</p>
+                </div>
+                <div class="setting-control">
+                  <div class="flex items-center">
+                    <input type="radio" name="auto-issue-ticket" id="auto-issue-yes"
+                      class="h-4 w-4 text-primary focus:ring-primary border-gray-300" checked>
+                    <label for="auto-issue-yes" class="ml-2 text-sm text-gray-700">是</label>
+                  </div>
+                  <div class="flex items-center mt-2">
+                    <input type="radio" name="auto-issue-ticket" id="auto-issue-no"
+                      class="h-4 w-4 text-primary focus:ring-primary border-gray-300">
+                    <label for="auto-issue-no" class="ml-2 text-sm text-gray-700">否</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-label">
+                  <span>积分规则</span>
+                  <p class="text-xs text-gray-500 mt-1">设置每消费1元获得的积分数量</p>
+                </div>
+                <div class="setting-control">
+                  <div class="flex items-center space-x-2">
+                    <input type="number" class="input-field w-24" value="1" min="0" max="10">
+                    <span class="text-sm text-gray-700">积分/元</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex justify-end mt-6 space-x-3">
+                <button type="button" class="btn-outline">取消</button>
+                <button type="submit" class="btn-primary">保存设置</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- 通知设置 -->
+      <div id="notification-tab" class="tab-content hidden">
+        <div class="card mb-6">
+          <div class="card-header">
+            <h3 class="font-medium text-gray-800">通知设置</h3>
+          </div>
+          <div class="card-body">
+            <form id="notification-config-form">
+              <div class="setting-item">
+                <div class="setting-label">
+                  <span>邮件服务器设置</span>
+                  <p class="text-xs text-gray-500 mt-1">配置发送系统通知邮件的服务器</p>
+                </div>
+                <div class="setting-control">
+                  <div class="space-y-3">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">SMTP 服务器</label>
+                      <input type="text" class="input-field" value="smtp.seuairline.com" placeholder="请输入SMTP服务器地址">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">端口</label>
+                        <input type="number" class="input-field" value="587" placeholder="请输入端口号">
+                      </div>
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">加密方式</label>
+                        <select class="input-field">
+                          <option value="tls">TLS</option>
+                          <option value="ssl">SSL</option>
+                          <option value="none">无</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">发件人邮箱</label>
+                      <input type="email" class="input-field" value="no-reply@seuairline.com" placeholder="请输入发件人邮箱">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">发件人名称</label>
+                      <input type="text" class="input-field" value="SEUAirline 航空票务系统" placeholder="请输入发件人名称">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">SMTP 用户名</label>
+                      <input type="text" class="input-field" value="smtp_user" placeholder="请输入SMTP用户名">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">SMTP 密码</label>
+                      <input type="password" class="input-field" value="********" placeholder="请输入SMTP密码">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-label">
+                  <span>短信服务器设置</span>
+                  <p class="text-xs text-gray-500 mt-1">配置发送短信通知的服务器</p>
+                </div>
+                <div class="setting-control">
+                  <div class="space-y-3">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">API 地址</label>
+                      <input type="text" class="input-field" value="https://api.sms.provider.com/send"
+                        placeholder="请输入API地址">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">API Key</label>
+                      <input type="text" class="input-field" value="api_key_********" placeholder="请输入API Key">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">短信签名</label>
+                      <input type="text" class="input-field" value="【SEUAirline】" placeholder="请输入短信签名">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-label">
+                  <span>通知类型配置</span>
+                  <p class="text-xs text-gray-500 mt-1">设置各项业务通知的发送方式</p>
+                </div>
+                <div class="setting-control">
+                  <div class="space-y-3">
+                    <div>
+                      <p class="text-sm font-medium text-gray-700 mb-2">订单创建成功</p>
+                      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="flex items-center">
+                          <input type="checkbox" id="notify-order-create-email"
+                            class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                          <label for="notify-order-create-email" class="ml-2 text-sm text-gray-700">邮件</label>
+                        </div>
+                        <div class="flex items-center">
+                          <input type="checkbox" id="notify-order-create-sms"
+                            class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                          <label for="notify-order-create-sms" class="ml-2 text-sm text-gray-700">短信</label>
+                        </div>
+                        <div class="flex items-center">
+                          <input type="checkbox" id="notify-order-create-system"
+                            class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                          <label for="notify-order-create-system" class="ml-2 text-sm text-gray-700">站内信</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <p class="text-sm font-medium text-gray-700 mb-2">支付成功</p>
+                      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="flex items-center">
+                          <input type="checkbox" id="notify-payment-success-email"
+                            class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                          <label for="notify-payment-success-email" class="ml-2 text-sm text-gray-700">邮件</label>
+                        </div>
+                        <div class="flex items-center">
+                          <input type="checkbox" id="notify-payment-success-sms"
+                            class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                          <label for="notify-payment-success-sms" class="ml-2 text-sm text-gray-700">短信</label>
+                        </div>
+                        <div class="flex items-center">
+                          <input type="checkbox" id="notify-payment-success-system"
+                            class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                          <label for="notify-payment-success-system" class="ml-2 text-sm text-gray-700">站内信</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <p class="text-sm font-medium text-gray-700 mb-2">航班变更/取消</p>
+                      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="flex items-center">
+                          <input type="checkbox" id="notify-flight-change-email"
+                            class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                          <label for="notify-flight-change-email" class="ml-2 text-sm text-gray-700">邮件</label>
+                        </div>
+                        <div class="flex items-center">
+                          <input type="checkbox" id="notify-flight-change-sms"
+                            class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                          <label for="notify-flight-change-sms" class="ml-2 text-sm text-gray-700">短信</label>
+                        </div>
+                        <div class="flex items-center">
+                          <input type="checkbox" id="notify-flight-change-system"
+                            class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                          <label for="notify-flight-change-system" class="ml-2 text-sm text-gray-700">站内信</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <p class="text-sm font-medium text-gray-700 mb-2">系统公告</p>
+                      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="flex items-center">
+                          <input type="checkbox" id="notify-announcement-email"
+                            class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                          <label for="notify-announcement-email" class="ml-2 text-sm text-gray-700">邮件</label>
+                        </div>
+                        <div class="flex items-center">
+                          <input type="checkbox" id="notify-announcement-sms"
+                            class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                          <label for="notify-announcement-sms" class="ml-2 text-sm text-gray-700">短信</label>
+                        </div>
+                        <div class="flex items-center">
+                          <input type="checkbox" id="notify-announcement-system"
+                            class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                          <label for="notify-announcement-system" class="ml-2 text-sm text-gray-700">站内信</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex justify-end mt-6 space-x-3">
+                <button type="button" class="btn-outline">取消</button>
+                <button type="submit" class="btn-primary">保存设置</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 保存成功提示 -->
+  <div id="toast"
+    class="fixed bottom-6 right-6 bg-success text-white px-6 py-3 rounded-lg shadow-lg flex items-center transform translate-y-10 opacity-0 transition-all duration-300 z-50">
+    <i class="fa fa-check-circle mr-2"></i>
+    <span>设置已成功保存</span>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="../../data/mock-api.js"></script>
+  <script>
+    // 获取元素
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const logoutBtn = document.getElementById('logout-btn');
+    const toast = document.getElementById('toast');
+
+    // 侧边栏切换
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('-translate-x-full');
+    });
+
+    // 管理员登出
+    logoutBtn.addEventListener('click', () => {
+      if (confirm('确定要退出登录吗？')) {
+        // 清除登录状态
+        localStorage.removeItem('adminToken');
+        sessionStorage.removeItem('adminToken');
+        localStorage.removeItem('currentAdmin');
+
+        // 跳转到登录页面
+        window.location.href = 'login.html';
+      }
+    });
+
+    // 显示提示框
+    function showToast(message = '设置已成功保存') {
+      const toastMessage = toast.querySelector('span');
+      toastMessage.textContent = message;
+
+      toast.classList.remove('translate-y-10', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-10', 'opacity-0');
+      }, 3000);
+    }
+
+    // 选项卡切换
+    const tabButtons = document.querySelectorAll('[data-tab]');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const tabId = button.getAttribute('data-tab');
+
+        // 隐藏所有内容
+        tabContents.forEach(content => {
+          content.classList.add('hidden');
+        });
+
+        // 显示选中的内容
+        document.getElementById(`${tabId}-tab`).classList.remove('hidden');
+
+        // 更新按钮状态
+        tabButtons.forEach(btn => {
+          btn.classList.remove('text-primary', 'border-b-2', 'border-primary', 'font-medium');
+          btn.classList.add('text-gray-500', 'hover:text-gray-700');
+        });
+
+        button.classList.remove('text-gray-500', 'hover:text-gray-700');
+        button.classList.add('text-primary', 'border-b-2', 'border-primary', 'font-medium');
+      });
+    });
+
+    // 表单提交处理
+    const forms = document.querySelectorAll('form');
+    forms.forEach(form => {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // 显示成功提示
+        showToast();
+      });
+    });
+
+    // 取消按钮处理
+    const cancelButtons = document.querySelectorAll('button[type="button"]:not(#sidebar-toggle):not(#logout-btn)');
+    cancelButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // 在实际应用中，这里可以重置表单或回滚更改
+        // 这里仅作为演示
+        if (button.textContent.trim() === '取消') {
+          // 重置表单
+          const form = button.closest('form');
+          if (form) {
+            form.reset();
+          }
+        }
+      });
+    });
+
+    // 检查管理员登录状态
+    function checkAdminLoginStatus() {
+      const adminToken = localStorage.getItem('adminToken') || sessionStorage.getItem('adminToken');
+      const currentAdmin = localStorage.getItem('currentAdmin');
+
+      if (!adminToken || !currentAdmin) {
+        // 未登录，跳转到登录页面
+        window.location.href = 'login.html';
+        return;
+      }
+
+      try {
+        // 验证token
+        const isTokenValid = MockAPI.validateAdminToken(adminToken);
+        if (!isTokenValid) {
+          // token无效
+          localStorage.removeItem('adminToken');
+          sessionStorage.removeItem('adminToken');
+          localStorage.removeItem('currentAdmin');
+          window.location.href = 'login.html';
+          return;
+        }
+
+        // 更新管理员信息显示
+        const adminInfo = JSON.parse(currentAdmin);
+        document.getElementById('admin-name').textContent = adminInfo.username || '管理员';
+        if (adminInfo.avatar) {
+          document.getElementById('admin-avatar').src = adminInfo.avatar;
+        }
+      } catch (error) {
+        console.error('验证管理员状态时发生错误:', error);
+        // 发生错误，清除状态并跳转到登录页
+        localStorage.removeItem('adminToken');
+        sessionStorage.removeItem('adminToken');
+        localStorage.removeItem('currentAdmin');
+        window.location.href = 'login.html';
+      }
+    }
+
+    // 页面加载时执行
+    window.addEventListener('DOMContentLoaded', () => {
+      // 检查登录状态
+      checkAdminLoginStatus();
+
+      // 设置侧边栏链接活动状态
+      const sidebarLinks = document.querySelectorAll('.sidebar-link');
+      const currentPath = window.location.pathname;
+
+      sidebarLinks.forEach(link => {
+        // 重置所有链接
+        link.classList.remove('active');
+
+        // 匹配当前页面
+        const linkPath = link.getAttribute('href');
+        if (currentPath.endsWith(linkPath)) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEUAirline - 帮助中心</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome -->
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/7.0.0/css/all.min.css" rel="stylesheet">
+
+  <!-- 自定义样式 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1E3A8A',
+            secondary: '#3B82F6',
+            accent: '#F8FAFC',
+            success: '#10B981',
+            warning: '#F59E0B',
+            danger: '#EF4444',
+            info: '#3B82F6',
+            dark: '#1E293B'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto { content-visibility: auto; }
+      .sidebar-link {
+        @apply flex items-center px-4 py-3 text-gray-600 hover:bg-blue-50 hover:text-primary transition-all duration-200 rounded-lg;
+      }
+      .sidebar-link.active {
+        @apply bg-blue-50 text-primary font-medium;
+      }
+      .btn-primary { 
+        @apply bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-all duration-300;
+      }
+      .btn-secondary { 
+        @apply bg-white text-primary border border-primary px-4 py-2 rounded-md hover:bg-blue-50 transition-all duration-300;
+      }
+      .btn-outline { 
+        @apply bg-white text-gray-600 border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50 transition-all duration-300;
+      }
+      .btn-sm {
+        @apply px-3 py-1 text-sm rounded-md;
+      }
+      .input-field {
+        @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all;
+      }
+      .card {
+        @apply bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden;
+      }
+      .card-header {
+        @apply px-5 py-4 border-b border-gray-100;
+      }
+      .card-body {
+        @apply px-5 py-4;
+      }
+      .faq-item {
+        @apply border border-gray-200 rounded-lg mb-4 overflow-hidden;
+      }
+      .faq-header {
+        @apply px-5 py-4 flex justify-between items-center cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors;
+      }
+      .faq-body {
+        @apply px-5 py-4 bg-white border-t border-gray-200 hidden;
+      }
+      .faq-item.active .faq-header {
+        @apply bg-blue-50;
+      }
+      .faq-item.active .faq-body {
+        @apply block;
+      }
+      .guide-card {
+        @apply card hover:shadow-md transition-shadow duration-300 cursor-pointer;
+      }
+      .guide-card:hover .card-body i {
+        @apply text-primary;
+      }
+      .tag {
+        @apply px-2 py-1 text-xs font-medium rounded-full;
+      }
+      .tag-primary {
+        @apply bg-blue-100 text-blue-800;
+      }
+      .tag-secondary {
+        @apply bg-green-100 text-green-800;
+      }
+      .tag-tertiary {
+        @apply bg-purple-100 text-purple-800;
+      }
+      .search-container {
+        @apply relative max-w-3xl mx-auto;
+      }
+      .search-input {
+        @apply w-full pl-12 pr-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all shadow-sm;
+      }
+      .search-icon {
+        @apply absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl;
+      }
+      .feature-card {
+        @apply bg-white p-6 rounded-lg border border-gray-200 flex flex-col items-center text-center hover:shadow-md transition-shadow duration-300;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+  <!-- 顶部导航栏 -->
+  <header class="bg-white shadow-sm sticky top-0 z-30">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center">
+          <button id="sidebar-toggle" class="mr-4 text-gray-500 hover:text-primary">
+            <i class="fa fa-bars text-xl"></i>
+          </button>
+          <a href="dashboard.html" class="flex items-center">
+            <i class="fa fa-cube text-primary text-2xl mr-2"></i>
+            <span class="text-xl font-bold text-primary">SEUAirline 管理系统</span>
+          </a>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <!-- 通知图标 -->
+          <div class="relative">
+            <button class="text-gray-500 hover:text-primary focus:outline-none">
+              <i class="fa fa-bell-o text-xl"></i>
+              <span
+                class="absolute top-0 right-0 h-4 w-4 rounded-full bg-red-500 text-xs text-white flex items-center justify-center">3</span>
+            </button>
+          </div>
+
+          <!-- 用户信息 -->
+          <div class="flex items-center space-x-2">
+            <img id="admin-avatar" src="https://picsum.photos/32/32" alt="管理员头像" class="w-8 h-8 rounded-full">
+            <div class="hidden md:block">
+              <div class="text-sm font-medium text-gray-700" id="admin-name">管理员</div>
+              <div class="text-xs text-gray-500">系统管理员</div>
+            </div>
+            <button id="logout-btn" class="text-gray-500 hover:text-primary">
+              <i class="fa fa-sign-out"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主要内容区 -->
+  <div class="flex">
+    <!-- 侧边栏 -->
+    <aside id="sidebar"
+      class="w-64 bg-white border-r border-gray-200 h-[calc(100vh-4rem)] sticky top-16 overflow-y-auto transition-all duration-300 transform">
+      <nav class="p-4">
+        <div class="mb-6">
+          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">主菜单</h3>
+          <div class="space-y-2">
+            <a href="dashboard.html" class="sidebar-link">
+              <i class="fa fa-tachometer w-5 mr-3"></i>
+              <span>仪表盘</span>
+            </a>
+            <a href="flights.html" class="sidebar-link">
+              <i class="fa fa-plane w-5 mr-3"></i>
+              <span>航班管理</span>
+            </a>
+            <a href="orders.html" class="sidebar-link">
+              <i class="fa fa-file-text-o w-5 mr-3"></i>
+              <span>订单管理</span>
+            </a>
+            <a href="users.html" class="sidebar-link">
+              <i class="fa fa-users w-5 mr-3"></i>
+              <span>用户管理</span>
+            </a>
+            <a href="airports.html" class="sidebar-link">
+              <i class="fa fa-building-o w-5 mr-3"></i>
+              <span>机场管理</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">系统设置</h3>
+          <div class="space-y-2">
+            <a href="system-settings.html" class="sidebar-link">
+              <i class="fa fa-cog w-5 mr-3"></i>
+              <span>系统设置</span>
+            </a>
+            <a href="admin-accounts.html" class="sidebar-link">
+              <i class="fa fa-user-circle-o w-5 mr-3"></i>
+              <span>管理员账户</span>
+            </a>
+            <a href="logs.html" class="sidebar-link">
+              <i class="fa fa-history w-5 mr-3"></i>
+              <span>系统日志</span>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">帮助与支持</h3>
+          <div class="space-y-2">
+            <a href="help-center.html" class="sidebar-link active">
+              <i class="fa fa-question-circle-o w-5 mr-3"></i>
+              <span>帮助中心</span>
+            </a>
+            <a href="#" class="sidebar-link">
+              <i class="fa fa-file-text w-5 mr-3"></i>
+              <span>文档中心</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- 内容区域 -->
+    <main class="flex-1 p-6">
+      <!-- 页面标题 -->
+      <div class="mb-8 text-center">
+        <h1 class="text-3xl font-bold text-gray-800">帮助中心</h1>
+        <p class="text-gray-500 mt-2">寻找常见问题的答案，浏览操作指南或联系我们的支持团队</p>
+      </div>
+
+      <!-- 搜索框 -->
+      <div class="search-container mb-10">
+        <div class="relative">
+          <i class="fa fa-search search-icon"></i>
+          <input type="text" id="help-search" class="search-input" placeholder="搜索帮助内容、常见问题或操作指南...">
+        </div>
+      </div>
+
+      <!-- 快速访问功能区 -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div class="feature-card">
+          <i class="fa fa-life-ring text-4xl text-gray-400 mb-4"></i>
+          <h3 class="text-lg font-semibold mb-2">常见问题</h3>
+          <p class="text-gray-600 mb-4">浏览最常见的问题和解答，快速解决您的疑问</p>
+          <a href="#faq" class="btn-secondary text-sm">查看常见问题</a>
+        </div>
+
+        <div class="feature-card">
+          <i class="fa fa-book text-4xl text-gray-400 mb-4"></i>
+          <h3 class="text-lg font-semibold mb-2">操作指南</h3>
+          <p class="text-gray-600 mb-4">详细的系统功能使用教程和最佳实践</p>
+          <a href="#guides" class="btn-secondary text-sm">浏览操作指南</a>
+        </div>
+
+        <div class="feature-card">
+          <i class="fa fa-envelope text-4xl text-gray-400 mb-4"></i>
+          <h3 class="text-lg font-semibold mb-2">联系支持</h3>
+          <p class="text-gray-600 mb-4">遇到问题？提交工单或联系我们的技术支持团队</p>
+          <a href="#contact" class="btn-secondary text-sm">联系我们</a>
+        </div>
+      </div>
+
+      <!-- 热门问题标签 -->
+      <div class="mb-10">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">热门搜索</h2>
+        <div class="flex flex-wrap gap-2">
+          <span class="tag tag-primary cursor-pointer">航班管理</span>
+          <span class="tag tag-secondary cursor-pointer">订单处理</span>
+          <span class="tag tag-tertiary cursor-pointer">用户账户</span>
+          <span class="tag tag-primary cursor-pointer">系统设置</span>
+          <span class="tag tag-secondary cursor-pointer">数据导出</span>
+          <span class="tag tag-tertiary cursor-pointer">权限管理</span>
+          <span class="tag tag-primary cursor-pointer">系统日志</span>
+          <span class="tag tag-secondary cursor-pointer">报表生成</span>
+          <span class="tag tag-tertiary cursor-pointer">错误排查</span>
+          <span class="tag tag-primary cursor-pointer">支付问题</span>
+        </div>
+      </div>
+
+      <!-- 常见问题部分 -->
+      <section id="faq" class="mb-12">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+          <i class="fa fa-question-circle text-primary mr-3"></i>
+          常见问题
+        </h2>
+
+        <!-- 常见问题分类标签 -->
+        <div class="flex flex-wrap gap-3 mb-6">
+          <button class="tag tag-primary px-4 py-2 text-sm">全部问题</button>
+          <button class="tag px-4 py-2 text-sm bg-gray-100 text-gray-800">航班管理</button>
+          <button class="tag px-4 py-2 text-sm bg-gray-100 text-gray-800">订单管理</button>
+          <button class="tag px-4 py-2 text-sm bg-gray-100 text-gray-800">用户管理</button>
+          <button class="tag px-4 py-2 text-sm bg-gray-100 text-gray-800">系统设置</button>
+          <button class="tag px-4 py-2 text-sm bg-gray-100 text-gray-800">账户安全</button>
+        </div>
+
+        <!-- FAQ列表 -->
+        <div class="space-y-4">
+          <!-- FAQ项目1 -->
+          <div class="faq-item active">
+            <div class="faq-header">
+              <h3 class="text-lg font-medium text-gray-800">如何添加新航班？</h3>
+              <i class="fa fa-chevron-down text-gray-500 transition-transform"></i>
+            </div>
+            <div class="faq-body">
+              <p class="text-gray-700 mb-3">添加新航班的步骤如下：</p>
+              <ol class="list-decimal pl-5 text-gray-700 space-y-2">
+                <li>在左侧菜单栏中点击「航班管理」</li>
+                <li>在航班列表页面点击右上角的「添加航班」按钮</li>
+                <li>填写航班信息表单，包括航班号、起降机场、时间、价格等</li>
+                <li>确认信息无误后点击「保存」按钮</li>
+                <li>系统会自动验证航班信息，验证通过后航班将成功创建</li>
+              </ol>
+              <p class="mt-3 text-gray-700">请注意：添加航班前请确保起降机场已在系统中注册。如果您需要添加新的机场，请先前往「机场管理」页面添加。</p>
+            </div>
+          </div>
+
+          <!-- FAQ项目2 -->
+          <div class="faq-item">
+            <div class="faq-header">
+              <h3 class="text-lg font-medium text-gray-800">如何处理待支付订单？</h3>
+              <i class="fa fa-chevron-down text-gray-500 transition-transform"></i>
+            </div>
+            <div class="faq-body">
+              <p class="text-gray-700 mb-3">处理待支付订单的方法：</p>
+              <ol class="list-decimal pl-5 text-gray-700 space-y-2">
+                <li>进入「订单管理」页面</li>
+                <li>使用状态筛选器选择「待支付」状态</li>
+                <li>在列表中找到需要处理的订单</li>
+                <li>点击订单操作列的「查看详情」按钮</li>
+                <li>在订单详情页面，您可以选择：
+                  <ul class="list-disc pl-5 mt-1 space-y-1">
+                    <li>发送支付提醒给用户</li>
+                    <li>如果超过支付时间限制，可以取消订单</li>
+                    <li>特殊情况下可以手动更改订单状态</li>
+                  </ul>
+                </li>
+              </ol>
+              <p class="mt-3 text-gray-700">系统默认会在用户下单后30分钟内等待支付，超过时间后订单将自动取消。此时间可以在「系统设置」中进行配置。</p>
+            </div>
+          </div>
+
+          <!-- FAQ项目3 -->
+          <div class="faq-item">
+            <div class="faq-header">
+              <h3 class="text-lg font-medium text-gray-800">如何禁用用户账户？</h3>
+              <i class="fa fa-chevron-down text-gray-500 transition-transform"></i>
+            </div>
+            <div class="faq-body">
+              <p class="text-gray-700 mb-3">禁用用户账户的操作步骤：</p>
+              <ol class="list-decimal pl-5 text-gray-700 space-y-2">
+                <li>进入「用户管理」页面</li>
+                <li>使用搜索功能或筛选器找到需要禁用的用户</li>
+                <li>在用户列表中，点击对应行的「操作」列的下拉菜单</li>
+                <li>选择「禁用账户」选项</li>
+                <li>在确认对话框中点击「确定」完成操作</li>
+              </ol>
+              <p class="mt-3 text-gray-700">禁用后，用户将无法登录系统，但他们的所有数据将被保留。如果需要重新启用账户，可按照相同步骤选择「启用账户」。</p>
+            </div>
+          </div>
+
+          <!-- FAQ项目4 -->
+          <div class="faq-item">
+            <div class="faq-header">
+              <h3 class="text-lg font-medium text-gray-800">如何配置系统邮件服务器？</h3>
+              <i class="fa fa-chevron-down text-gray-500 transition-transform"></i>
+            </div>
+            <div class="faq-body">
+              <p class="text-gray-700 mb-3">配置邮件服务器的步骤：</p>
+              <ol class="list-decimal pl-5 text-gray-700 space-y-2">
+                <li>进入「系统设置」页面</li>
+                <li>点击左侧菜单的「通知设置」</li>
+                <li>找到「邮件服务器配置」部分</li>
+                <li>填写以下信息：
+                  <ul class="list-disc pl-5 mt-1 space-y-1">
+                    <li>SMTP服务器地址</li>
+                    <li>SMTP端口号（通常为25、465或587）</li>
+                    <li>发件人邮箱地址</li>
+                    <li>邮箱密码或授权码</li>
+                    <li>是否使用SSL/TLS加密</li>
+                  </ul>
+                </li>
+                <li>点击「保存配置」按钮</li>
+                <li>配置完成后，建议点击「发送测试邮件」按钮确认配置是否正确</li>
+              </ol>
+              <p class="mt-3 text-gray-700">请注意：部分邮箱服务商可能需要先开启SMTP服务并生成专用授权码，而非直接使用邮箱密码。详情请参考您的邮箱服务商的帮助文档。</p>
+            </div>
+          </div>
+
+          <!-- FAQ项目5 -->
+          <div class="faq-item">
+            <div class="faq-header">
+              <h3 class="text-lg font-medium text-gray-800">如何导出系统日志？</h3>
+              <i class="fa fa-chevron-down text-gray-500 transition-transform"></i>
+            </div>
+            <div class="faq-body">
+              <p class="text-gray-700 mb-3">导出系统日志的方法：</p>
+              <ol class="list-decimal pl-5 text-gray-700 space-y-2">
+                <li>进入「系统日志」页面</li>
+                <li>使用筛选器设置您想要导出的日志范围（可选）：
+                  <ul class="list-disc pl-5 mt-1 space-y-1">
+                    <li>日志级别（信息、警告、错误等）</li>
+                    <li>日志类型（操作日志、登录日志等）</li>
+                    <li>时间范围</li>
+                  </ul>
+                </li>
+                <li>点击页面上方的「导出日志」按钮</li>
+                <li>在弹出的导出设置对话框中选择：
+                  <ul class="list-disc pl-5 mt-1 space-y-1">
+                    <li>导出范围（选中项或当前筛选结果）</li>
+                    <li>导出格式（Excel、CSV、TXT、JSON）</li>
+                    <li>需要包含的日志字段</li>
+                  </ul>
+                </li>
+                <li>点击「开始导出」按钮，系统将生成并下载日志文件</li>
+              </ol>
+              <p class="mt-3 text-gray-700">导出大量日志可能需要一些时间，请耐心等待。系统会在导出完成后自动下载文件。</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 加载更多按钮 -->
+        <div class="text-center mt-8">
+          <button class="btn-secondary">
+            <i class="fa fa-refresh mr-2"></i>
+            加载更多问题
+          </button>
+        </div>
+      </section>
+
+      <!-- 操作指南部分 -->
+      <section id="guides" class="mb-12">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+          <i class="fa fa-book text-primary mr-3"></i>
+          操作指南
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- 指南卡片1 -->
+          <div class="guide-card">
+            <div class="card-header">
+              <h3 class="font-semibold text-lg">航班管理完全指南</h3>
+              <span class="tag tag-primary mt-2">航班管理</span>
+            </div>
+            <div class="card-body">
+              <p class="text-gray-700 mb-4">详细介绍如何添加、编辑、查询和管理航班信息，包括航班时刻表管理、价格调整等。</p>
+              <div class="flex items-center text-gray-500 text-sm mb-3">
+                <i class="fa fa-clock-o mr-1"></i> 阅读时间：15分钟
+              </div>
+              <div class="flex items-center text-gray-500 text-sm">
+                <i class="fa fa-eye mr-1"></i> 已阅读：2,345次
+              </div>
+            </div>
+          </div>
+
+          <!-- 指南卡片2 -->
+          <div class="guide-card">
+            <div class="card-header">
+              <h3 class="font-semibold text-lg">订单处理工作流</h3>
+              <span class="tag tag-secondary mt-2">订单管理</span>
+            </div>
+            <div class="card-body">
+              <p class="text-gray-700 mb-4">全面了解订单从创建到完成的整个生命周期，以及如何处理各类订单状态和特殊情况。</p>
+              <div class="flex items-center text-gray-500 text-sm mb-3">
+                <i class="fa fa-clock-o mr-1"></i> 阅读时间：12分钟
+              </div>
+              <div class="flex items-center text-gray-500 text-sm">
+                <i class="fa fa-eye mr-1"></i> 已阅读：1,876次
+              </div>
+            </div>
+          </div>
+
+          <!-- 指南卡片3 -->
+          <div class="guide-card">
+            <div class="card-header">
+              <h3 class="font-semibold text-lg">用户权限管理</h3>
+              <span class="tag tag-tertiary mt-2">权限管理</span>
+            </div>
+            <div class="card-body">
+              <p class="text-gray-700 mb-4">详解如何创建管理员账户、分配不同级别的权限，以及如何管理用户角色和访问控制。</p>
+              <div class="flex items-center text-gray-500 text-sm mb-3">
+                <i class="fa fa-clock-o mr-1"></i> 阅读时间：10分钟
+              </div>
+              <div class="flex items-center text-gray-500 text-sm">
+                <i class="fa fa-eye mr-1"></i> 已阅读：1,543次
+              </div>
+            </div>
+          </div>
+
+          <!-- 指南卡片4 -->
+          <div class="guide-card">
+            <div class="card-header">
+              <h3 class="font-semibold text-lg">系统配置最佳实践</h3>
+              <span class="tag tag-primary mt-2">系统设置</span>
+            </div>
+            <div class="card-body">
+              <p class="text-gray-700 mb-4">提供系统关键参数配置的建议和最佳实践，包括性能优化、安全设置等重要选项说明。</p>
+              <div class="flex items-center text-gray-500 text-sm mb-3">
+                <i class="fa fa-clock-o mr-1"></i> 阅读时间：18分钟
+              </div>
+              <div class="flex items-center text-gray-500 text-sm">
+                <i class="fa fa-eye mr-1"></i> 已阅读：1,287次
+              </div>
+            </div>
+          </div>
+
+          <!-- 指南卡片5 -->
+          <div class="guide-card">
+            <div class="card-header">
+              <h3 class="font-semibold text-lg">数据导出与报表生成</h3>
+              <span class="tag tag-secondary mt-2">数据分析</span>
+            </div>
+            <div class="card-body">
+              <p class="text-gray-700 mb-4">学习如何导出各类系统数据、生成销售报表、乘客统计等，以及如何解读和利用这些数据。</p>
+              <div class="flex items-center text-gray-500 text-sm mb-3">
+                <i class="fa fa-clock-o mr-1"></i> 阅读时间：14分钟
+              </div>
+              <div class="flex items-center text-gray-500 text-sm">
+                <i class="fa fa-eye mr-1"></i> 已阅读：1,156次
+              </div>
+            </div>
+          </div>
+
+          <!-- 指南卡片6 -->
+          <div class="guide-card">
+            <div class="card-header">
+              <h3 class="font-semibold text-lg">系统安全与故障排除</h3>
+              <span class="tag tag-tertiary mt-2">系统维护</span>
+            </div>
+            <div class="card-body">
+              <p class="text-gray-700 mb-4">常见系统问题的排查方法、安全漏洞的防范措施，以及系统备份与恢复的详细操作步骤。</p>
+              <div class="flex items-center text-gray-500 text-sm mb-3">
+                <i class="fa fa-clock-o mr-1"></i> 阅读时间：20分钟
+              </div>
+              <div class="flex items-center text-gray-500 text-sm">
+                <i class="fa fa-eye mr-1"></i> 已阅读：987次
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 查看更多指南 -->
+        <div class="text-center mt-8">
+          <button class="btn-secondary">
+            <i class="fa fa-book mr-2"></i>
+            查看所有操作指南
+          </button>
+        </div>
+      </section>
+
+      <!-- 联系支持部分 -->
+      <section id="contact">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+          <i class="fa fa-envelope text-primary mr-3"></i>
+          联系支持
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- 联系信息 -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="font-semibold text-lg">支持渠道</h3>
+            </div>
+            <div class="card-body">
+              <div class="space-y-6">
+                <div class="flex items-start">
+                  <div class="flex-shrink-0 bg-blue-100 p-3 rounded-full">
+                    <i class="fa fa-envelope text-primary"></i>
+                  </div>
+                  <div class="ml-4">
+                    <h4 class="font-medium text-gray-900">邮件支持</h4>
+                    <p class="text-gray-600 mt-1">发送邮件至 support@seuairline.com 我们将在1-2个工作日内回复您</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start">
+                  <div class="flex-shrink-0 bg-green-100 p-3 rounded-full">
+                    <i class="fa fa-phone text-green-600"></i>
+                  </div>
+                  <div class="ml-4">
+                    <h4 class="font-medium text-gray-900">电话支持</h4>
+                    <p class="text-gray-600 mt-1">工作日 9:00-18:00 拨打 400-123-4567</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start">
+                  <div class="flex-shrink-0 bg-purple-100 p-3 rounded-full">
+                    <i class="fa fa-comments text-purple-600"></i>
+                  </div>
+                  <div class="ml-4">
+                    <h4 class="font-medium text-gray-900">在线客服</h4>
+                    <p class="text-gray-600 mt-1">工作日 9:00-21:00 可通过右下角在线客服获取即时帮助</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-8 pt-6 border-t border-gray-200">
+                <h4 class="font-medium text-gray-900 mb-3">常见问题快速解答</h4>
+                <ul class="space-y-2">
+                  <li class="flex items-center text-gray-700">
+                    <i class="fa fa-check-circle text-success mr-2"></i>
+                    <span>系统正常工作时间：7×24小时</span>
+                  </li>
+                  <li class="flex items-center text-gray-700">
+                    <i class="fa fa-check-circle text-success mr-2"></i>
+                    <span>紧急问题响应时间：1小时内</span>
+                  </li>
+                  <li class="flex items-center text-gray-700">
+                    <i class="fa fa-check-circle text-success mr-2"></i>
+                    <span>定期维护时间：每周日 02:00-04:00</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- 提交工单 -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="font-semibold text-lg">提交工单</h3>
+            </div>
+            <div class="card-body">
+              <form id="support-ticket-form">
+                <div class="mb-4">
+                  <label for="ticket-title" class="block text-sm font-medium text-gray-700 mb-1">问题标题</label>
+                  <input type="text" id="ticket-title" class="input-field" placeholder="请简要描述您的问题">
+                </div>
+
+                <div class="mb-4">
+                  <label for="ticket-type" class="block text-sm font-medium text-gray-700 mb-1">问题类型</label>
+                  <select id="ticket-type" class="input-field">
+                    <option value="">请选择问题类型</option>
+                    <option value="flight">航班管理问题</option>
+                    <option value="order">订单管理问题</option>
+                    <option value="user">用户账户问题</option>
+                    <option value="system">系统功能问题</option>
+                    <option value="security">安全与权限问题</option>
+                    <option value="other">其他问题</option>
+                  </select>
+                </div>
+
+                <div class="mb-4">
+                  <label for="ticket-priority" class="block text-sm font-medium text-gray-700 mb-1">优先级</label>
+                  <select id="ticket-priority" class="input-field">
+                    <option value="low">低（一般咨询，不影响使用）</option>
+                    <option value="medium" selected>中（需要关注，部分影响使用）</option>
+                    <option value="high">高（重要问题，明显影响使用）</option>
+                    <option value="urgent">紧急（严重问题，无法正常使用）</option>
+                  </select>
+                </div>
+
+                <div class="mb-4">
+                  <label for="ticket-description" class="block text-sm font-medium text-gray-700 mb-1">问题描述</label>
+                  <textarea id="ticket-description" rows="4" class="input-field"
+                    placeholder="请详细描述您遇到的问题，包括发生时间、操作步骤等信息"></textarea>
+                </div>
+
+                <div class="mb-6">
+                  <label class="block text-sm font-medium text-gray-700 mb-1">上传附件（可选）</label>
+                  <div
+                    class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                    <div class="space-y-1 text-center">
+                      <i class="fa fa-cloud-upload text-gray-400 text-3xl mb-2"></i>
+                      <div class="flex text-sm text-gray-600">
+                        <label for="file-upload"
+                          class="relative cursor-pointer bg-white rounded-md font-medium text-primary hover:text-primary/90">
+                          <span>上传文件</span>
+                          <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                        </label>
+                        <p class="pl-1">或拖放文件</p>
+                      </div>
+                      <p class="text-xs text-gray-500">PNG, JPG, GIF 或 PDF 格式，最大 10MB</p>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn-primary w-full">
+                  <i class="fa fa-paper-plane mr-2"></i>
+                  提交工单
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 成功提示 -->
+  <div id="toast"
+    class="fixed bottom-6 right-6 bg-success text-white px-6 py-3 rounded-lg shadow-lg flex items-center transform translate-y-10 opacity-0 transition-all duration-300 z-50">
+    <i class="fa fa-check-circle mr-2"></i>
+    <span>操作成功</span>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="../../data/mock-api.js"></script>
+  <script>
+    // 获取元素
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const logoutBtn = document.getElementById('logout-btn');
+    const helpSearch = document.getElementById('help-search');
+    const faqItems = document.querySelectorAll('.faq-item');
+    const supportTicketForm = document.getElementById('support-ticket-form');
+    const toast = document.getElementById('toast');
+
+    // 侧边栏切换
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('-translate-x-full');
+    });
+
+    // 管理员登出
+    logoutBtn.addEventListener('click', () => {
+      if (confirm('确定要退出登录吗？')) {
+        // 清除登录状态
+        localStorage.removeItem('adminToken');
+        sessionStorage.removeItem('adminToken');
+        localStorage.removeItem('currentAdmin');
+
+        // 跳转到登录页面
+        window.location.href = 'login.html';
+      }
+    });
+
+    // 显示提示框
+    function showToast(message = '操作成功') {
+      const toastMessage = toast.querySelector('span');
+      toastMessage.textContent = message;
+
+      toast.classList.remove('translate-y-10', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-10', 'opacity-0');
+      }, 3000);
+    }
+
+    // FAQ切换显示/隐藏
+    faqItems.forEach(item => {
+      const header = item.querySelector('.faq-header');
+      const icon = header.querySelector('i');
+
+      header.addEventListener('click', () => {
+        item.classList.toggle('active');
+
+        // 旋转图标
+        if (item.classList.contains('active')) {
+          icon.style.transform = 'rotate(180deg)';
+        } else {
+          icon.style.transform = 'rotate(0)';
+        }
+      });
+    });
+
+    // 提交支持工单
+    supportTicketForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // 获取表单数据
+      const title = document.getElementById('ticket-title').value;
+      const type = document.getElementById('ticket-type').value;
+      const priority = document.getElementById('ticket-priority').value;
+      const description = document.getElementById('ticket-description').value;
+
+      // 简单验证
+      if (!title.trim()) {
+        alert('请输入问题标题');
+        return;
+      }
+
+      if (!type) {
+        alert('请选择问题类型');
+        return;
+      }
+
+      if (!description.trim()) {
+        alert('请描述您的问题');
+        return;
+      }
+
+      // 在实际应用中，这里应该调用API提交工单
+      // 模拟提交过程
+      showToast('工单提交成功，我们将尽快处理您的问题');
+
+      // 重置表单
+      supportTicketForm.reset();
+
+      // 模拟返回工单编号
+      setTimeout(() => {
+        const ticketId = 'TK' + Date.now().toString().slice(-8);
+        alert(`您的工单已成功提交！\n工单编号：${ticketId}\n我们将在24小时内联系您`);
+      }, 1000);
+    });
+
+    // 热门标签点击事件
+    const hotTags = document.querySelectorAll('.tag.cursor-pointer');
+    hotTags.forEach(tag => {
+      tag.addEventListener('click', () => {
+        helpSearch.value = tag.textContent;
+        // 触发搜索（在实际应用中）
+        console.log('搜索标签:', tag.textContent);
+      });
+    });
+
+    // 帮助搜索
+    helpSearch.addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      // 在实际应用中，这里应该实现实时搜索功能
+      console.log('搜索帮助:', searchTerm);
+    });
+
+    // 操作指南卡片点击事件
+    const guideCards = document.querySelectorAll('.guide-card');
+    guideCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const title = card.querySelector('h3').textContent;
+        alert(`即将跳转到操作指南：${title}`);
+        // 在实际应用中，这里应该跳转到具体的指南详情页面
+      });
+    });
+
+    // 检查管理员登录状态
+    function checkAdminLoginStatus() {
+      const adminToken = localStorage.getItem('adminToken') || sessionStorage.getItem('adminToken');
+      const currentAdmin = localStorage.getItem('currentAdmin');
+
+      if (!adminToken || !currentAdmin) {
+        // 未登录，跳转到登录页面
+        window.location.href = 'login.html';
+        return;
+      }
+
+      try {
+        // 验证token
+        const isTokenValid = MockAPI.validateAdminToken(adminToken);
+        if (!isTokenValid) {
+          // token无效
+          localStorage.removeItem('adminToken');
+          sessionStorage.removeItem('adminToken');
+          localStorage.removeItem('currentAdmin');
+          window.location.href = 'login.html';
+          return;
+        }
+
+        // 更新管理员信息显示
+        const adminInfo = JSON.parse(currentAdmin);
+        document.getElementById('admin-name').textContent = adminInfo.username || '管理员';
+        if (adminInfo.avatar) {
+          document.getElementById('admin-avatar').src = adminInfo.avatar;
+        }
+      } catch (error) {
+        console.error('验证管理员状态时发生错误:', error);
+        // 发生错误，清除状态并跳转到登录页
+        localStorage.removeItem('adminToken');
+        sessionStorage.removeItem('adminToken');
+        localStorage.removeItem('currentAdmin');
+        window.location.href = 'login.html';
+      }
+    }
+
+    // 页面加载时执行
+    window.addEventListener('DOMContentLoaded', () => {
+      // 检查登录状态
+      checkAdminLoginStatus();
+
+      // 设置侧边栏链接活动状态
+      const sidebarLinks = document.querySelectorAll('.sidebar-link');
+      const currentPath = window.location.pathname;
+
+      sidebarLinks.forEach(link => {
+        // 重置所有链接
+        link.classList.remove('active');
+
+        // 匹配当前页面
+        const linkPath = link.getAttribute('href');
+        if (currentPath.endsWith(linkPath)) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

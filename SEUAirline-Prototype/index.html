@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEUAirline航空订票系统原型</title>
+  <!-- Favicon -->
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cpath fill='%231E3A8A' d='M552 264C582.9 264 608 289.1 608 320C608 350.9 582.9 376 552 376L424.7 376L265.5 549.6C259.4 556.2 250.9 560 241.9 560L198.2 560C187.3 560 179.6 549.3 183 538.9L237.3 376L137.6 376L84.8 442C81.8 445.8 77.2 448 72.3 448L52.5 448C42.1 448 34.5 438.2 37 428.1L64 320L37 211.9C34.4 201.8 42.1 192 52.5 192L72.3 192C77.2 192 81.8 194.2 84.8 198L137.6 264L237.3 264L183 101.1C179.6 90.7 187.3 80 198.2 80L241.9 80C250.9 80 259.4 83.8 265.5 90.4L424.7 264L552 264z'/%3E%3C/svg%3E"
+    type="image/svg+xml">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome -->
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/7.0.0/css/all.min.css" rel="stylesheet">
+  <!-- Chart.js -->
+  <script src="https://cdn.bootcdn.net/ajax/libs/Chart.js/4.5.0/chart.umd.min.js"></script>
+
+  <!-- 自定义配置 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1E3A8A', // 航空蓝
+            secondary: '#3B82F6', // 中蓝色
+            accent: '#F8FAFC', // 科技银
+            success: '#10B981',
+            warning: '#F59E0B',
+            danger: '#EF4444',
+            info: '#3B82F6'
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif']
+          },
+          backgroundImage: {
+            'airline-pattern': "url('data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%231e3a8a' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E')"
+          }
+        }
+      }
+    }
+  </script>
+
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto { content-visibility: auto; }
+      .text-shadow { text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+      .transition-all-300 { transition: all 300ms ease; }
+      .card-hover { @apply hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1; }
+      .btn-primary { @apply bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-all duration-300; }
+      .btn-secondary { @apply bg-secondary text-white px-4 py-2 rounded-md hover:bg-secondary/90 transition-all duration-300; }
+      .input-field { @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary; }
+      .section-title { @apply text-2xl font-bold text-gray-800 mb-4; }
+      .card { @apply bg-white rounded-lg shadow-md p-6; }
+    }
+  </style>
+</head>
+
+<body class="bg-accent bg-airline-pattern min-h-screen">
+  <!-- 顶部导航栏 -->
+  <header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-3">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <i class="fa fa-plane text-primary text-2xl"></i>
+          <h1 class="text-xl font-bold text-primary">SEUAirline</h1>
+          <span class="text-sm text-gray-500">航空订票系统原型</span>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <button id="btn-user-mode" class="btn-primary">
+            <i class="fa fa-user mr-2"></i>用户端
+          </button>
+          <button id="btn-admin-mode" class="btn-secondary">
+            <i class="fa fa-cog mr-2"></i>管理端
+          </button>
+          <button id="btn-fullscreen" class="p-2 rounded-md hover:bg-gray-100">
+            <i class="fa fa-expand"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主内容区 -->
+  <main class="container mx-auto px-4 py-6">
+    <!-- 浏览器模拟框架 -->
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+      <!-- 浏览器状态栏 -->
+      <div class="bg-gray-100 p-2 flex items-center border-b">
+        <div class="flex space-x-1.5 mr-4">
+          <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+          <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+          <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+        </div>
+        <div class="flex-1 bg-white rounded px-3 py-1 text-xs text-gray-600 flex items-center">
+          <i class="fa fa-lock text-green-500 mr-2"></i>
+          <span id="url-display">https://www.seuairline.com/homepage</span>
+        </div>
+      </div>
+
+      <!-- 页面内容区域 -->
+      <div class="relative">
+        <iframe id="page-content" src="pages/user/homepage.html" class="w-full min-h-[80vh] border-0"
+          frameborder="0"></iframe>
+
+        <!-- 加载指示器 -->
+        <div id="loading-indicator" class="absolute inset-0 bg-white/80 flex items-center justify-center hidden">
+          <div class="text-center">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary mb-2"></div>
+            <p class="text-gray-600">加载中...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 功能说明 -->
+    <div class="mt-6 bg-blue-50 border border-blue-100 rounded-lg p-4">
+      <h3 class="text-lg font-semibold text-blue-800 flex items-center">
+        <i class="fa fa-info-circle mr-2"></i>系统说明
+      </h3>
+      <div class="mt-2 text-sm text-blue-700 space-y-2">
+        <p>• 本原型基于HTML5 + Tailwind CSS + JavaScript开发，模拟完整的航空订票系统功能</p>
+        <p>• 用户端包含航班搜索、预订、支付等完整流程</p>
+        <p>• 管理端提供航班、航线、用户等管理功能</p>
+        <p>• 管理员登录：用户名 admin，密码 admin123</p>
+        <p>• 点击上方按钮切换用户端/管理端模式</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="bg-gray-800 text-white py-6 mt-10">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-4 md:mb-0">
+          <div class="flex items-center">
+            <i class="fa fa-plane text-blue-400 mr-2"></i>
+            <span class="font-bold text-lg">SEUAirline</span>
+          </div>
+          <p class="text-gray-400 text-sm mt-1">企业级航空订票系统原型</p>
+        </div>
+
+        <div class="text-gray-400 text-sm">
+          <p>© 2024 SEUAirline. All rights reserved.</p>
+          <p>技术支持：Spring Boot + MySQL + Tailwind CSS</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="data/mock-api.js"></script>
+  <script>
+    // 页面切换逻辑
+    const pageContent = document.getElementById('page-content');
+    const loadingIndicator = document.getElementById('loading-indicator');
+    const urlDisplay = document.getElementById('url-display');
+    const btnUserMode = document.getElementById('btn-user-mode');
+    const btnAdminMode = document.getElementById('btn-admin-mode');
+    const btnFullscreen = document.getElementById('btn-fullscreen');
+
+    // 显示加载指示器
+    function showLoading() {
+      loadingIndicator.classList.remove('hidden');
+    }
+
+    // 隐藏加载指示器
+    function hideLoading() {
+      loadingIndicator.classList.add('hidden');
+    }
+
+    // 切换到用户模式
+    btnUserMode.addEventListener('click', () => {
+      switchPage('pages/user/homepage.html');
+      btnUserMode.classList.add('btn-primary');
+      btnUserMode.classList.remove('btn-secondary');
+      btnAdminMode.classList.add('btn-secondary');
+      btnAdminMode.classList.remove('btn-primary');
+    });
+
+    // 切换到管理模式
+    btnAdminMode.addEventListener('click', () => {
+      switchPage('pages/admin/login.html');
+      btnAdminMode.classList.add('btn-primary');
+      btnAdminMode.classList.remove('btn-secondary');
+      btnUserMode.classList.add('btn-secondary');
+      btnUserMode.classList.remove('btn-primary');
+    });
+
+    // 切换页面
+    function switchPage(url) {
+      showLoading();
+      pageContent.src = url;
+      urlDisplay.textContent = `https://www.seuairline.com/${url.replace('pages/', '').replace('.html', '')}`;
+    }
+
+    // 监听iframe加载完成
+    pageContent.addEventListener('load', hideLoading);
+
+    // 全屏功能
+    btnFullscreen.addEventListener('click', () => {
+      const container = pageContent.parentElement;
+      if (!document.fullscreenElement) {
+        container.requestFullscreen().catch(err => {
+          console.log(`全屏错误: ${err.message}`);
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    });
+
+    // 初始化页面
+    window.addEventListener('DOMContentLoaded', () => {
+      switchPage('pages/user/homepage.html');
+    });
+  </script>
+</body>
+
+</html>

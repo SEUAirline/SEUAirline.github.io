@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEUAirline - 管理控制台</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome -->
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/7.0.0/css/all.min.css" rel="stylesheet">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+
+  <!-- 自定义样式 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1E3A8A',
+            secondary: '#3B82F6',
+            accent: '#F8FAFC',
+            success: '#10B981',
+            warning: '#F59E0B',
+            danger: '#EF4444',
+            info: '#3B82F6',
+            dark: '#1E293B'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto { content-visibility: auto; }
+      .sidebar-link {
+        @apply flex items-center px-4 py-3 text-gray-600 hover:bg-blue-50 hover:text-primary transition-all duration-200 rounded-lg;
+      }
+      .sidebar-link.active {
+        @apply bg-blue-50 text-primary font-medium;
+      }
+      .stat-card {
+        @apply bg-white rounded-lg shadow-sm p-5 border border-gray-100 flex items-center;
+      }
+      .stat-icon {
+        @apply w-12 h-12 rounded-full flex items-center justify-center text-white mr-4;
+      }
+      .card {
+        @apply bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden;
+      }
+      .card-header {
+        @apply px-5 py-4 border-b border-gray-100 flex justify-between items-center;
+      }
+      .card-body {
+        @apply px-5 py-4;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+  <!-- 顶部导航栏 -->
+  <header class="bg-white shadow-sm sticky top-0 z-30">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center">
+          <button id="sidebar-toggle" class="mr-4 text-gray-500 hover:text-primary">
+            <i class="fa fa-bars text-xl"></i>
+          </button>
+          <a href="dashboard.html" class="flex items-center">
+            <i class="fa fa-cube text-primary text-2xl mr-2"></i>
+            <span class="text-xl font-bold text-primary">SEUAirline 管理系统</span>
+          </a>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <!-- 通知图标 -->
+          <div class="relative">
+            <button class="text-gray-500 hover:text-primary focus:outline-none">
+              <i class="fa fa-bell-o text-xl"></i>
+              <span
+                class="absolute top-0 right-0 h-4 w-4 rounded-full bg-red-500 text-xs text-white flex items-center justify-center">3</span>
+            </button>
+          </div>
+
+          <!-- 用户信息 -->
+          <div class="flex items-center space-x-2">
+            <img id="admin-avatar" src="https://picsum.photos/32/32" alt="管理员头像" class="w-8 h-8 rounded-full">
+            <div class="hidden md:block">
+              <div class="text-sm font-medium text-gray-700" id="admin-name">管理员</div>
+              <div class="text-xs text-gray-500">系统管理员</div>
+            </div>
+            <button id="logout-btn" class="text-gray-500 hover:text-primary">
+              <i class="fa fa-sign-out"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主要内容区 -->
+  <div class="flex">
+    <!-- 侧边栏 -->
+    <aside id="sidebar"
+      class="w-64 bg-white border-r border-gray-200 h-[calc(100vh-4rem)] sticky top-16 overflow-y-auto transition-all duration-300 transform">
+      <nav class="p-4">
+        <div class="mb-6">
+          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">主菜单</h3>
+          <div class="space-y-2">
+            <a href="dashboard.html" class="sidebar-link active">
+              <i class="fa fa-tachometer w-5 mr-3"></i>
+              <span>仪表盘</span>
+            </a>
+            <a href="flights.html" class="sidebar-link">
+              <i class="fa fa-plane w-5 mr-3"></i>
+              <span>航班管理</span>
+            </a>
+            <a href="orders.html" class="sidebar-link">
+              <i class="fa fa-file-text-o w-5 mr-3"></i>
+              <span>订单管理</span>
+            </a>
+            <a href="users.html" class="sidebar-link">
+              <i class="fa fa-users w-5 mr-3"></i>
+              <span>用户管理</span>
+            </a>
+            <a href="airports.html" class="sidebar-link">
+              <i class="fa fa-building-o w-5 mr-3"></i>
+              <span>机场管理</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">系统设置</h3>
+          <div class="space-y-2">
+            <a href="system-settings.html" class="sidebar-link">
+              <i class="fa fa-cog w-5 mr-3"></i>
+              <span>系统设置</span>
+            </a>
+            <a href="admin-accounts.html" class="sidebar-link">
+              <i class="fa fa-user-circle-o w-5 mr-3"></i>
+              <span>管理员账户</span>
+            </a>
+            <a href="logs.html" class="sidebar-link">
+              <i class="fa fa-history w-5 mr-3"></i>
+              <span>系统日志</span>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">帮助与支持</h3>
+          <div class="space-y-2">
+            <a href="#" class="sidebar-link">
+              <i class="fa fa-question-circle-o w-5 mr-3"></i>
+              <span>帮助中心</span>
+            </a>
+            <a href="#" class="sidebar-link">
+              <i class="fa fa-file-text w-5 mr-3"></i>
+              <span>文档中心</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- 内容区域 -->
+    <main class="flex-1 p-6">
+      <!-- 页面标题 -->
+      <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">仪表盘</h1>
+        <p class="text-gray-500 mt-1">欢迎回来，管理员！这是系统的运行概览</p>
+      </div>
+
+      <!-- 统计卡片 -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+        <!-- 总航班统计 -->
+        <div class="stat-card">
+          <div class="stat-icon bg-blue-500">
+            <i class="fa fa-plane text-xl"></i>
+          </div>
+          <div>
+            <div class="text-3xl font-bold text-gray-800">125</div>
+            <div class="text-sm text-gray-500">今日航班总数</div>
+            <div class="text-xs text-green-500 mt-1">
+              <i class="fa fa-arrow-up mr-1"></i> 较昨日增长 3%
+            </div>
+          </div>
+        </div>
+
+        <!-- 总订单统计 -->
+        <div class="stat-card">
+          <div class="stat-icon bg-green-500">
+            <i class="fa fa-file-text-o text-xl"></i>
+          </div>
+          <div>
+            <div class="text-3xl font-bold text-gray-800">823</div>
+            <div class="text-sm text-gray-500">今日订单总数</div>
+            <div class="text-xs text-green-500 mt-1">
+              <i class="fa fa-arrow-up mr-1"></i> 较昨日增长 8%
+            </div>
+          </div>
+        </div>
+
+        <!-- 总用户统计 -->
+        <div class="stat-card">
+          <div class="stat-icon bg-purple-500">
+            <i class="fa fa-users text-xl"></i>
+          </div>
+          <div>
+            <div class="text-3xl font-bold text-gray-800">12,580</div>
+            <div class="text-sm text-gray-500">总用户数</div>
+            <div class="text-xs text-green-500 mt-1">
+              <i class="fa fa-arrow-up mr-1"></i> 较昨日增长 2%
+            </div>
+          </div>
+        </div>
+
+        <!-- 系统收益统计 -->
+        <div class="stat-card">
+          <div class="stat-icon bg-amber-500">
+            <i class="fa fa-line-chart text-xl"></i>
+          </div>
+          <div>
+            <div class="text-3xl font-bold text-gray-800">¥245,680</div>
+            <div class="text-sm text-gray-500">今日销售额</div>
+            <div class="text-xs text-red-500 mt-1">
+              <i class="fa fa-arrow-down mr-1"></i> 较昨日下降 1%
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 图表区域 -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <!-- 销售趋势图表 -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="font-medium text-gray-800">销售趋势分析</h3>
+            <div class="relative">
+              <select
+                class="pl-3 pr-10 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary appearance-none">
+                <option>近7天</option>
+                <option>近30天</option>
+                <option>近90天</option>
+                <option>自定义</option>
+              </select>
+              <i
+                class="fa fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-400 pointer-events-none"></i>
+            </div>
+          </div>
+          <div class="card-body">
+            <canvas id="sales-chart" height="250"></canvas>
+          </div>
+        </div>
+
+        <!-- 热门航线图表 -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="font-medium text-gray-800">热门航线分布</h3>
+            <div class="relative">
+              <select
+                class="pl-3 pr-10 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary appearance-none">
+                <option>本周</option>
+                <option>本月</option>
+                <option>本季度</option>
+                <option>全年</option>
+              </select>
+              <i
+                class="fa fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-400 pointer-events-none"></i>
+            </div>
+          </div>
+          <div class="card-body">
+            <canvas id="routes-chart" height="250"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- 最近活动和待处理任务 -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- 最新订单 -->
+        <div class="card lg:col-span-2">
+          <div class="card-header">
+            <h3 class="font-medium text-gray-800">最新订单</h3>
+            <a href="orders.html" class="text-primary text-sm hover:underline">查看全部</a>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">订单号</th>
+                  <th class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">航班号</th>
+                  <th class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">乘客</th>
+                  <th class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">金额</th>
+                  <th class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                  <th class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr>
+                  <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-800">SA20240120001</td>
+                  <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-600">CA1234</td>
+                  <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-600">张三</td>
+                  <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-600">¥1,150.00</td>
+                  <td class="px-5 py-4 whitespace-nowrap">
+                    <span
+                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">已出票</span>
+                  </td>
+                  <td class="px-5 py-4 whitespace-nowrap text-sm text-primary">
+                    <a href="#" class="hover:underline">查看详情</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-800">SA20240120002</td>
+                  <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-600">MU5312</td>
+                  <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-600">李四</td>
+                  <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-600">¥1,380.00</td>
+                  <td class="px-5 py-4 whitespace-nowrap">
+                    <span
+                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">待支付</span>
+                  </td>
+                  <td class="px-5 py-4 whitespace-nowrap text-sm text-primary">
+                    <a href="#" class="hover:underline">查看详情</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-800">SA20240120003</td>
+                  <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-600">CZ3987</td>
+                  <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-600">王五</td>
+                  <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-600">¥2,180.00</td>
+                  <td class="px-5 py-4 whitespace-nowrap">
+                    <span
+                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">已支付</span>
+                  </td>
+                  <td class="px-5 py-4 whitespace-nowrap text-sm text-primary">
+                    <a href="#" class="hover:underline">查看详情</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-800">SA20240120004</td>
+                  <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-600">3U8888</td>
+                  <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-600">赵六</td>
+                  <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-600">¥1,280.00</td>
+                  <td class="px-5 py-4 whitespace-nowrap">
+                    <span
+                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">已取消</span>
+                  </td>
+                  <td class="px-5 py-4 whitespace-nowrap text-sm text-primary">
+                    <a href="#" class="hover:underline">查看详情</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 待处理任务 -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="font-medium text-gray-800">待处理任务</h3>
+            <span
+              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">8
+              项</span>
+          </div>
+          <div class="card-body">
+            <div class="space-y-4">
+              <div class="flex items-start">
+                <input type="checkbox" class="h-5 w-5 text-primary focus:ring-primary border-gray-300 rounded mt-0.5">
+                <div class="ml-3">
+                  <p class="text-sm text-gray-800 font-medium">处理异常订单（5个）</p>
+                  <p class="text-xs text-gray-500 mt-1">需要管理员审核的异常订单</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <input type="checkbox" class="h-5 w-5 text-primary focus:ring-primary border-gray-300 rounded mt-0.5">
+                <div class="ml-3">
+                  <p class="text-sm text-gray-800 font-medium">添加新航班信息（3条）</p>
+                  <p class="text-xs text-gray-500 mt-1">需添加明天的航班信息</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <input type="checkbox" class="h-5 w-5 text-primary focus:ring-primary border-gray-300 rounded mt-0.5">
+                <div class="ml-3">
+                  <p class="text-sm text-gray-800 font-medium">审核用户退票申请</p>
+                  <p class="text-xs text-gray-500 mt-1">有2个用户申请退票</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <input type="checkbox" class="h-5 w-5 text-primary focus:ring-primary border-gray-300 rounded mt-0.5">
+                <div class="ml-3">
+                  <p class="text-sm text-gray-800 font-medium">更新航班状态</p>
+                  <p class="text-xs text-gray-500 mt-1">部分航班信息需要更新</p>
+                </div>
+              </div>
+            </div>
+            <div class="mt-6">
+              <a href="#" class="text-center block text-primary text-sm font-medium hover:underline">查看全部任务</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="../../data/mock-api.js"></script>
+  <script>
+    // 获取元素
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    // 侧边栏切换
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('-translate-x-full');
+    });
+
+    // 管理员登出
+    logoutBtn.addEventListener('click', () => {
+      if (confirm('确定要退出登录吗？')) {
+        // 清除登录状态
+        localStorage.removeItem('adminToken');
+        sessionStorage.removeItem('adminToken');
+        localStorage.removeItem('currentAdmin');
+
+        // 跳转到登录页面
+        window.location.href = 'login.html';
+      }
+    });
+
+    // 初始化图表
+    function initCharts() {
+      // 销售趋势图表
+      const salesCtx = document.getElementById('sales-chart').getContext('2d');
+      const salesChart = new Chart(salesCtx, {
+        type: 'line',
+        data: {
+          labels: ['1月15日', '1月16日', '1月17日', '1月18日', '1月19日', '1月20日', '1月21日'],
+          datasets: [{
+            label: '销售额 (元)',
+            data: [185600, 198400, 212300, 208700, 235600, 245680, 256700],
+            borderColor: '#3B82F6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            fill: true,
+            tension: 0.4,
+            borderWidth: 2,
+            pointBackgroundColor: '#1E3A8A',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            pointRadius: 4,
+            pointHoverRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              backgroundColor: 'rgba(30, 58, 138, 0.9)',
+              titleColor: '#fff',
+              bodyColor: '#fff',
+              borderColor: '#3B82F6',
+              borderWidth: 1,
+              padding: 10,
+              displayColors: false,
+              callbacks: {
+                label: function (context) {
+                  return `销售额: ¥${context.parsed.y.toLocaleString()}`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                display: false
+              },
+              ticks: {
+                color: '#64748B'
+              }
+            },
+            y: {
+              beginAtZero: true,
+              grid: {
+                color: 'rgba(148, 163, 184, 0.1)'
+              },
+              ticks: {
+                color: '#64748B',
+                callback: function (value) {
+                  return '¥' + value.toLocaleString();
+                }
+              }
+            }
+          }
+        }
+      });
+
+      // 热门航线图表
+      const routesCtx = document.getElementById('routes-chart').getContext('2d');
+      const routesChart = new Chart(routesCtx, {
+        type: 'bar',
+        data: {
+          labels: ['北京-上海', '广州-北京', '深圳-上海', '成都-北京', '上海-香港', '北京-广州'],
+          datasets: [{
+            label: '订单数量',
+            data: [320, 280, 250, 220, 180, 170],
+            backgroundColor: [
+              'rgba(59, 130, 246, 0.8)',
+              'rgba(59, 130, 246, 0.7)',
+              'rgba(59, 130, 246, 0.6)',
+              'rgba(59, 130, 246, 0.5)',
+              'rgba(59, 130, 246, 0.4)',
+              'rgba(59, 130, 246, 0.3)'
+            ],
+            borderColor: [
+              'rgba(30, 58, 138, 1)',
+              'rgba(30, 58, 138, 1)',
+              'rgba(30, 58, 138, 1)',
+              'rgba(30, 58, 138, 1)',
+              'rgba(30, 58, 138, 1)',
+              'rgba(30, 58, 138, 1)'
+            ],
+            borderWidth: 1,
+            borderRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              backgroundColor: 'rgba(30, 58, 138, 0.9)',
+              titleColor: '#fff',
+              bodyColor: '#fff',
+              borderColor: '#3B82F6',
+              borderWidth: 1,
+              padding: 10,
+              displayColors: false
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                display: false
+              },
+              ticks: {
+                color: '#64748B'
+              }
+            },
+            y: {
+              beginAtZero: true,
+              grid: {
+                color: 'rgba(148, 163, 184, 0.1)'
+              },
+              ticks: {
+                color: '#64748B'
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // 检查管理员登录状态
+    function checkAdminLoginStatus() {
+      const adminToken = localStorage.getItem('adminToken') || sessionStorage.getItem('adminToken');
+      const currentAdmin = localStorage.getItem('currentAdmin');
+
+      if (!adminToken || !currentAdmin) {
+        // 未登录，跳转到登录页面
+        window.location.href = 'login.html';
+        return;
+      }
+
+      try {
+        // 验证token
+        const isTokenValid = MockAPI.validateAdminToken(adminToken);
+        if (!isTokenValid) {
+          // token无效
+          localStorage.removeItem('adminToken');
+          sessionStorage.removeItem('adminToken');
+          localStorage.removeItem('currentAdmin');
+          window.location.href = 'login.html';
+          return;
+        }
+
+        // 更新管理员信息显示
+        const adminInfo = JSON.parse(currentAdmin);
+        document.getElementById('admin-name').textContent = adminInfo.username || '管理员';
+        if (adminInfo.avatar) {
+          document.getElementById('admin-avatar').src = adminInfo.avatar;
+        }
+      } catch (error) {
+        console.error('验证管理员状态时发生错误:', error);
+        // 发生错误，清除状态并跳转到登录页
+        localStorage.removeItem('adminToken');
+        sessionStorage.removeItem('adminToken');
+        localStorage.removeItem('currentAdmin');
+        window.location.href = 'login.html';
+      }
+    }
+
+    // 页面加载时执行
+    window.addEventListener('DOMContentLoaded', () => {
+      // 检查登录状态
+      checkAdminLoginStatus();
+
+      // 初始化图表
+      initCharts();
+
+      // 设置侧边栏链接活动状态
+      const sidebarLinks = document.querySelectorAll('.sidebar-link');
+      const currentPath = window.location.pathname;
+
+      sidebarLinks.forEach(link => {
+        // 重置所有链接
+        link.classList.remove('active');
+
+        // 匹配当前页面
+        const linkPath = link.getAttribute('href');
+        if (currentPath.endsWith(linkPath)) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

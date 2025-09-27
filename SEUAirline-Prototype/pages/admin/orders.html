@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEUAirline - 订单管理</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome -->
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/7.0.0/css/all.min.css" rel="stylesheet">
+
+  <!-- 自定义样式 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1E3A8A',
+            secondary: '#3B82F6',
+            accent: '#F8FAFC',
+            success: '#10B981',
+            warning: '#F59E0B',
+            danger: '#EF4444',
+            info: '#3B82F6',
+            dark: '#1E293B'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto { content-visibility: auto; }
+      .sidebar-link {
+        @apply flex items-center px-4 py-3 text-gray-600 hover:bg-blue-50 hover:text-primary transition-all duration-200 rounded-lg;
+      }
+      .sidebar-link.active {
+        @apply bg-blue-50 text-primary font-medium;
+      }
+      .btn-primary { 
+        @apply bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-all duration-300;
+      }
+      .btn-secondary { 
+        @apply bg-white text-primary border border-primary px-4 py-2 rounded-md hover:bg-blue-50 transition-all duration-300;
+      }
+      .btn-outline { 
+        @apply bg-white text-gray-600 border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50 transition-all duration-300;
+      }
+      .btn-danger { 
+        @apply bg-white text-danger border border-danger px-4 py-2 rounded-md hover:bg-red-50 transition-all duration-300;
+      }
+      .input-field {
+        @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all;
+      }
+      .card {
+        @apply bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden;
+      }
+      .card-header {
+        @apply px-5 py-4 border-b border-gray-100 flex justify-between items-center;
+      }
+      .card-body {
+        @apply px-5 py-4;
+      }
+      .status-badge {
+        @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+  <!-- 顶部导航栏 -->
+  <header class="bg-white shadow-sm sticky top-0 z-30">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center">
+          <button id="sidebar-toggle" class="mr-4 text-gray-500 hover:text-primary">
+            <i class="fa fa-bars text-xl"></i>
+          </button>
+          <a href="dashboard.html" class="flex items-center">
+            <i class="fa fa-cube text-primary text-2xl mr-2"></i>
+            <span class="text-xl font-bold text-primary">SEUAirline 管理系统</span>
+          </a>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <!-- 通知图标 -->
+          <div class="relative">
+            <button class="text-gray-500 hover:text-primary focus:outline-none">
+              <i class="fa fa-bell-o text-xl"></i>
+              <span
+                class="absolute top-0 right-0 h-4 w-4 rounded-full bg-red-500 text-xs text-white flex items-center justify-center">5</span>
+            </button>
+          </div>
+
+          <!-- 用户信息 -->
+          <div class="flex items-center space-x-2">
+            <img id="admin-avatar" src="https://picsum.photos/32/32" alt="管理员头像" class="w-8 h-8 rounded-full">
+            <div class="hidden md:block">
+              <div class="text-sm font-medium text-gray-700" id="admin-name">管理员</div>
+              <div class="text-xs text-gray-500">系统管理员</div>
+            </div>
+            <button id="logout-btn" class="text-gray-500 hover:text-primary">
+              <i class="fa fa-sign-out"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主要内容区 -->
+  <div class="flex">
+    <!-- 侧边栏 -->
+    <aside id="sidebar"
+      class="w-64 bg-white border-r border-gray-200 h-[calc(100vh-4rem)] sticky top-16 overflow-y-auto transition-all duration-300 transform">
+      <nav class="p-4">
+        <div class="mb-6">
+          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">主菜单</h3>
+          <div class="space-y-2">
+            <a href="dashboard.html" class="sidebar-link">
+              <i class="fa fa-tachometer w-5 mr-3"></i>
+              <span>仪表盘</span>
+            </a>
+            <a href="flights.html" class="sidebar-link">
+              <i class="fa fa-plane w-5 mr-3"></i>
+              <span>航班管理</span>
+            </a>
+            <a href="orders.html" class="sidebar-link active">
+              <i class="fa fa-file-text-o w-5 mr-3"></i>
+              <span>订单管理</span>
+            </a>
+            <a href="users.html" class="sidebar-link">
+              <i class="fa fa-users w-5 mr-3"></i>
+              <span>用户管理</span>
+            </a>
+            <a href="airports.html" class="sidebar-link">
+              <i class="fa fa-building-o w-5 mr-3"></i>
+              <span>机场管理</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">系统设置</h3>
+          <div class="space-y-2">
+            <a href="system-settings.html" class="sidebar-link">
+              <i class="fa fa-cog w-5 mr-3"></i>
+              <span>系统设置</span>
+            </a>
+            <a href="admin-accounts.html" class="sidebar-link">
+              <i class="fa fa-user-circle-o w-5 mr-3"></i>
+              <span>管理员账户</span>
+            </a>
+            <a href="logs.html" class="sidebar-link">
+              <i class="fa fa-history w-5 mr-3"></i>
+              <span>系统日志</span>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">帮助与支持</h3>
+          <div class="space-y-2">
+            <a href="#" class="sidebar-link">
+              <i class="fa fa-question-circle-o w-5 mr-3"></i>
+              <span>帮助中心</span>
+            </a>
+            <a href="#" class="sidebar-link">
+              <i class="fa fa-file-text w-5 mr-3"></i>
+              <span>文档中心</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- 内容区域 -->
+    <main class="flex-1 p-6">
+      <!-- 页面标题 -->
+      <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">订单管理</h1>
+        <p class="text-gray-500 mt-1">查看和管理所有客户订单，包括订单状态跟踪、出票和退票操作</p>
+      </div>
+
+      <!-- 操作栏 -->
+      <div class="card mb-6">
+        <div class="card-body">
+          <div class="flex flex-col md:flex-row gap-4">
+            <div class="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">订单号</label>
+                <input type="text" id="order-number-search" class="input-field" placeholder="输入订单号">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">客户姓名</label>
+                <input type="text" id="customer-name-search" class="input-field" placeholder="输入客户姓名">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">航班号</label>
+                <input type="text" id="flight-number-search" class="input-field" placeholder="输入航班号">
+              </div>
+            </div>
+            <div class="flex items-end space-x-3">
+              <button id="search-order-btn" class="btn-primary">
+                <i class="fa fa-search mr-1"></i> 搜索
+              </button>
+              <button id="reset-search-btn" class="btn-outline">
+                <i class="fa fa-refresh mr-1"></i> 重置
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 订单列表 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="flex justify-between items-center w-full">
+            <h3 class="font-medium text-gray-800">订单列表</h3>
+            <div class="flex items-center space-x-3">
+              <div class="relative">
+                <select id="order-status-filter"
+                  class="pl-3 pr-10 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary appearance-none">
+                  <option value="">全部状态</option>
+                  <option value="pending">待支付</option>
+                  <option value="paid">已支付</option>
+                  <option value="issued">已出票</option>
+                  <option value="completed">已完成</option>
+                  <option value="cancelled">已取消</option>
+                  <option value="refunded">已退款</option>
+                </select>
+                <i
+                  class="fa fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-400 pointer-events-none"></i>
+              </div>
+              <div class="text-sm text-gray-500">共 <span id="total-orders" class="font-medium text-primary">248</span>
+                个订单</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">订单号</th>
+                <th class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">客户信息</th>
+                <th class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">航班信息</th>
+                <th class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">出发日期</th>
+                <th class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">订单金额</th>
+                <th class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">订单状态</th>
+                <th class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">下单时间</th>
+                <th class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <!-- 订单1 -->
+              <tr data-order-id="ORD20230526001">
+                <td class="px-5 py-4 whitespace-nowrap text-sm font-medium text-primary">ORD20230526001</td>
+                <td class="px-5 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-800">张三</div>
+                  <div class="text-xs text-gray-500">138****5678</div>
+                </td>
+                <td class="px-5 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-800">CA1234</div>
+                  <div class="text-xs text-gray-500">PEK → PVG</div>
+                </td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-600">2023-06-15</td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm font-medium text-gray-800">¥2,300</td>
+                <td class="px-5 py-4 whitespace-nowrap">
+                  <span class="status-badge bg-green-100 text-green-800">已出票</span>
+                </td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-500">2023-05-26 14:30:22</td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm">
+                  <div class="flex space-x-2">
+                    <button class="text-primary hover:text-primary/80 transition-colors" title="查看详情">
+                      <i class="fa fa-eye"></i>
+                    </button>
+                    <button class="text-success hover:text-success/80 transition-colors" title="查看客票">
+                      <i class="fa fa-ticket"></i>
+                    </button>
+                    <button class="text-gray-600 hover:text-gray-800 transition-colors" title="联系客户">
+                      <i class="fa fa-phone"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 订单2 -->
+              <tr data-order-id="ORD20230526002">
+                <td class="px-5 py-4 whitespace-nowrap text-sm font-medium text-primary">ORD20230526002</td>
+                <td class="px-5 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-800">李四</div>
+                  <div class="text-xs text-gray-500">139****9012</div>
+                </td>
+                <td class="px-5 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-800">MU5312</div>
+                  <div class="text-xs text-gray-500">SHA → CAN</div>
+                </td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-600">2023-06-20</td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm font-medium text-gray-800">¥1,380</td>
+                <td class="px-5 py-4 whitespace-nowrap">
+                  <span class="status-badge bg-yellow-100 text-yellow-800">待支付</span>
+                </td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-500">2023-05-26 15:45:11</td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm">
+                  <div class="flex space-x-2">
+                    <button class="text-primary hover:text-primary/80 transition-colors" title="查看详情">
+                      <i class="fa fa-eye"></i>
+                    </button>
+                    <button class="text-success hover:text-success/80 transition-colors" title="提醒支付">
+                      <i class="fa fa-bell"></i>
+                    </button>
+                    <button class="text-danger hover:text-danger/80 transition-colors" title="取消订单">
+                      <i class="fa fa-times-circle"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 订单3 -->
+              <tr data-order-id="ORD20230526003">
+                <td class="px-5 py-4 whitespace-nowrap text-sm font-medium text-primary">ORD20230526003</td>
+                <td class="px-5 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-800">王五</div>
+                  <div class="text-xs text-gray-500">135****3456</div>
+                </td>
+                <td class="px-5 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-800">CZ3987</div>
+                  <div class="text-xs text-gray-500">HGH → PEK</div>
+                </td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-600">2023-06-10</td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm font-medium text-gray-800">¥2,850</td>
+                <td class="px-5 py-4 whitespace-nowrap">
+                  <span class="status-badge bg-blue-100 text-blue-800">已支付</span>
+                </td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-500">2023-05-26 16:20:55</td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm">
+                  <div class="flex space-x-2">
+                    <button class="text-primary hover:text-primary/80 transition-colors" title="查看详情">
+                      <i class="fa fa-eye"></i>
+                    </button>
+                    <button class="text-success hover:text-success/80 transition-colors" title="出票">
+                      <i class="fa fa-ticket"></i>
+                    </button>
+                    <button class="text-danger hover:text-danger/80 transition-colors" title="取消订单">
+                      <i class="fa fa-times-circle"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 订单4 -->
+              <tr data-order-id="ORD20230526004">
+                <td class="px-5 py-4 whitespace-nowrap text-sm font-medium text-primary">ORD20230526004</td>
+                <td class="px-5 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-800">赵六</div>
+                  <div class="text-xs text-gray-500">136****7890</div>
+                </td>
+                <td class="px-5 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-800">3U8888</div>
+                  <div class="text-xs text-gray-500">CTU → PKX</div>
+                </td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-600">2023-06-05</td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm font-medium text-gray-800">¥1,280</td>
+                <td class="px-5 py-4 whitespace-nowrap">
+                  <span class="status-badge bg-red-100 text-red-800">已取消</span>
+                </td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-500">2023-05-26 17:05:38</td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm">
+                  <div class="flex space-x-2">
+                    <button class="text-primary hover:text-primary/80 transition-colors" title="查看详情">
+                      <i class="fa fa-eye"></i>
+                    </button>
+                    <button class="text-gray-400 cursor-not-allowed" title="已取消">
+                      <i class="fa fa-times-circle"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 订单5 -->
+              <tr data-order-id="ORD20230526005">
+                <td class="px-5 py-4 whitespace-nowrap text-sm font-medium text-primary">ORD20230526005</td>
+                <td class="px-5 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-800">钱七</div>
+                  <div class="text-xs text-gray-500">137****2345</div>
+                </td>
+                <td class="px-5 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-800">HU7234</div>
+                  <div class="text-xs text-gray-500">SZX → SHA</div>
+                </td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-600">2023-06-18</td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm font-medium text-gray-800">¥3,240</td>
+                <td class="px-5 py-4 whitespace-nowrap">
+                  <span class="status-badge bg-purple-100 text-purple-800">已退款</span>
+                </td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-500">2023-05-26 18:10:22</td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm">
+                  <div class="flex space-x-2">
+                    <button class="text-primary hover:text-primary/80 transition-colors" title="查看详情">
+                      <i class="fa fa-eye"></i>
+                    </button>
+                    <button class="text-success hover:text-success/80 transition-colors" title="查看退款记录">
+                      <i class="fa fa-credit-card"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 订单6 -->
+              <tr data-order-id="ORD20230526006">
+                <td class="px-5 py-4 whitespace-nowrap text-sm font-medium text-primary">ORD20230526006</td>
+                <td class="px-5 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-800">孙八</div>
+                  <div class="text-xs text-gray-500">134****6789</div>
+                </td>
+                <td class="px-5 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-800">CA1234</div>
+                  <div class="text-xs text-gray-500">PEK → PVG</div>
+                </td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-600">2023-06-15</td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm font-medium text-gray-800">¥1,150</td>
+                <td class="px-5 py-4 whitespace-nowrap">
+                  <span class="status-badge bg-gray-100 text-gray-800">已完成</span>
+                </td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm text-gray-500">2023-05-26 19:35:10</td>
+                <td class="px-5 py-4 whitespace-nowrap text-sm">
+                  <div class="flex space-x-2">
+                    <button class="text-primary hover:text-primary/80 transition-colors" title="查看详情">
+                      <i class="fa fa-eye"></i>
+                    </button>
+                    <button class="text-gray-400 cursor-not-allowed" title="已完成">
+                      <i class="fa fa-check-circle"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 分页 -->
+        <div class="px-5 py-4 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center">
+          <div class="text-sm text-gray-700 mb-4 sm:mb-0">
+            显示 1 到 6 条，共 248 条
+          </div>
+          <nav class="inline-flex rounded-md shadow">
+            <a href="#"
+              class="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+              <i class="fa fa-chevron-left"></i>
+            </a>
+            <a href="#"
+              class="px-3 py-2 border-t border-b border-gray-300 bg-primary text-sm font-medium text-white">1</a>
+            <a href="#"
+              class="px-3 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">2</a>
+            <a href="#"
+              class="px-3 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">3</a>
+            <span
+              class="px-3 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-700">...</span>
+            <a href="#"
+              class="px-3 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">42</a>
+            <a href="#"
+              class="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+              <i class="fa fa-chevron-right"></i>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 订单详情模态框 -->
+  <div id="order-details-modal"
+    class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto">
+      <div class="p-5 border-b border-gray-200">
+        <div class="flex justify-between items-center">
+          <h3 class="text-lg font-medium">订单详情</h3>
+          <button id="close-order-details-btn" class="text-gray-400 hover:text-gray-500">
+            <i class="fa fa-times text-xl"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="p-5">
+        <!-- 订单基本信息 -->
+        <div class="mb-6">
+          <h4 class="text-md font-medium text-gray-800 mb-3">订单基本信息</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <p class="text-sm text-gray-500">订单号</p>
+              <p class="font-medium" id="detail-order-number">ORD20230526001</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">订单状态</p>
+              <p class="font-medium" id="detail-order-status">已出票</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">下单时间</p>
+              <p id="detail-order-time">2023-05-26 14:30:22</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">支付时间</p>
+              <p id="detail-payment-time">2023-05-26 14:35:45</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">出票时间</p>
+              <p id="detail-issue-time">2023-05-26 14:40:10</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">订单金额</p>
+              <p class="font-medium text-lg text-primary" id="detail-order-amount">¥2,300.00</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 联系人信息 -->
+        <div class="mb-6">
+          <h4 class="text-md font-medium text-gray-800 mb-3">联系人信息</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <p class="text-sm text-gray-500">姓名</p>
+              <p id="detail-contact-name">张三</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">手机号</p>
+              <p id="detail-contact-phone">138****5678</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">邮箱</p>
+              <p id="detail-contact-email">zhangsan@example.com</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 航班信息 -->
+        <div class="mb-6">
+          <h4 class="text-md font-medium text-gray-800 mb-3">航班信息</h4>
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <div class="flex items-center justify-between">
+              <div class="text-center">
+                <p class="text-sm text-gray-500">出发</p>
+                <p class="font-medium" id="detail-departure-airport">PEK</p>
+                <p class="text-sm" id="detail-departure-city">北京首都 T2</p>
+                <p class="text-xs text-gray-500" id="detail-departure-date">2023-06-15</p>
+                <p class="font-medium" id="detail-departure-time">08:00</p>
+              </div>
+
+              <div class="flex-1 mx-6">
+                <div class="relative">
+                  <div class="border-t-2 border-primary border-dashed w-full"></div>
+                  <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <i class="fa fa-plane text-primary rotate-90"></i>
+                  </div>
+                  <div class="absolute top-0 right-0">
+                    <span class="text-xs bg-blue-50 text-primary px-2 py-1 rounded" id="detail-flight-duration">2h
+                      20m</span>
+                  </div>
+                </div>
+                <div class="text-center mt-2">
+                  <p class="font-medium" id="detail-flight-number">CA1234</p>
+                  <p class="text-xs text-gray-500" id="detail-aircraft-type">波音737</p>
+                </div>
+              </div>
+
+              <div class="text-center">
+                <p class="text-sm text-gray-500">到达</p>
+                <p class="font-medium" id="detail-arrival-airport">PVG</p>
+                <p class="text-sm" id="detail-arrival-city">上海浦东 T1</p>
+                <p class="text-xs text-gray-500" id="detail-arrival-date">2023-06-15</p>
+                <p class="font-medium" id="detail-arrival-time">10:20</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 乘客信息 -->
+        <div class="mb-6">
+          <h4 class="text-md font-medium text-gray-800 mb-3">乘客信息</h4>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">姓名</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">证件类型</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">证件号码</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">座位等级</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">票价</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">票号</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr>
+                  <td class="px-4 py-3 whitespace-nowrap text-sm">张三</td>
+                  <td class="px-4 py-3 whitespace-nowrap text-sm">身份证</td>
+                  <td class="px-4 py-3 whitespace-nowrap text-sm">110**********1234</td>
+                  <td class="px-4 py-3 whitespace-nowrap text-sm">经济舱</td>
+                  <td class="px-4 py-3 whitespace-nowrap text-sm">¥1,150.00</td>
+                  <td class="px-4 py-3 whitespace-nowrap text-sm">999-1234567890</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-3 whitespace-nowrap text-sm">李四</td>
+                  <td class="px-4 py-3 whitespace-nowrap text-sm">身份证</td>
+                  <td class="px-4 py-3 whitespace-nowrap text-sm">110**********5678</td>
+                  <td class="px-4 py-3 whitespace-nowrap text-sm">经济舱</td>
+                  <td class="px-4 py-3 whitespace-nowrap text-sm">¥1,150.00</td>
+                  <td class="px-4 py-3 whitespace-nowrap text-sm">999-1234567891</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 操作按钮 -->
+        <div class="flex justify-end space-x-3" id="order-actions">
+          <button class="btn-outline" id="close-order-modal-btn">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="../../data/mock-api.js"></script>
+  <script>
+    // 获取元素
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const logoutBtn = document.getElementById('logout-btn');
+    const searchOrderBtn = document.getElementById('search-order-btn');
+    const resetSearchBtn = document.getElementById('reset-search-btn');
+    const orderDetailsModal = document.getElementById('order-details-modal');
+    const closeOrderDetailsBtn = document.getElementById('close-order-details-btn');
+    const closeOrderModalBtn = document.getElementById('close-order-modal-btn');
+
+    // 侧边栏切换
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('-translate-x-full');
+    });
+
+    // 管理员登出
+    logoutBtn.addEventListener('click', () => {
+      if (confirm('确定要退出登录吗？')) {
+        // 清除登录状态
+        localStorage.removeItem('adminToken');
+        sessionStorage.removeItem('adminToken');
+        localStorage.removeItem('currentAdmin');
+
+        // 跳转到登录页面
+        window.location.href = 'login.html';
+      }
+    });
+
+    // 搜索订单
+    searchOrderBtn.addEventListener('click', () => {
+      const orderNumber = document.getElementById('order-number-search').value;
+      const customerName = document.getElementById('customer-name-search').value;
+      const flightNumber = document.getElementById('flight-number-search').value;
+      const orderStatus = document.getElementById('order-status-filter').value;
+
+      console.log('搜索订单:', { orderNumber, customerName, flightNumber, orderStatus });
+
+      // 这里可以添加实际的搜索逻辑
+      alert('搜索功能已触发');
+    });
+
+    // 重置搜索
+    resetSearchBtn.addEventListener('click', () => {
+      document.getElementById('order-number-search').value = '';
+      document.getElementById('customer-name-search').value = '';
+      document.getElementById('flight-number-search').value = '';
+      document.getElementById('order-status-filter').value = '';
+    });
+
+    // 关闭订单详情模态框
+    const closeOrderDetailsModal = () => {
+      orderDetailsModal.classList.add('hidden');
+    };
+
+    closeOrderDetailsBtn.addEventListener('click', closeOrderDetailsModal);
+    closeOrderModalBtn.addEventListener('click', closeOrderDetailsModal);
+
+    // 点击模态框外部关闭
+    orderDetailsModal.addEventListener('click', (e) => {
+      if (e.target === orderDetailsModal) {
+        closeOrderDetailsModal();
+      }
+    });
+
+    // 查看订单详情
+    document.querySelectorAll('button[title="查看详情"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const orderRow = btn.closest('tr');
+        const orderId = orderRow.dataset.orderId;
+
+        console.log('查看订单详情:', orderId);
+
+        // 在实际应用中，这里应该从API加载订单详情
+        // 这里我们模拟更新模态框中的信息
+        document.getElementById('detail-order-number').textContent = orderId;
+
+        // 显示模态框
+        orderDetailsModal.classList.remove('hidden');
+
+        // 根据订单状态更新操作按钮
+        const statusCell = orderRow.querySelector('.status-badge');
+        const statusText = statusCell.textContent;
+        const orderActions = document.getElementById('order-actions');
+
+        // 清空现有按钮（保留关闭按钮）
+        while (orderActions.firstChild) {
+          if (orderActions.firstChild.id === 'close-order-modal-btn') {
+            break;
+          }
+          orderActions.removeChild(orderActions.firstChild);
+        }
+
+        // 根据状态添加相应的操作按钮
+        switch (statusText) {
+          case '待支付':
+            const remindBtn = document.createElement('button');
+            remindBtn.className = 'btn-secondary mr-3';
+            remindBtn.innerHTML = '<i class="fa fa-bell mr-1"></i> 提醒支付';
+            remindBtn.addEventListener('click', () => {
+              alert('已发送支付提醒');
+            });
+            orderActions.insertBefore(remindBtn, closeOrderModalBtn);
+
+            const cancelBtn = document.createElement('button');
+            cancelBtn.className = 'btn-danger mr-3';
+            cancelBtn.innerHTML = '<i class="fa fa-times-circle mr-1"></i> 取消订单';
+            cancelBtn.addEventListener('click', () => {
+              if (confirm('确定要取消该订单吗？')) {
+                alert('订单已取消');
+                closeOrderDetailsModal();
+              }
+            });
+            orderActions.insertBefore(cancelBtn, closeOrderModalBtn);
+            break;
+
+          case '已支付':
+            const issueBtn = document.createElement('button');
+            issueBtn.className = 'btn-primary mr-3';
+            issueBtn.innerHTML = '<i class="fa fa-ticket mr-1"></i> 出票';
+            issueBtn.addEventListener('click', () => {
+              if (confirm('确定要为该订单出票吗？')) {
+                alert('出票成功');
+                closeOrderDetailsModal();
+              }
+            });
+            orderActions.insertBefore(issueBtn, closeOrderModalBtn);
+            break;
+
+          case '已出票':
+            const ticketBtn = document.createElement('button');
+            ticketBtn.className = 'btn-secondary mr-3';
+            ticketBtn.innerHTML = '<i class="fa fa-file-text-o mr-1"></i> 打印客票';
+            ticketBtn.addEventListener('click', () => {
+              alert('客票已打印');
+            });
+            orderActions.insertBefore(ticketBtn, closeOrderModalBtn);
+            break;
+
+          case '已退款':
+            const refundDetailBtn = document.createElement('button');
+            refundDetailBtn.className = 'btn-secondary mr-3';
+            refundDetailBtn.innerHTML = '<i class="fa fa-credit-card mr-1"></i> 退款详情';
+            refundDetailBtn.addEventListener('click', () => {
+              alert('查看退款详情');
+            });
+            orderActions.insertBefore(refundDetailBtn, closeOrderModalBtn);
+            break;
+        }
+      });
+    });
+
+    // 提醒支付
+    document.querySelectorAll('button[title="提醒支付"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const orderRow = btn.closest('tr');
+        const orderId = orderRow.dataset.orderId;
+
+        console.log('提醒支付:', orderId);
+        alert(`已向客户发送订单 ${orderId} 的支付提醒`);
+      });
+    });
+
+    // 取消订单
+    document.querySelectorAll('button[title="取消订单"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const orderRow = btn.closest('tr');
+        const orderId = orderRow.dataset.orderId;
+
+        if (confirm(`确定要取消订单 ${orderId} 吗？`)) {
+          console.log('取消订单:', orderId);
+
+          // 更新状态为已取消
+          const statusCell = orderRow.querySelector('.status-badge');
+          statusCell.className = 'status-badge bg-red-100 text-red-800';
+          statusCell.textContent = '已取消';
+
+          // 更新操作按钮
+          const actionCell = orderRow.querySelector('td:last-child');
+          actionCell.innerHTML = `
+            <div class="flex space-x-2">
+              <button class="text-primary hover:text-primary/80 transition-colors" title="查看详情">
+                <i class="fa fa-eye"></i>
+              </button>
+              <button class="text-gray-400 cursor-not-allowed" title="已取消">
+                <i class="fa fa-times-circle"></i>
+              </button>
+            </div>
+          `;
+
+          alert(`订单 ${orderId} 已成功取消`);
+        }
+      });
+    });
+
+    // 出票
+    document.querySelectorAll('button[title="出票"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const orderRow = btn.closest('tr');
+        const orderId = orderRow.dataset.orderId;
+
+        if (confirm(`确定要为订单 ${orderId} 出票吗？`)) {
+          console.log('出票:', orderId);
+
+          // 更新状态为已出票
+          const statusCell = orderRow.querySelector('.status-badge');
+          statusCell.className = 'status-badge bg-green-100 text-green-800';
+          statusCell.textContent = '已出票';
+
+          // 更新操作按钮
+          const actionCell = orderRow.querySelector('td:last-child');
+          actionCell.innerHTML = `
+            <div class="flex space-x-2">
+              <button class="text-primary hover:text-primary/80 transition-colors" title="查看详情">
+                <i class="fa fa-eye"></i>
+              </button>
+              <button class="text-success hover:text-success/80 transition-colors" title="查看客票">
+                <i class="fa fa-ticket"></i>
+              </button>
+              <button class="text-gray-600 hover:text-gray-800 transition-colors" title="联系客户">
+                <i class="fa fa-phone"></i>
+              </button>
+            </div>
+          `;
+
+          alert(`订单 ${orderId} 已成功出票`);
+        }
+      });
+    });
+
+    // 查看客票
+    document.querySelectorAll('button[title="查看客票"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const orderRow = btn.closest('tr');
+        const orderId = orderRow.dataset.orderId;
+
+        console.log('查看客票:', orderId);
+        alert(`查看订单 ${orderId} 的电子客票`);
+      });
+    });
+
+    // 联系客户
+    document.querySelectorAll('button[title="联系客户"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const orderRow = btn.closest('tr');
+        const orderId = orderRow.dataset.orderId;
+
+        console.log('联系客户:', orderId);
+        alert(`正在联系订单 ${orderId} 的客户`);
+      });
+    });
+
+    // 查看退款记录
+    document.querySelectorAll('button[title="查看退款记录"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const orderRow = btn.closest('tr');
+        const orderId = orderRow.dataset.orderId;
+
+        console.log('查看退款记录:', orderId);
+        alert(`查看订单 ${orderId} 的退款记录`);
+      });
+    });
+
+    // 检查管理员登录状态
+    function checkAdminLoginStatus() {
+      const adminToken = localStorage.getItem('adminToken') || sessionStorage.getItem('adminToken');
+      const currentAdmin = localStorage.getItem('currentAdmin');
+
+      if (!adminToken || !currentAdmin) {
+        // 未登录，跳转到登录页面
+        window.location.href = 'login.html';
+        return;
+      }
+
+      try {
+        // 验证token
+        const isTokenValid = MockAPI.validateAdminToken(adminToken);
+        if (!isTokenValid) {
+          // token无效
+          localStorage.removeItem('adminToken');
+          sessionStorage.removeItem('adminToken');
+          localStorage.removeItem('currentAdmin');
+          window.location.href = 'login.html';
+          return;
+        }
+
+        // 更新管理员信息显示
+        const adminInfo = JSON.parse(currentAdmin);
+        document.getElementById('admin-name').textContent = adminInfo.username || '管理员';
+        if (adminInfo.avatar) {
+          document.getElementById('admin-avatar').src = adminInfo.avatar;
+        }
+      } catch (error) {
+        console.error('验证管理员状态时发生错误:', error);
+        // 发生错误，清除状态并跳转到登录页
+        localStorage.removeItem('adminToken');
+        sessionStorage.removeItem('adminToken');
+        localStorage.removeItem('currentAdmin');
+        window.location.href = 'login.html';
+      }
+    }
+
+    // 页面加载时执行
+    window.addEventListener('DOMContentLoaded', () => {
+      // 检查登录状态
+      checkAdminLoginStatus();
+
+      // 设置侧边栏链接活动状态
+      const sidebarLinks = document.querySelectorAll('.sidebar-link');
+      const currentPath = window.location.pathname;
+
+      sidebarLinks.forEach(link => {
+        // 重置所有链接
+        link.classList.remove('active');
+
+        // 匹配当前页面
+        const linkPath = link.getAttribute('href');
+        if (currentPath.endsWith(linkPath)) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEUAirline - 系统日志</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome -->
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/7.0.0/css/all.min.css" rel="stylesheet">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+
+  <!-- 自定义样式 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1E3A8A',
+            secondary: '#3B82F6',
+            accent: '#F8FAFC',
+            success: '#10B981',
+            warning: '#F59E0B',
+            danger: '#EF4444',
+            info: '#3B82F6',
+            dark: '#1E293B'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto { content-visibility: auto; }
+      .sidebar-link {
+        @apply flex items-center px-4 py-3 text-gray-600 hover:bg-blue-50 hover:text-primary transition-all duration-200 rounded-lg;
+      }
+      .sidebar-link.active {
+        @apply bg-blue-50 text-primary font-medium;
+      }
+      .btn-primary { 
+        @apply bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-all duration-300;
+      }
+      .btn-secondary { 
+        @apply bg-white text-primary border border-primary px-4 py-2 rounded-md hover:bg-blue-50 transition-all duration-300;
+      }
+      .btn-outline { 
+        @apply bg-white text-gray-600 border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50 transition-all duration-300;
+      }
+      .btn-danger { 
+        @apply bg-white text-danger border border-danger px-4 py-2 rounded-md hover:bg-red-50 transition-all duration-300;
+      }
+      .btn-sm {
+        @apply px-3 py-1 text-sm rounded-md;
+      }
+      .input-field {
+        @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all;
+      }
+      .card {
+        @apply bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden;
+      }
+      .card-header {
+        @apply px-5 py-4 border-b border-gray-100 flex justify-between items-center;
+      }
+      .card-body {
+        @apply px-5 py-4;
+      }
+      .table-row-hover:hover {
+        @apply bg-gray-50;
+      }
+      .log-level-badge {
+        @apply px-2 py-1 rounded-full text-xs font-medium;
+      }
+      .level-info {
+        @apply bg-blue-100 text-blue-800;
+      }
+      .level-warning {
+        @apply bg-yellow-100 text-yellow-800;
+      }
+      .level-error {
+        @apply bg-red-100 text-red-800;
+      }
+      .level-success {
+        @apply bg-green-100 text-green-800;
+      }
+      .log-type-badge {
+        @apply px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800;
+      }
+      .log-details {
+        @apply p-4 bg-gray-50 rounded-md mt-2 text-sm text-gray-700 overflow-x-auto;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+  <!-- 顶部导航栏 -->
+  <header class="bg-white shadow-sm sticky top-0 z-30">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center">
+          <button id="sidebar-toggle" class="mr-4 text-gray-500 hover:text-primary">
+            <i class="fa fa-bars text-xl"></i>
+          </button>
+          <a href="dashboard.html" class="flex items-center">
+            <i class="fa fa-cube text-primary text-2xl mr-2"></i>
+            <span class="text-xl font-bold text-primary">SEUAirline 管理系统</span>
+          </a>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <!-- 通知图标 -->
+          <div class="relative">
+            <button class="text-gray-500 hover:text-primary focus:outline-none">
+              <i class="fa fa-bell-o text-xl"></i>
+              <span
+                class="absolute top-0 right-0 h-4 w-4 rounded-full bg-red-500 text-xs text-white flex items-center justify-center">3</span>
+            </button>
+          </div>
+
+          <!-- 用户信息 -->
+          <div class="flex items-center space-x-2">
+            <img id="admin-avatar" src="https://picsum.photos/32/32" alt="管理员头像" class="w-8 h-8 rounded-full">
+            <div class="hidden md:block">
+              <div class="text-sm font-medium text-gray-700" id="admin-name">管理员</div>
+              <div class="text-xs text-gray-500">系统管理员</div>
+            </div>
+            <button id="logout-btn" class="text-gray-500 hover:text-primary">
+              <i class="fa fa-sign-out"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主要内容区 -->
+  <div class="flex">
+    <!-- 侧边栏 -->
+    <aside id="sidebar"
+      class="w-64 bg-white border-r border-gray-200 h-[calc(100vh-4rem)] sticky top-16 overflow-y-auto transition-all duration-300 transform">
+      <nav class="p-4">
+        <div class="mb-6">
+          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">主菜单</h3>
+          <div class="space-y-2">
+            <a href="dashboard.html" class="sidebar-link">
+              <i class="fa fa-tachometer w-5 mr-3"></i>
+              <span>仪表盘</span>
+            </a>
+            <a href="flights.html" class="sidebar-link">
+              <i class="fa fa-plane w-5 mr-3"></i>
+              <span>航班管理</span>
+            </a>
+            <a href="orders.html" class="sidebar-link">
+              <i class="fa fa-file-text-o w-5 mr-3"></i>
+              <span>订单管理</span>
+            </a>
+            <a href="users.html" class="sidebar-link">
+              <i class="fa fa-users w-5 mr-3"></i>
+              <span>用户管理</span>
+            </a>
+            <a href="airports.html" class="sidebar-link">
+              <i class="fa fa-building-o w-5 mr-3"></i>
+              <span>机场管理</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">系统设置</h3>
+          <div class="space-y-2">
+            <a href="system-settings.html" class="sidebar-link">
+              <i class="fa fa-cog w-5 mr-3"></i>
+              <span>系统设置</span>
+            </a>
+            <a href="admin-accounts.html" class="sidebar-link">
+              <i class="fa fa-user-circle-o w-5 mr-3"></i>
+              <span>管理员账户</span>
+            </a>
+            <a href="logs.html" class="sidebar-link active">
+              <i class="fa fa-history w-5 mr-3"></i>
+              <span>系统日志</span>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">帮助与支持</h3>
+          <div class="space-y-2">
+            <a href="#" class="sidebar-link">
+              <i class="fa fa-question-circle-o w-5 mr-3"></i>
+              <span>帮助中心</span>
+            </a>
+            <a href="#" class="sidebar-link">
+              <i class="fa fa-file-text w-5 mr-3"></i>
+              <span>文档中心</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- 内容区域 -->
+    <main class="flex-1 p-6">
+      <!-- 页面标题 -->
+      <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">系统日志</h1>
+        <p class="text-gray-500 mt-1">查看和管理系统操作日志，包括登录日志、操作日志和系统异常日志</p>
+      </div>
+
+      <!-- 日志统计概览 -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-gray-500">今日日志总数</p>
+                <h3 class="text-2xl font-bold mt-1">1,524</h3>
+              </div>
+              <div class="p-3 bg-blue-50 rounded-lg">
+                <i class="fa fa-file-text-o text-blue-500 text-xl"></i>
+              </div>
+            </div>
+            <div class="mt-4 flex items-center">
+              <span class="text-xs text-green-600 flex items-center">
+                <i class="fa fa-arrow-up mr-1"></i>
+                12.5%
+              </span>
+              <span class="text-xs text-gray-500 ml-2">较昨日</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-gray-500">错误日志</p>
+                <h3 class="text-2xl font-bold mt-1">24</h3>
+              </div>
+              <div class="p-3 bg-red-50 rounded-lg">
+                <i class="fa fa-exclamation-circle text-red-500 text-xl"></i>
+              </div>
+            </div>
+            <div class="mt-4 flex items-center">
+              <span class="text-xs text-red-600 flex items-center">
+                <i class="fa fa-arrow-up mr-1"></i>
+                8.3%
+              </span>
+              <span class="text-xs text-gray-500 ml-2">较昨日</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-gray-500">警告日志</p>
+                <h3 class="text-2xl font-bold mt-1">156</h3>
+              </div>
+              <div class="p-3 bg-yellow-50 rounded-lg">
+                <i class="fa fa-warning text-yellow-500 text-xl"></i>
+              </div>
+            </div>
+            <div class="mt-4 flex items-center">
+              <span class="text-xs text-green-600 flex items-center">
+                <i class="fa fa-arrow-down mr-1"></i>
+                4.7%
+              </span>
+              <span class="text-xs text-gray-500 ml-2">较昨日</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-gray-500">异常登录尝试</p>
+                <h3 class="text-2xl font-bold mt-1">12</h3>
+              </div>
+              <div class="p-3 bg-purple-50 rounded-lg">
+                <i class="fa fa-lock text-purple-500 text-xl"></i>
+              </div>
+            </div>
+            <div class="mt-4 flex items-center">
+              <span class="text-xs text-green-600 flex items-center">
+                <i class="fa fa-arrow-down mr-1"></i>
+                16.7%
+              </span>
+              <span class="text-xs text-gray-500 ml-2">较昨日</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 日志分布图表 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="font-medium text-gray-800">日志类型分布</h3>
+          </div>
+          <div class="card-body">
+            <canvas id="logTypeChart" height="250"></canvas>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="font-medium text-gray-800">近7天日志趋势</h3>
+          </div>
+          <div class="card-body">
+            <canvas id="logTrendChart" height="250"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- 功能操作栏 -->
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+        <div class="flex gap-3">
+          <button id="export-logs-btn" class="btn-secondary flex items-center">
+            <i class="fa fa-download mr-2"></i>
+            导出日志
+          </button>
+          <button id="clear-logs-btn" class="btn-danger flex items-center">
+            <i class="fa fa-trash mr-2"></i>
+            清空日志
+          </button>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+          <div class="relative w-full sm:w-64">
+            <input type="text" id="search-log" class="input-field pl-10" placeholder="搜索日志内容...">
+            <i class="fa fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+          </div>
+
+          <select id="filter-level" class="input-field w-full sm:w-32">
+            <option value="all">所有级别</option>
+            <option value="info">信息</option>
+            <option value="warning">警告</option>
+            <option value="error">错误</option>
+            <option value="success">成功</option>
+          </select>
+
+          <select id="filter-type" class="input-field w-full sm:w-40">
+            <option value="all">所有类型</option>
+            <option value="login">登录日志</option>
+            <option value="operation">操作日志</option>
+            <option value="system">系统日志</option>
+            <option value="exception">异常日志</option>
+          </select>
+
+          <select id="filter-time" class="input-field w-full sm:w-32">
+            <option value="today">今天</option>
+            <option value="yesterday">昨天</option>
+            <option value="7days">7天内</option>
+            <option value="30days">30天内</option>
+            <option value="custom">自定义</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 日志列表 -->
+      <div class="card mb-6">
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-full divide-y divide-gray-200">
+            <thead>
+              <tr>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <input type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  时间
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  级别
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  类型
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  操作人
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  IP地址
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  操作内容
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  操作
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <!-- 日志1 -->
+              <tr class="table-row-hover">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <input type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  2023-07-15 14:32:18
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="log-level-badge level-success">成功</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="log-type-badge">登录</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <div class="flex items-center">
+                    <img class="h-6 w-6 rounded-full mr-2" src="https://picsum.photos/24/24?random=1" alt="头像">
+                    admin
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  192.168.1.101
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-900 log-item" data-id="1">
+                  管理员admin登录系统成功
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button class="text-blue-600 hover:text-blue-900 view-log" data-id="1">查看详情</button>
+                </td>
+              </tr>
+              <tr id="log-details-1" class="hidden">
+                <td colspan="8" class="px-6 py-0">
+                  <div class="log-details">
+                    <p><strong>操作时间:</strong> 2023-07-15 14:32:18</p>
+                    <p><strong>操作人:</strong> admin (ID: 001)</p>
+                    <p><strong>IP地址:</strong> 192.168.1.101</p>
+                    <p><strong>浏览器:</strong> Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36</p>
+                    <p><strong>操作内容:</strong> 管理员admin登录系统成功</p>
+                    <p><strong>请求路径:</strong> /api/admin/login</p>
+                    <p><strong>请求参数:</strong> {"username": "admin", "password": "******"}</p>
+                    <p><strong>响应结果:</strong> {"success": true, "token": "******"}</p>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 日志2 -->
+              <tr class="table-row-hover">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <input type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  2023-07-15 14:30:55
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="log-level-badge level-error">错误</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="log-type-badge">登录</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <div class="flex items-center">
+                    <img class="h-6 w-6 rounded-full mr-2" src="https://picsum.photos/24/24?random=2" alt="头像">
+                    operator1
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  192.168.1.102
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-900 log-item" data-id="2">
+                  密码错误，尝试登录失败
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button class="text-blue-600 hover:text-blue-900 view-log" data-id="2">查看详情</button>
+                </td>
+              </tr>
+              <tr id="log-details-2" class="hidden">
+                <td colspan="8" class="px-6 py-0">
+                  <div class="log-details">
+                    <p><strong>操作时间:</strong> 2023-07-15 14:30:55</p>
+                    <p><strong>操作人:</strong> operator1 (ID: 002)</p>
+                    <p><strong>IP地址:</strong> 192.168.1.102</p>
+                    <p><strong>浏览器:</strong> Chrome/108.0.0.0 Safari/537.36</p>
+                    <p><strong>操作内容:</strong> 密码错误，尝试登录失败</p>
+                    <p><strong>请求路径:</strong> /api/admin/login</p>
+                    <p><strong>请求参数:</strong> {"username": "operator1", "password": "******"}</p>
+                    <p><strong>错误信息:</strong> 密码错误，请重新输入</p>
+                    <p><strong>错误代码:</strong> ERROR_INVALID_PASSWORD</p>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 日志3 -->
+              <tr class="table-row-hover">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <input type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  2023-07-15 14:28:12
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="log-level-badge level-info">信息</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="log-type-badge">操作</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <div class="flex items-center">
+                    <img class="h-6 w-6 rounded-full mr-2" src="https://picsum.photos/24/24?random=3" alt="头像">
+                    admin
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  192.168.1.101
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-900 log-item" data-id="3">
+                  添加新航班 SU2023，航线：北京-上海
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button class="text-blue-600 hover:text-blue-900 view-log" data-id="3">查看详情</button>
+                </td>
+              </tr>
+              <tr id="log-details-3" class="hidden">
+                <td colspan="8" class="px-6 py-0">
+                  <div class="log-details">
+                    <p><strong>操作时间:</strong> 2023-07-15 14:28:12</p>
+                    <p><strong>操作人:</strong> admin (ID: 001)</p>
+                    <p><strong>IP地址:</strong> 192.168.1.101</p>
+                    <p><strong>浏览器:</strong> Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36</p>
+                    <p><strong>操作内容:</strong> 添加新航班 SU2023，航线：北京-上海</p>
+                    <p><strong>请求路径:</strong> /api/admin/flights/add</p>
+                    <p><strong>请求参数:</strong> {"flightNo": "SU2023", "departureCity": "北京", "arrivalCity": "上海", "..."}
+                    </p>
+                    <p><strong>响应结果:</strong> {"success": true, "flightId": "F20230715001"}</p>
+                    <p><strong>操作对象ID:</strong> F20230715001</p>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 日志4 -->
+              <tr class="table-row-hover">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <input type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  2023-07-15 14:25:33
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="log-level-badge level-warning">警告</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="log-type-badge">系统</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <div class="flex items-center">
+                    <i class="fa fa-desktop text-gray-400 mr-2"></i>
+                    系统
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  192.168.1.1
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-900 log-item" data-id="4">
+                  数据库连接池警告：当前连接数已超过阈值80%
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button class="text-blue-600 hover:text-blue-900 view-log" data-id="4">查看详情</button>
+                </td>
+              </tr>
+              <tr id="log-details-4" class="hidden">
+                <td colspan="8" class="px-6 py-0">
+                  <div class="log-details">
+                    <p><strong>操作时间:</strong> 2023-07-15 14:25:33</p>
+                    <p><strong>操作人:</strong> 系统</p>
+                    <p><strong>IP地址:</strong> 192.168.1.1</p>
+                    <p><strong>操作内容:</strong> 数据库连接池警告：当前连接数已超过阈值80%</p>
+                    <p><strong>警告类型:</strong> 数据库连接池</p>
+                    <p><strong>当前连接数:</strong> 85</p>
+                    <p><strong>最大连接数:</strong> 100</p>
+                    <p><strong>建议操作:</strong> 检查是否有连接未正确关闭，或考虑增加数据库连接池大小</p>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 日志5 -->
+              <tr class="table-row-hover">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <input type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  2023-07-15 14:20:47
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="log-level-badge level-info">信息</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="log-type-badge">操作</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <div class="flex items-center">
+                    <img class="h-6 w-6 rounded-full mr-2" src="https://picsum.photos/24/24?random=4" alt="头像">
+                    operator1
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  192.168.1.102
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-900 log-item" data-id="5">
+                  更新订单状态：从待支付变为已支付，订单号：ORD20230715001
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button class="text-blue-600 hover:text-blue-900 view-log" data-id="5">查看详情</button>
+                </td>
+              </tr>
+              <tr id="log-details-5" class="hidden">
+                <td colspan="8" class="px-6 py-0">
+                  <div class="log-details">
+                    <p><strong>操作时间:</strong> 2023-07-15 14:20:47</p>
+                    <p><strong>操作人:</strong> operator1 (ID: 002)</p>
+                    <p><strong>IP地址:</strong> 192.168.1.102</p>
+                    <p><strong>浏览器:</strong> Chrome/108.0.0.0 Safari/537.36</p>
+                    <p><strong>操作内容:</strong> 更新订单状态：从待支付变为已支付，订单号：ORD20230715001</p>
+                    <p><strong>请求路径:</strong> /api/admin/orders/update-status</p>
+                    <p><strong>请求参数:</strong> {"orderId": "ORD20230715001", "status": "paid"}</p>
+                    <p><strong>响应结果:</strong> {"success": true}</p>
+                    <p><strong>操作对象ID:</strong> ORD20230715001</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 分页控件 -->
+        <div class="px-6 py-4 border-t border-gray-200 bg-white flex items-center justify-between">
+          <div class="flex-1 flex justify-between sm:hidden">
+            <button class="btn-outline">上一页</button>
+            <button class="btn-outline ml-3">下一页</button>
+          </div>
+          <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+            <div>
+              <p class="text-sm text-gray-700">
+                显示 <span class="font-medium">1</span> 到 <span class="font-medium">5</span> 条，共 <span
+                  class="font-medium">1,524</span> 条结果
+              </p>
+            </div>
+            <div>
+              <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                <button
+                  class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                  <span class="sr-only">上一页</span>
+                  <i class="fa fa-chevron-left text-xs"></i>
+                </button>
+                <button
+                  class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-primary text-sm font-medium text-white">
+                  1
+                </button>
+                <button
+                  class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                  2
+                </button>
+                <button
+                  class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                  3
+                </button>
+                <span
+                  class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                  ...
+                </span>
+                <button
+                  class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                  305
+                </button>
+                <button
+                  class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                  <span class="sr-only">下一页</span>
+                  <i class="fa fa-chevron-right text-xs"></i>
+                </button>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 导出日志模态框 -->
+  <div id="export-modal" class="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-lg">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <div class="flex justify-between items-center">
+          <h3 class="text-lg font-medium text-gray-900">导出日志</h3>
+          <button id="close-export-modal" class="text-gray-500 hover:text-gray-700">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="px-6 py-4">
+        <form id="export-form">
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">导出范围</label>
+            <div class="space-y-2">
+              <div class="flex items-center">
+                <input type="radio" name="export-scope" id="export-selected"
+                  class="h-4 w-4 text-primary focus:ring-primary border-gray-300">
+                <label for="export-selected" class="ml-2 text-sm text-gray-700">导出选中的日志</label>
+              </div>
+              <div class="flex items-center">
+                <input type="radio" name="export-scope" id="export-current"
+                  class="h-4 w-4 text-primary focus:ring-primary border-gray-300" checked>
+                <label for="export-current" class="ml-2 text-sm text-gray-700">导出当前筛选结果</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">导出格式</label>
+            <select class="input-field">
+              <option value="excel">Excel (.xlsx)</option>
+              <option value="csv">CSV (.csv)</option>
+              <option value="txt">文本文件 (.txt)</option>
+              <option value="json">JSON (.json)</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">导出内容</label>
+            <div class="grid grid-cols-2 gap-2">
+              <div class="flex items-center">
+                <input type="checkbox" id="include-time"
+                  class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                <label for="include-time" class="ml-2 text-sm text-gray-700">时间</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="include-level"
+                  class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                <label for="include-level" class="ml-2 text-sm text-gray-700">级别</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="include-type"
+                  class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                <label for="include-type" class="ml-2 text-sm text-gray-700">类型</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="include-user"
+                  class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                <label for="include-user" class="ml-2 text-sm text-gray-700">操作人</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="include-ip"
+                  class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                <label for="include-ip" class="ml-2 text-sm text-gray-700">IP地址</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="include-content"
+                  class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                <label for="include-content" class="ml-2 text-sm text-gray-700">操作内容</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="include-details"
+                  class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                <label for="include-details" class="ml-2 text-sm text-gray-700">详细信息</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-end space-x-3">
+            <button type="button" id="cancel-export" class="btn-outline">取消</button>
+            <button type="submit" class="btn-primary">开始导出</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 成功提示 -->
+  <div id="toast"
+    class="fixed bottom-6 right-6 bg-success text-white px-6 py-3 rounded-lg shadow-lg flex items-center transform translate-y-10 opacity-0 transition-all duration-300 z-50">
+    <i class="fa fa-check-circle mr-2"></i>
+    <span>操作成功</span>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="../../data/mock-api.js"></script>
+  <script>
+    // 获取元素
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const logoutBtn = document.getElementById('logout-btn');
+    const searchInput = document.getElementById('search-log');
+    const filterLevel = document.getElementById('filter-level');
+    const filterType = document.getElementById('filter-type');
+    const filterTime = document.getElementById('filter-time');
+    const exportLogsBtn = document.getElementById('export-logs-btn');
+    const clearLogsBtn = document.getElementById('clear-logs-btn');
+    const exportModal = document.getElementById('export-modal');
+    const closeExportModalBtn = document.getElementById('close-export-modal');
+    const cancelExportBtn = document.getElementById('cancel-export');
+    const exportForm = document.getElementById('export-form');
+    const toast = document.getElementById('toast');
+    const viewLogButtons = document.querySelectorAll('.view-log');
+
+    // 侧边栏切换
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('-translate-x-full');
+    });
+
+    // 管理员登出
+    logoutBtn.addEventListener('click', () => {
+      if (confirm('确定要退出登录吗？')) {
+        // 清除登录状态
+        localStorage.removeItem('adminToken');
+        sessionStorage.removeItem('adminToken');
+        localStorage.removeItem('currentAdmin');
+
+        // 跳转到登录页面
+        window.location.href = 'login.html';
+      }
+    });
+
+    // 显示提示框
+    function showToast(message = '操作成功') {
+      const toastMessage = toast.querySelector('span');
+      toastMessage.textContent = message;
+
+      toast.classList.remove('translate-y-10', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-10', 'opacity-0');
+      }, 3000);
+    }
+
+    // 搜索日志
+    searchInput.addEventListener('input', () => {
+      const searchValue = searchInput.value.toLowerCase();
+      // 这里可以添加搜索逻辑
+      console.log('搜索日志:', searchValue);
+    });
+
+    // 筛选日志级别
+    filterLevel.addEventListener('change', () => {
+      const selectedLevel = filterLevel.value;
+      // 这里可以添加筛选逻辑
+      console.log('筛选级别:', selectedLevel);
+    });
+
+    // 筛选日志类型
+    filterType.addEventListener('change', () => {
+      const selectedType = filterType.value;
+      // 这里可以添加筛选逻辑
+      console.log('筛选类型:', selectedType);
+    });
+
+    // 筛选时间范围
+    filterTime.addEventListener('change', () => {
+      const selectedTime = filterTime.value;
+      // 这里可以添加筛选逻辑
+      console.log('筛选时间范围:', selectedTime);
+
+      // 如果选择自定义时间范围，这里可以显示日期选择器
+      if (selectedTime === 'custom') {
+        alert('自定义时间范围功能：在此处显示日期选择器');
+      }
+    });
+
+    // 打开导出日志模态框
+    exportLogsBtn.addEventListener('click', () => {
+      exportModal.classList.remove('hidden');
+    });
+
+    // 关闭导出日志模态框
+    closeExportModalBtn.addEventListener('click', () => {
+      exportModal.classList.add('hidden');
+    });
+
+    cancelExportBtn.addEventListener('click', () => {
+      exportModal.classList.add('hidden');
+    });
+
+    // 导出日志表单提交
+    exportForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // 在实际应用中，这里应该调用API导出日志
+      // 模拟导出过程
+      exportModal.classList.add('hidden');
+      showToast('日志导出已开始，完成后将自动下载');
+
+      // 模拟下载延迟
+      setTimeout(() => {
+        alert('日志导出完成，文件已准备好下载');
+      }, 2000);
+    });
+
+    // 清空日志
+    clearLogsBtn.addEventListener('click', () => {
+      if (confirm('确定要清空所有日志吗？此操作不可撤销！')) {
+        // 在实际应用中，这里应该调用API清空日志
+        showToast('日志已成功清空');
+      }
+    });
+
+    // 查看日志详情
+    viewLogButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const logId = button.getAttribute('data-id');
+        const detailsRow = document.getElementById(`log-details-${logId}`);
+
+        // 切换详情行显示/隐藏
+        detailsRow.classList.toggle('hidden');
+
+        // 更新按钮文本
+        if (detailsRow.classList.contains('hidden')) {
+          button.textContent = '查看详情';
+        } else {
+          button.textContent = '收起详情';
+        }
+      });
+    });
+
+    // 点击模态框外部关闭模态框
+    exportModal.addEventListener('mousedown', (e) => {
+      if (e.target === exportModal) {
+        exportModal.classList.add('hidden');
+      }
+    });
+
+    // 初始化图表
+    function initCharts() {
+      // 日志类型分布图表
+      const logTypeCtx = document.getElementById('logTypeChart').getContext('2d');
+      new Chart(logTypeCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['操作日志', '登录日志', '系统日志', '异常日志'],
+          datasets: [{
+            data: [42, 28, 18, 12],
+            backgroundColor: [
+              '#3B82F6',  // 蓝色
+              '#10B981',  // 绿色
+              '#F59E0B',  // 黄色
+              '#EF4444'   // 红色
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: {
+                padding: 20,
+                boxWidth: 12
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  const label = context.label || '';
+                  const value = context.raw || 0;
+                  return `${label}: ${value}%`;
+                }
+              }
+            }
+          },
+          cutout: '65%'
+        }
+      });
+
+      // 日志趋势图表
+      const logTrendCtx = document.getElementById('logTrendChart').getContext('2d');
+      new Chart(logTrendCtx, {
+        type: 'line',
+        data: {
+          labels: ['7/9', '7/10', '7/11', '7/12', '7/13', '7/14', '7/15'],
+          datasets: [
+            {
+              label: '信息',
+              data: [1200, 1350, 1250, 1400, 1380, 1450, 1524],
+              borderColor: '#3B82F6',
+              backgroundColor: 'rgba(59, 130, 246, 0.1)',
+              tension: 0.3,
+              fill: true
+            },
+            {
+              label: '警告',
+              data: [180, 165, 172, 168, 175, 162, 156],
+              borderColor: '#F59E0B',
+              backgroundColor: 'transparent',
+              tension: 0.3
+            },
+            {
+              label: '错误',
+              data: [15, 18, 20, 25, 22, 26, 24],
+              borderColor: '#EF4444',
+              backgroundColor: 'transparent',
+              tension: 0.3
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
+                drawBorder: false
+              }
+            },
+            x: {
+              grid: {
+                display: false
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: {
+                boxWidth: 12,
+                usePointStyle: true,
+                pointStyle: 'circle'
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // 检查管理员登录状态
+    function checkAdminLoginStatus() {
+      const adminToken = localStorage.getItem('adminToken') || sessionStorage.getItem('adminToken');
+      const currentAdmin = localStorage.getItem('currentAdmin');
+
+      if (!adminToken || !currentAdmin) {
+        // 未登录，跳转到登录页面
+        window.location.href = 'login.html';
+        return;
+      }
+
+      try {
+        // 验证token
+        const isTokenValid = MockAPI.validateAdminToken(adminToken);
+        if (!isTokenValid) {
+          // token无效
+          localStorage.removeItem('adminToken');
+          sessionStorage.removeItem('adminToken');
+          localStorage.removeItem('currentAdmin');
+          window.location.href = 'login.html';
+          return;
+        }
+
+        // 更新管理员信息显示
+        const adminInfo = JSON.parse(currentAdmin);
+        document.getElementById('admin-name').textContent = adminInfo.username || '管理员';
+        if (adminInfo.avatar) {
+          document.getElementById('admin-avatar').src = adminInfo.avatar;
+        }
+      } catch (error) {
+        console.error('验证管理员状态时发生错误:', error);
+        // 发生错误，清除状态并跳转到登录页
+        localStorage.removeItem('adminToken');
+        sessionStorage.removeItem('adminToken');
+        localStorage.removeItem('currentAdmin');
+        window.location.href = 'login.html';
+      }
+    }
+
+    // 页面加载时执行
+    window.addEventListener('DOMContentLoaded', () => {
+      // 检查登录状态
+      checkAdminLoginStatus();
+
+      // 设置侧边栏链接活动状态
+      const sidebarLinks = document.querySelectorAll('.sidebar-link');
+      const currentPath = window.location.pathname;
+
+      sidebarLinks.forEach(link => {
+        // 重置所有链接
+        link.classList.remove('active');
+
+        // 匹配当前页面
+        const linkPath = link.getAttribute('href');
+        if (currentPath.endsWith(linkPath)) {
+          link.classList.add('active');
+        }
+      });
+
+      // 初始化图表
+      initCharts();
+    });
+  </script>
+</body>
+
+</html>

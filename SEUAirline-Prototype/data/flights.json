@@ -1,0 +1,98 @@
+[
+  {
+    "flightNo": "CA1234",
+    "aircraftType": "Boeing 737-800",
+    "departureAirport": "PEK",
+    "arrivalAirport": "PVG",
+    "departureTime": "08:00",
+    "arrivalTime": "10:20",
+    "duration": "2h20m",
+    "price": {
+      "economy": 980,
+      "business": 2980
+    },
+    "availableSeats": {
+      "economy": 120,
+      "business": 20
+    },
+    "status": "onTime",
+    "date": "2024-01-20"
+  },
+  {
+    "flightNo": "MU5678",
+    "aircraftType": "Airbus A320",
+    "departureAirport": "PVG",
+    "arrivalAirport": "PEK",
+    "departureTime": "11:30",
+    "arrivalTime": "13:50",
+    "duration": "2h20m",
+    "price": {
+      "economy": 1080,
+      "business": 3180
+    },
+    "availableSeats": {
+      "economy": 85,
+      "business": 15
+    },
+    "status": "onTime",
+    "date": "2024-01-20"
+  },
+  {
+    "flightNo": "CZ3456",
+    "aircraftType": "Airbus A330",
+    "departureAirport": "CAN",
+    "arrivalAirport": "PEK",
+    "departureTime": "09:45",
+    "arrivalTime": "13:00",
+    "duration": "3h15m",
+    "price": {
+      "economy": 1580,
+      "business": 4580
+    },
+    "availableSeats": {
+      "economy": 150,
+      "business": 25
+    },
+    "status": "onTime",
+    "date": "2024-01-20"
+  },
+  {
+    "flightNo": "HO1234",
+    "aircraftType": "Boeing 787-9",
+    "departureAirport": "SHA",
+    "arrivalAirport": "CTU",
+    "departureTime": "14:20",
+    "arrivalTime": "17:30",
+    "duration": "3h10m",
+    "price": {
+      "economy": 1380,
+      "business": 3980
+    },
+    "availableSeats": {
+      "economy": 100,
+      "business": 18
+    },
+    "status": "onTime",
+    "date": "2024-01-20"
+  },
+  {
+    "flightNo": "MF8765",
+    "aircraftType": "Airbus A321",
+    "departureAirport": "XMN",
+    "arrivalAirport": "SHA",
+    "departureTime": "16:50",
+    "arrivalTime": "19:10",
+    "duration": "2h20m",
+    "price": {
+      "economy": 780,
+      "business": 2280
+    },
+    "availableSeats": {
+      "economy": 135,
+      "business": 12
+    },
+    "status": "delayed",
+    "delayReason": "天气原因",
+    "date": "2024-01-20"
+  }
+]

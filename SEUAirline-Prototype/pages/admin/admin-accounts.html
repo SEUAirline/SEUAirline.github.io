@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEUAirline - 管理员账户</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome -->
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/7.0.0/css/all.min.css" rel="stylesheet">
+
+  <!-- 自定义样式 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1E3A8A',
+            secondary: '#3B82F6',
+            accent: '#F8FAFC',
+            success: '#10B981',
+            warning: '#F59E0B',
+            danger: '#EF4444',
+            info: '#3B82F6',
+            dark: '#1E293B'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto { content-visibility: auto; }
+      .sidebar-link {
+        @apply flex items-center px-4 py-3 text-gray-600 hover:bg-blue-50 hover:text-primary transition-all duration-200 rounded-lg;
+      }
+      .sidebar-link.active {
+        @apply bg-blue-50 text-primary font-medium;
+      }
+      .btn-primary { 
+        @apply bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-all duration-300;
+      }
+      .btn-secondary { 
+        @apply bg-white text-primary border border-primary px-4 py-2 rounded-md hover:bg-blue-50 transition-all duration-300;
+      }
+      .btn-outline { 
+        @apply bg-white text-gray-600 border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50 transition-all duration-300;
+      }
+      .btn-danger { 
+        @apply bg-white text-danger border border-danger px-4 py-2 rounded-md hover:bg-red-50 transition-all duration-300;
+      }
+      .btn-sm {
+        @apply px-3 py-1 text-sm rounded-md;
+      }
+      .input-field {
+        @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all;
+      }
+      .card {
+        @apply bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden;
+      }
+      .card-header {
+        @apply px-5 py-4 border-b border-gray-100 flex justify-between items-center;
+      }
+      .card-body {
+        @apply px-5 py-4;
+      }
+      .table-row-hover:hover {
+        @apply bg-gray-50;
+      }
+      .status-badge {
+        @apply px-2 py-1 rounded-full text-xs font-medium;
+      }
+      .badge-active {
+        @apply bg-green-100 text-green-800;
+      }
+      .badge-inactive {
+        @apply bg-red-100 text-red-800;
+      }
+      .role-badge {
+        @apply px-2 py-1 rounded-full text-xs font-medium;
+      }
+      .role-admin {
+        @apply bg-blue-100 text-blue-800;
+      }
+      .role-operator {
+        @apply bg-yellow-100 text-yellow-800;
+      }
+      .role-auditor {
+        @apply bg-purple-100 text-purple-800;
+      }
+      .modal-backdrop {
+        @apply fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4;
+      }
+      .modal-content {
+        @apply bg-white rounded-lg shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+  <!-- 顶部导航栏 -->
+  <header class="bg-white shadow-sm sticky top-0 z-30">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center">
+          <button id="sidebar-toggle" class="mr-4 text-gray-500 hover:text-primary">
+            <i class="fa fa-bars text-xl"></i>
+          </button>
+          <a href="dashboard.html" class="flex items-center">
+            <i class="fa fa-cube text-primary text-2xl mr-2"></i>
+            <span class="text-xl font-bold text-primary">SEUAirline 管理系统</span>
+          </a>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <!-- 通知图标 -->
+          <div class="relative">
+            <button class="text-gray-500 hover:text-primary focus:outline-none">
+              <i class="fa fa-bell-o text-xl"></i>
+              <span
+                class="absolute top-0 right-0 h-4 w-4 rounded-full bg-red-500 text-xs text-white flex items-center justify-center">3</span>
+            </button>
+          </div>
+
+          <!-- 用户信息 -->
+          <div class="flex items-center space-x-2">
+            <img id="admin-avatar" src="https://picsum.photos/32/32" alt="管理员头像" class="w-8 h-8 rounded-full">
+            <div class="hidden md:block">
+              <div class="text-sm font-medium text-gray-700" id="admin-name">管理员</div>
+              <div class="text-xs text-gray-500">系统管理员</div>
+            </div>
+            <button id="logout-btn" class="text-gray-500 hover:text-primary">
+              <i class="fa fa-sign-out"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主要内容区 -->
+  <div class="flex">
+    <!-- 侧边栏 -->
+    <aside id="sidebar"
+      class="w-64 bg-white border-r border-gray-200 h-[calc(100vh-4rem)] sticky top-16 overflow-y-auto transition-all duration-300 transform">
+      <nav class="p-4">
+        <div class="mb-6">
+          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">主菜单</h3>
+          <div class="space-y-2">
+            <a href="dashboard.html" class="sidebar-link">
+              <i class="fa fa-tachometer w-5 mr-3"></i>
+              <span>仪表盘</span>
+            </a>
+            <a href="flights.html" class="sidebar-link">
+              <i class="fa fa-plane w-5 mr-3"></i>
+              <span>航班管理</span>
+            </a>
+            <a href="orders.html" class="sidebar-link">
+              <i class="fa fa-file-text-o w-5 mr-3"></i>
+              <span>订单管理</span>
+            </a>
+            <a href="users.html" class="sidebar-link">
+              <i class="fa fa-users w-5 mr-3"></i>
+              <span>用户管理</span>
+            </a>
+            <a href="airports.html" class="sidebar-link">
+              <i class="fa fa-building-o w-5 mr-3"></i>
+              <span>机场管理</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">系统设置</h3>
+          <div class="space-y-2">
+            <a href="system-settings.html" class="sidebar-link">
+              <i class="fa fa-cog w-5 mr-3"></i>
+              <span>系统设置</span>
+            </a>
+            <a href="admin-accounts.html" class="sidebar-link active">
+              <i class="fa fa-user-circle-o w-5 mr-3"></i>
+              <span>管理员账户</span>
+            </a>
+            <a href="logs.html" class="sidebar-link">
+              <i class="fa fa-history w-5 mr-3"></i>
+              <span>系统日志</span>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">帮助与支持</h3>
+          <div class="space-y-2">
+            <a href="#" class="sidebar-link">
+              <i class="fa fa-question-circle-o w-5 mr-3"></i>
+              <span>帮助中心</span>
+            </a>
+            <a href="#" class="sidebar-link">
+              <i class="fa fa-file-text w-5 mr-3"></i>
+              <span>文档中心</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- 内容区域 -->
+    <main class="flex-1 p-6">
+      <!-- 页面标题 -->
+      <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">管理员账户</h1>
+        <p class="text-gray-500 mt-1">管理系统的管理员账户，包括添加、编辑、删除和权限管理</p>
+      </div>
+
+      <!-- 功能操作栏 -->
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+        <button id="add-admin-btn" class="btn-primary flex items-center">
+          <i class="fa fa-plus mr-2"></i>
+          添加管理员
+        </button>
+
+        <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+          <div class="relative w-full sm:w-64">
+            <input type="text" id="search-admin" class="input-field pl-10" placeholder="搜索管理员...">
+            <i class="fa fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+          </div>
+
+          <select id="filter-role" class="input-field w-full sm:w-40">
+            <option value="all">所有角色</option>
+            <option value="admin">系统管理员</option>
+            <option value="operator">操作员</option>
+            <option value="auditor">审计员</option>
+          </select>
+
+          <select id="filter-status" class="input-field w-full sm:w-40">
+            <option value="all">所有状态</option>
+            <option value="active">已启用</option>
+            <option value="inactive">已禁用</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 管理员列表 -->
+      <div class="card mb-6">
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-full divide-y divide-gray-200">
+            <thead>
+              <tr>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  ID
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  用户名
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  姓名
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  角色
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  邮箱
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  手机
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  创建时间
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  状态
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  操作
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <!-- 管理员1 -->
+              <tr class="table-row-hover">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  001
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 h-10 w-10">
+                      <img class="h-10 w-10 rounded-full" src="https://picsum.photos/40/40?random=1" alt="头像">
+                    </div>
+                    <div class="ml-4">
+                      <div class="text-sm font-medium text-gray-900">admin</div>
+                      <div class="text-xs text-gray-500">系统管理员</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  张三
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="role-badge role-admin">系统管理员</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  admin@seuairline.com
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  13800138000
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  2023-01-01 08:00:00
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="status-badge badge-active">已启用</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button class="text-blue-600 hover:text-blue-900 mr-3 edit-admin" data-id="001">编辑</button>
+                  <button class="text-gray-600 hover:text-gray-900 mr-3 reset-password" data-id="001">重置密码</button>
+                  <button class="text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled>禁用</button>
+                </td>
+              </tr>
+
+              <!-- 管理员2 -->
+              <tr class="table-row-hover">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  002
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 h-10 w-10">
+                      <img class="h-10 w-10 rounded-full" src="https://picsum.photos/40/40?random=2" alt="头像">
+                    </div>
+                    <div class="ml-4">
+                      <div class="text-sm font-medium text-gray-900">operator1</div>
+                      <div class="text-xs text-gray-500">操作员</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  李四
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="role-badge role-operator">操作员</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  operator1@seuairline.com
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  13900139000
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  2023-02-15 10:30:00
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="status-badge badge-active">已启用</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button class="text-blue-600 hover:text-blue-900 mr-3 edit-admin" data-id="002">编辑</button>
+                  <button class="text-gray-600 hover:text-gray-900 mr-3 reset-password" data-id="002">重置密码</button>
+                  <button class="text-red-600 hover:text-red-900 disable-admin" data-id="002">禁用</button>
+                </td>
+              </tr>
+
+              <!-- 管理员3 -->
+              <tr class="table-row-hover">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  003
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 h-10 w-10">
+                      <img class="h-10 w-10 rounded-full" src="https://picsum.photos/40/40?random=3" alt="头像">
+                    </div>
+                    <div class="ml-4">
+                      <div class="text-sm font-medium text-gray-900">auditor1</div>
+                      <div class="text-xs text-gray-500">审计员</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  王五
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="role-badge role-auditor">审计员</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  auditor1@seuairline.com
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  13700137000
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  2023-03-20 14:20:00
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="status-badge badge-inactive">已禁用</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button class="text-blue-600 hover:text-blue-900 mr-3 edit-admin" data-id="003">编辑</button>
+                  <button class="text-gray-600 hover:text-gray-900 mr-3 reset-password" data-id="003">重置密码</button>
+                  <button class="text-green-600 hover:text-green-900 enable-admin" data-id="003">启用</button>
+                </td>
+              </tr>
+
+              <!-- 管理员4 -->
+              <tr class="table-row-hover">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  004
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 h-10 w-10">
+                      <img class="h-10 w-10 rounded-full" src="https://picsum.photos/40/40?random=4" alt="头像">
+                    </div>
+                    <div class="ml-4">
+                      <div class="text-sm font-medium text-gray-900">operator2</div>
+                      <div class="text-xs text-gray-500">操作员</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  赵六
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="role-badge role-operator">操作员</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  operator2@seuairline.com
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  13600136000
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  2023-04-05 09:15:00
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="status-badge badge-active">已启用</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button class="text-blue-600 hover:text-blue-900 mr-3 edit-admin" data-id="004">编辑</button>
+                  <button class="text-gray-600 hover:text-gray-900 mr-3 reset-password" data-id="004">重置密码</button>
+                  <button class="text-red-600 hover:text-red-900 disable-admin" data-id="004">禁用</button>
+                </td>
+              </tr>
+
+              <!-- 管理员5 -->
+              <tr class="table-row-hover">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  005
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 h-10 w-10">
+                      <img class="h-10 w-10 rounded-full" src="https://picsum.photos/40/40?random=5" alt="头像">
+                    </div>
+                    <div class="ml-4">
+                      <div class="text-sm font-medium text-gray-900">auditor2</div>
+                      <div class="text-xs text-gray-500">审计员</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  孙七
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="role-badge role-auditor">审计员</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  auditor2@seuairline.com
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  13500135000
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  2023-05-12 16:45:00
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="status-badge badge-active">已启用</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button class="text-blue-600 hover:text-blue-900 mr-3 edit-admin" data-id="005">编辑</button>
+                  <button class="text-gray-600 hover:text-gray-900 mr-3 reset-password" data-id="005">重置密码</button>
+                  <button class="text-red-600 hover:text-red-900 disable-admin" data-id="005">禁用</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 分页控件 -->
+        <div class="px-6 py-4 border-t border-gray-200 bg-white flex items-center justify-between">
+          <div class="flex-1 flex justify-between sm:hidden">
+            <button class="btn-outline">上一页</button>
+            <button class="btn-outline ml-3">下一页</button>
+          </div>
+          <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+            <div>
+              <p class="text-sm text-gray-700">
+                显示 <span class="font-medium">1</span> 到 <span class="font-medium">5</span> 条，共 <span
+                  class="font-medium">12</span> 条结果
+              </p>
+            </div>
+            <div>
+              <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                <button
+                  class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                  <span class="sr-only">上一页</span>
+                  <i class="fa fa-chevron-left text-xs"></i>
+                </button>
+                <button
+                  class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-primary text-sm font-medium text-white">
+                  1
+                </button>
+                <button
+                  class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                  2
+                </button>
+                <button
+                  class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                  3
+                </button>
+                <span
+                  class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                  ...
+                </span>
+                <button
+                  class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                  12
+                </button>
+                <button
+                  class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                  <span class="sr-only">下一页</span>
+                  <i class="fa fa-chevron-right text-xs"></i>
+                </button>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 添加/编辑管理员模态框 -->
+  <div id="admin-modal" class="modal-backdrop hidden">
+    <div class="modal-content">
+      <div class="card-header">
+        <h3 class="font-medium text-gray-800" id="modal-title">添加管理员</h3>
+        <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+          <i class="fa fa-times text-xl"></i>
+        </button>
+      </div>
+      <div class="card-body">
+        <form id="admin-form">
+          <input type="hidden" id="admin-id" value="">
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">用户名 <span class="text-danger">*</span></label>
+              <input type="text" id="username" class="input-field" placeholder="请输入用户名" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">真实姓名 <span
+                  class="text-danger">*</span></label>
+              <input type="text" id="real-name" class="input-field" placeholder="请输入真实姓名" required>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">电子邮箱 <span
+                  class="text-danger">*</span></label>
+              <input type="email" id="email" class="input-field" placeholder="请输入电子邮箱" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">手机号码 <span
+                  class="text-danger">*</span></label>
+              <input type="tel" id="phone" class="input-field" placeholder="请输入手机号码" required>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" id="password-fields">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">密码 <span class="text-danger">*</span></label>
+              <input type="password" id="password" class="input-field" placeholder="请输入密码" required>
+              <p class="text-xs text-gray-500 mt-1">密码至少包含8个字符，包括大小写字母、数字</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">确认密码 <span
+                  class="text-danger">*</span></label>
+              <input type="password" id="confirm-password" class="input-field" placeholder="请确认密码" required>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">角色权限 <span class="text-danger">*</span></label>
+            <select id="role" class="input-field" required>
+              <option value="admin">系统管理员</option>
+              <option value="operator">操作员</option>
+              <option value="auditor">审计员</option>
+            </select>
+            <p class="text-xs text-gray-500 mt-1">
+              <strong>系统管理员</strong>：拥有所有功能权限<br>
+              <strong>操作员</strong>：可管理航班、订单和用户，但不能管理系统设置和管理员账户<br>
+              <strong>审计员</strong>：仅有查询权限，可查看系统日志和数据统计
+            </p>
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">权限明细</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="permissions-container">
+              <div class="flex items-center">
+                <input type="checkbox" id="perm-dashboard"
+                  class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                <label for="perm-dashboard" class="ml-2 text-sm text-gray-700">查看仪表盘</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="perm-flight-manage"
+                  class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                <label for="perm-flight-manage" class="ml-2 text-sm text-gray-700">航班管理</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="perm-order-manage"
+                  class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                <label for="perm-order-manage" class="ml-2 text-sm text-gray-700">订单管理</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="perm-user-manage"
+                  class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                <label for="perm-user-manage" class="ml-2 text-sm text-gray-700">用户管理</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="perm-airport-manage"
+                  class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                <label for="perm-airport-manage" class="ml-2 text-sm text-gray-700">机场管理</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="perm-system-settings"
+                  class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                <label for="perm-system-settings" class="ml-2 text-sm text-gray-700">系统设置</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="perm-admin-manage"
+                  class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                <label for="perm-admin-manage" class="ml-2 text-sm text-gray-700">管理员账户管理</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="perm-view-logs"
+                  class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                <label for="perm-view-logs" class="ml-2 text-sm text-gray-700">查看系统日志</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-end space-x-3 mt-6">
+            <button type="button" id="cancel-modal" class="btn-outline">取消</button>
+            <button type="submit" class="btn-primary">保存</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 重置密码模态框 -->
+  <div id="reset-password-modal" class="modal-backdrop hidden">
+    <div class="modal-content">
+      <div class="card-header">
+        <h3 class="font-medium text-gray-800">重置密码</h3>
+        <button id="close-reset-modal" class="text-gray-500 hover:text-gray-700">
+          <i class="fa fa-times text-xl"></i>
+        </button>
+      </div>
+      <div class="card-body">
+        <form id="reset-password-form">
+          <input type="hidden" id="reset-admin-id" value="">
+
+          <div class="mb-4">
+            <p class="text-gray-700 mb-4">您确定要重置以下管理员的密码吗？</p>
+            <div class="p-3 bg-gray-50 rounded-md mb-4">
+              <p class="font-medium" id="reset-admin-info">管理员信息</p>
+              <p class="text-sm text-gray-500 mt-1">重置后，密码将被设置为系统默认密码，管理员首次登录时需要修改密码</p>
+            </div>
+
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <i class="fa fa-exclamation-triangle text-yellow-500"></i>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm text-yellow-700">
+                    重置密码操作不可逆，请确保该操作是必要的。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-end space-x-3 mt-6">
+            <button type="button" id="cancel-reset-modal" class="btn-outline">取消</button>
+            <button type="submit" class="btn-primary">确认重置</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 成功提示 -->
+  <div id="toast"
+    class="fixed bottom-6 right-6 bg-success text-white px-6 py-3 rounded-lg shadow-lg flex items-center transform translate-y-10 opacity-0 transition-all duration-300 z-50">
+    <i class="fa fa-check-circle mr-2"></i>
+    <span>操作成功</span>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="../../data/mock-api.js"></script>
+  <script>
+    // 获取元素
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const logoutBtn = document.getElementById('logout-btn');
+    const addAdminBtn = document.getElementById('add-admin-btn');
+    const adminModal = document.getElementById('admin-modal');
+    const closeModalBtn = document.getElementById('close-modal');
+    const cancelModalBtn = document.getElementById('cancel-modal');
+    const resetPasswordModal = document.getElementById('reset-password-modal');
+    const closeResetModalBtn = document.getElementById('close-reset-modal');
+    const cancelResetModalBtn = document.getElementById('cancel-reset-modal');
+    const adminForm = document.getElementById('admin-form');
+    const resetPasswordForm = document.getElementById('reset-password-form');
+    const toast = document.getElementById('toast');
+    const searchInput = document.getElementById('search-admin');
+    const filterRole = document.getElementById('filter-role');
+    const filterStatus = document.getElementById('filter-status');
+    const editButtons = document.querySelectorAll('.edit-admin');
+    const resetPasswordButtons = document.querySelectorAll('.reset-password');
+    const disableButtons = document.querySelectorAll('.disable-admin');
+    const enableButtons = document.querySelectorAll('.enable-admin');
+    const roleSelect = document.getElementById('role');
+    const permissionsContainer = document.getElementById('permissions-container');
+
+    // 侧边栏切换
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('-translate-x-full');
+    });
+
+    // 管理员登出
+    logoutBtn.addEventListener('click', () => {
+      if (confirm('确定要退出登录吗？')) {
+        // 清除登录状态
+        localStorage.removeItem('adminToken');
+        sessionStorage.removeItem('adminToken');
+        localStorage.removeItem('currentAdmin');
+
+        // 跳转到登录页面
+        window.location.href = 'login.html';
+      }
+    });
+
+    // 显示提示框
+    function showToast(message = '操作成功') {
+      const toastMessage = toast.querySelector('span');
+      toastMessage.textContent = message;
+
+      toast.classList.remove('translate-y-10', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-10', 'opacity-0');
+      }, 3000);
+    }
+
+    // 打开添加管理员模态框
+    addAdminBtn.addEventListener('click', () => {
+      // 重置表单
+      adminForm.reset();
+      document.getElementById('admin-id').value = '';
+      document.getElementById('modal-title').textContent = '添加管理员';
+      document.getElementById('password-fields').classList.remove('hidden');
+
+      // 根据选择的角色更新权限选项
+      updatePermissionOptions();
+
+      // 显示模态框
+      adminModal.classList.remove('hidden');
+    });
+
+    // 关闭添加/编辑模态框
+    closeModalBtn.addEventListener('click', () => {
+      adminModal.classList.add('hidden');
+    });
+
+    cancelModalBtn.addEventListener('click', () => {
+      adminModal.classList.add('hidden');
+    });
+
+    // 关闭重置密码模态框
+    closeResetModalBtn.addEventListener('click', () => {
+      resetPasswordModal.classList.add('hidden');
+    });
+
+    cancelResetModalBtn.addEventListener('click', () => {
+      resetPasswordModal.classList.add('hidden');
+    });
+
+    // 编辑管理员
+    editButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const adminId = button.getAttribute('data-id');
+        // 在实际应用中，这里应该从服务器获取管理员信息
+        // 这里使用模拟数据
+        const adminInfo = getAdminInfoById(adminId);
+
+        if (adminInfo) {
+          // 填充表单数据
+          document.getElementById('admin-id').value = adminId;
+          document.getElementById('modal-title').textContent = '编辑管理员';
+          document.getElementById('username').value = adminInfo.username;
+          document.getElementById('real-name').value = adminInfo.realName;
+          document.getElementById('email').value = adminInfo.email;
+          document.getElementById('phone').value = adminInfo.phone;
+          document.getElementById('role').value = adminInfo.role;
+
+          // 隐藏密码字段
+          document.getElementById('password-fields').classList.add('hidden');
+
+          // 根据选择的角色更新权限选项
+          updatePermissionOptions();
+
+          // 显示模态框
+          adminModal.classList.remove('hidden');
+        }
+      });
+    });
+
+    // 重置密码
+    resetPasswordButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const adminId = button.getAttribute('data-id');
+        // 在实际应用中，这里应该从服务器获取管理员信息
+        const adminInfo = getAdminInfoById(adminId);
+
+        if (adminInfo) {
+          document.getElementById('reset-admin-id').value = adminId;
+          document.getElementById('reset-admin-info').textContent = `${adminInfo.username} - ${adminInfo.realName}`;
+          resetPasswordModal.classList.remove('hidden');
+        }
+      });
+    });
+
+    // 禁用管理员
+    disableButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const adminId = button.getAttribute('data-id');
+
+        if (confirm('确定要禁用该管理员账户吗？禁用后该账户将无法登录系统。')) {
+          // 在实际应用中，这里应该调用API禁用管理员
+          // 模拟成功操作
+          showToast('管理员账户已成功禁用');
+          // 这里可以添加更新UI的逻辑
+        }
+      });
+    });
+
+    // 启用管理员
+    enableButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const adminId = button.getAttribute('data-id');
+
+        if (confirm('确定要启用该管理员账户吗？')) {
+          // 在实际应用中，这里应该调用API启用管理员
+          // 模拟成功操作
+          showToast('管理员账户已成功启用');
+          // 这里可以添加更新UI的逻辑
+        }
+      });
+    });
+
+    // 表单提交 - 添加/编辑管理员
+    adminForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // 表单验证
+      const username = document.getElementById('username').value.trim();
+      const realName = document.getElementById('real-name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+
+      if (!username) {
+        alert('请输入用户名');
+        return;
+      }
+
+      if (!realName) {
+        alert('请输入真实姓名');
+        return;
+      }
+
+      if (!email) {
+        alert('请输入电子邮箱');
+        return;
+      }
+
+      if (!phone) {
+        alert('请输入手机号码');
+        return;
+      }
+
+      // 检查是否是添加操作，如果是则验证密码
+      const isAdd = !document.getElementById('admin-id').value;
+      if (isAdd) {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+
+        if (!password) {
+          alert('请输入密码');
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          alert('两次输入的密码不一致');
+          return;
+        }
+
+        // 密码复杂度验证
+        if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
+          alert('密码至少包含8个字符，包括大小写字母和数字');
+          return;
+        }
+      }
+
+      // 收集表单数据
+      const formData = {
+        id: document.getElementById('admin-id').value,
+        username: username,
+        realName: realName,
+        email: email,
+        phone: phone,
+        role: document.getElementById('role').value,
+        permissions: getSelectedPermissions()
+      };
+
+      // 如果是添加操作，添加密码
+      if (isAdd) {
+        formData.password = document.getElementById('password').value;
+      }
+
+      // 在实际应用中，这里应该调用API保存数据
+      console.log('保存管理员数据:', formData);
+
+      // 显示成功提示并关闭模态框
+      showToast(isAdd ? '管理员已成功添加' : '管理员信息已成功更新');
+      adminModal.classList.add('hidden');
+    });
+
+    // 表单提交 - 重置密码
+    resetPasswordForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const adminId = document.getElementById('reset-admin-id').value;
+
+      // 在实际应用中，这里应该调用API重置密码
+      console.log('重置管理员密码，ID:', adminId);
+
+      // 显示成功提示并关闭模态框
+      showToast('密码已成功重置为默认值');
+      resetPasswordModal.classList.add('hidden');
+    });
+
+    // 搜索功能
+    searchInput.addEventListener('input', () => {
+      const searchValue = searchInput.value.toLowerCase();
+      // 这里可以添加搜索逻辑
+      console.log('搜索管理员:', searchValue);
+    });
+
+    // 角色筛选
+    filterRole.addEventListener('change', () => {
+      const selectedRole = filterRole.value;
+      // 这里可以添加角色筛选逻辑
+      console.log('筛选角色:', selectedRole);
+    });
+
+    // 状态筛选
+    filterStatus.addEventListener('change', () => {
+      const selectedStatus = filterStatus.value;
+      // 这里可以添加状态筛选逻辑
+      console.log('筛选状态:', selectedStatus);
+    });
+
+    // 角色选择变更事件
+    roleSelect.addEventListener('change', updatePermissionOptions);
+
+    // 根据选择的角色更新权限选项
+    function updatePermissionOptions() {
+      const selectedRole = roleSelect.value;
+      const permissionCheckboxes = permissionsContainer.querySelectorAll('input[type="checkbox"]');
+
+      // 重置所有权限
+      permissionCheckboxes.forEach(checkbox => {
+        checkbox.checked = false;
+        checkbox.disabled = false;
+      });
+
+      // 根据角色设置权限
+      switch (selectedRole) {
+        case 'admin':
+          // 系统管理员拥有所有权限
+          permissionCheckboxes.forEach(checkbox => {
+            checkbox.checked = true;
+          });
+          break;
+        case 'operator':
+          // 操作员权限
+          document.getElementById('perm-dashboard').checked = true;
+          document.getElementById('perm-flight-manage').checked = true;
+          document.getElementById('perm-order-manage').checked = true;
+          document.getElementById('perm-user-manage').checked = true;
+          document.getElementById('perm-airport-manage').checked = true;
+          document.getElementById('perm-view-logs').checked = true;
+
+          // 禁用无权限的选项
+          document.getElementById('perm-system-settings').disabled = true;
+          document.getElementById('perm-admin-manage').disabled = true;
+          break;
+        case 'auditor':
+          // 审计员权限
+          document.getElementById('perm-dashboard').checked = true;
+          document.getElementById('perm-view-logs').checked = true;
+
+          // 禁用无权限的选项
+          document.getElementById('perm-flight-manage').disabled = true;
+          document.getElementById('perm-order-manage').disabled = true;
+          document.getElementById('perm-user-manage').disabled = true;
+          document.getElementById('perm-airport-manage').disabled = true;
+          document.getElementById('perm-system-settings').disabled = true;
+          document.getElementById('perm-admin-manage').disabled = true;
+          break;
+      }
+    }
+
+    // 获取选中的权限
+    function getSelectedPermissions() {
+      const selectedPermissions = [];
+      const permissionCheckboxes = permissionsContainer.querySelectorAll('input[type="checkbox"]:checked:not(:disabled)');
+
+      permissionCheckboxes.forEach(checkbox => {
+        selectedPermissions.push(checkbox.id.replace('perm-', ''));
+      });
+
+      return selectedPermissions;
+    }
+
+    // 根据ID获取管理员信息（模拟数据）
+    function getAdminInfoById(id) {
+      const admins = [
+        { id: '001', username: 'admin', realName: '张三', email: 'admin@seuairline.com', phone: '13800138000', role: 'admin' },
+        { id: '002', username: 'operator1', realName: '李四', email: 'operator1@seuairline.com', phone: '13900139000', role: 'operator' },
+        { id: '003', username: 'auditor1', realName: '王五', email: 'auditor1@seuairline.com', phone: '13700137000', role: 'auditor' },
+        { id: '004', username: 'operator2', realName: '赵六', email: 'operator2@seuairline.com', phone: '13600136000', role: 'operator' },
+        { id: '005', username: 'auditor2', realName: '孙七', email: 'auditor2@seuairline.com', phone: '13500135000', role: 'auditor' }
+      ];
+
+      return admins.find(admin => admin.id === id);
+    }
+
+    // 点击模态框外部关闭模态框
+    document.addEventListener('mousedown', (e) => {
+      if (adminModal.classList.contains('hidden') && resetPasswordModal.classList.contains('hidden')) {
+        return;
+      }
+
+      const modalContent = adminModal.querySelector('.modal-content');
+      const resetModalContent = resetPasswordModal.querySelector('.modal-content');
+
+      if (e.target === adminModal) {
+        adminModal.classList.add('hidden');
+      }
+
+      if (e.target === resetPasswordModal) {
+        resetPasswordModal.classList.add('hidden');
+      }
+    });
+
+    // 检查管理员登录状态
+    function checkAdminLoginStatus() {
+      const adminToken = localStorage.getItem('adminToken') || sessionStorage.getItem('adminToken');
+      const currentAdmin = localStorage.getItem('currentAdmin');
+
+      if (!adminToken || !currentAdmin) {
+        // 未登录，跳转到登录页面
+        window.location.href = 'login.html';
+        return;
+      }
+
+      try {
+        // 验证token
+        const isTokenValid = MockAPI.validateAdminToken(adminToken);
+        if (!isTokenValid) {
+          // token无效
+          localStorage.removeItem('adminToken');
+          sessionStorage.removeItem('adminToken');
+          localStorage.removeItem('currentAdmin');
+          window.location.href = 'login.html';
+          return;
+        }
+
+        // 更新管理员信息显示
+        const adminInfo = JSON.parse(currentAdmin);
+        document.getElementById('admin-name').textContent = adminInfo.username || '管理员';
+        if (adminInfo.avatar) {
+          document.getElementById('admin-avatar').src = adminInfo.avatar;
+        }
+      } catch (error) {
+        console.error('验证管理员状态时发生错误:', error);
+        // 发生错误，清除状态并跳转到登录页
+        localStorage.removeItem('adminToken');
+        sessionStorage.removeItem('adminToken');
+        localStorage.removeItem('currentAdmin');
+        window.location.href = 'login.html';
+      }
+    }
+
+    // 页面加载时执行
+    window.addEventListener('DOMContentLoaded', () => {
+      // 检查登录状态
+      checkAdminLoginStatus();
+
+      // 设置侧边栏链接活动状态
+      const sidebarLinks = document.querySelectorAll('.sidebar-link');
+      const currentPath = window.location.pathname;
+
+      sidebarLinks.forEach(link => {
+        // 重置所有链接
+        link.classList.remove('active');
+
+        // 匹配当前页面
+        const linkPath = link.getAttribute('href');
+        if (currentPath.endsWith(linkPath)) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

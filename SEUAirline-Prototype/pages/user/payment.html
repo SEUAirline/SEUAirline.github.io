@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEUAirline - 订单支付</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome -->
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/7.0.0/css/all.min.css" rel="stylesheet">
+
+  <!-- 自定义样式 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1E3A8A',
+            secondary: '#3B82F6',
+            accent: '#F8FAFC',
+            danger: '#EF4444',
+            success: '#10B981'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto { content-visibility: auto; }
+      .btn-primary { 
+        @apply bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-all duration-300;
+      }
+      .btn-secondary { 
+        @apply bg-white text-primary border border-primary px-4 py-2 rounded-md hover:bg-gray-50 transition-all duration-300;
+      }
+      .input-form {
+        @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all;
+      }
+      .form-label {
+        @apply block text-sm font-medium text-gray-700 mb-1;
+      }
+      .step-active {
+        @apply bg-primary text-white border-primary;
+      }
+      .step-line {
+        @apply h-1 flex-grow bg-gray-300;
+      }
+      .step-line-active {
+        @apply bg-primary;
+      }
+      .payment-card {
+        @apply border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-primary transition-all;
+      }
+      .payment-card-active {
+        @apply border-primary bg-blue-50;
+      }
+      .countdown {
+        @apply text-danger font-medium;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+  <!-- 导航栏 -->
+  <nav class="bg-white shadow-sm sticky top-0 z-30">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center">
+          <a href="homepage.html" class="flex items-center">
+            <i class="fa fa-plane text-primary text-2xl mr-2"></i>
+            <span class="text-xl font-bold text-primary">SEUAirline</span>
+          </a>
+        </div>
+
+        <div class="hidden md:flex space-x-8">
+          <a href="homepage.html" class="text-gray-600 hover:text-primary">首页</a>
+          <a href="view_orders.html" class="text-gray-600 hover:text-primary">我的订单</a>
+          <a href="user_center.html" class="text-gray-600 hover:text-primary">个人中心</a>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <div id="user-info" class="hidden items-center space-x-2">
+            <img src="https://picsum.photos/32/32" alt="用户头像" class="w-8 h-8 rounded-full">
+            <span class="text-gray-700"><span id="username">游客</span> <i
+                class="fa fa-vip-card text-yellow-500"></i></span>
+          </div>
+          <button class="md:hidden text-gray-600">
+            <i class="fa fa-bars text-xl"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 进度指示器 -->
+  <div class="bg-white border-b border-gray-200">
+    <div class="container mx-auto px-4 py-4">
+      <div class="flex items-center justify-between max-w-4xl mx-auto">
+        <div class="flex flex-col items-center">
+          <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center bg-gray-100 text-gray-400">
+            <i class="fa fa-search"></i>
+          </div>
+          <span class="text-xs mt-1 text-gray-500">选择航班</span>
+        </div>
+        <div class="step-line step-line-active flex-grow mx-2"></div>
+        <div class="flex flex-col items-center">
+          <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center bg-gray-100 text-gray-400">
+            <i class="fa fa-user"></i>
+          </div>
+          <span class="text-xs mt-1 text-gray-500">填写信息</span>
+        </div>
+        <div class="step-line step-line-active flex-grow mx-2"></div>
+        <div class="flex flex-col items-center">
+          <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center step-active">
+            <i class="fa fa-credit-card"></i>
+          </div>
+          <span class="text-xs mt-1 text-primary font-medium">支付订单</span>
+        </div>
+        <div class="step-line flex-grow mx-2"></div>
+        <div class="flex flex-col items-center">
+          <div class="w-10 h-10 rounded-full border-2 border-gray-300 bg-white flex items-center justify-center">
+            <i class="fa fa-check text-gray-400"></i>
+          </div>
+          <span class="text-xs mt-1 text-gray-500">完成预订</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 支付倒计时提示 -->
+  <div class="bg-yellow-50 border border-yellow-200 py-3 px-4 mb-4">
+    <div class="container mx-auto">
+      <div class="flex items-center justify-center space-x-3 text-yellow-700">
+        <i class="fa fa-clock-o text-yellow-500"></i>
+        <span class="text-sm">订单支付剩余时间：<span class="countdown" id="payment-countdown">30:00</span></span>
+        <button class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded hover:bg-yellow-200 transition-all">
+          <i class="fa fa-volume-up mr-1"></i>开启提醒
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 主要内容区 -->
+  <main class="container mx-auto px-4 py-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- 左侧：订单信息 -->
+      <div class="lg:col-span-2">
+        <!-- 订单信息卡片 -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-bold text-gray-800 flex items-center">
+              <i class="fa fa-file-invoice text-primary mr-2"></i>
+              订单信息
+            </h2>
+            <div class="text-sm text-gray-500">订单号：<span class="text-gray-700 font-medium">SA20240120001</span></div>
+          </div>
+
+          <div class="border-t border-gray-100 pt-4">
+            <!-- 航班信息 -->
+            <div class="flex flex-col md:flex-row items-center justify-between mb-6">
+              <div class="flex items-center mb-4 md:mb-0">
+                <div class="text-center">
+                  <div class="text-2xl font-bold text-gray-800">08:00</div>
+                  <div class="text-sm text-gray-500 mt-1">北京首都 T2</div>
+                </div>
+
+                <div class="flex flex-col items-center mx-6">
+                  <div class="text-sm text-gray-500">2h20m</div>
+                  <div class="relative w-40 h-0.5 my-2">
+                    <div class="absolute left-0 right-0 top-0 flex justify-between">
+                      <div class="w-2 h-2 bg-primary rounded-full -mt-1"></div>
+                      <div class="hidden md:block"><i class="fa fa-plane text-primary transform rotate-45"></i></div>
+                      <div class="w-2 h-2 bg-primary rounded-full -mt-1"></div>
+                    </div>
+                  </div>
+                  <div class="text-sm text-gray-500">直飞</div>
+                </div>
+
+                <div class="text-center">
+                  <div class="text-2xl font-bold text-gray-800">10:20</div>
+                  <div class="text-sm text-gray-500 mt-1">上海浦东 T1</div>
+                </div>
+              </div>
+
+              <div class="text-right">
+                <div class="text-lg font-bold">CA1234</div>
+                <div class="text-sm text-gray-500 mt-1">2024-01-20</div>
+                <div class="text-sm text-gray-500">经济舱</div>
+              </div>
+            </div>
+
+            <!-- 乘客信息 -->
+            <div class="mb-6">
+              <h3 class="text-base font-medium text-gray-700 mb-3">乘客信息</h3>
+              <div class="bg-gray-50 rounded-md p-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                  <div class="flex">
+                    <span class="text-gray-500 w-16">姓名：</span>
+                    <span class="text-gray-800">张三</span>
+                  </div>
+                  <div class="flex">
+                    <span class="text-gray-500 w-16">性别：</span>
+                    <span class="text-gray-800">男</span>
+                  </div>
+                  <div class="flex">
+                    <span class="text-gray-500 w-16">证件：</span>
+                    <span class="text-gray-800">身份证</span>
+                  </div>
+                  <div class="flex">
+                    <span class="text-gray-500 w-16">号码：</span>
+                    <span class="text-gray-800">11010XXXXXXXXXXX123</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 联系人信息 -->
+            <div>
+              <h3 class="text-base font-medium text-gray-700 mb-3">联系人信息</h3>
+              <div class="bg-gray-50 rounded-md p-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                  <div class="flex">
+                    <span class="text-gray-500 w-16">姓名：</span>
+                    <span class="text-gray-800">张三</span>
+                  </div>
+                  <div class="flex">
+                    <span class="text-gray-500 w-16">电话：</span>
+                    <span class="text-gray-800">138XXXX1234</span>
+                  </div>
+                  <div class="flex md:col-span-2">
+                    <span class="text-gray-500 w-16">邮箱：</span>
+                    <span class="text-gray-800">zhangsan@example.com</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 支付方式 -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+          <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+            <i class="fa fa-credit-card text-primary mr-2"></i>
+            支付方式
+          </h2>
+
+          <div class="space-y-4">
+            <!-- 支付宝 -->
+            <div class="payment-card payment-card-active" data-payment-type="alipay">
+              <div class="flex items-center">
+                <div class="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center mr-3">
+                  <i class="fa fa-alipay text-blue-500 text-2xl"></i>
+                </div>
+                <div class="flex-1">
+                  <div class="font-medium text-gray-800">支付宝</div>
+                  <div class="text-xs text-gray-500 mt-0.5">推荐使用，快速安全</div>
+                </div>
+                <div class="w-5 h-5 rounded-full border-2 border-primary flex items-center justify-center">
+                  <div class="w-3 h-3 rounded-full bg-primary"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 微信支付 -->
+            <div class="payment-card" data-payment-type="wechat">
+              <div class="flex items-center">
+                <div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center mr-3">
+                  <i class="fa fa-weixin text-green-500 text-2xl"></i>
+                </div>
+                <div class="flex-1">
+                  <div class="font-medium text-gray-800">微信支付</div>
+                  <div class="text-xs text-gray-500 mt-0.5">使用微信扫码支付</div>
+                </div>
+                <div class="w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center">
+                </div>
+              </div>
+            </div>
+
+            <!-- 银行卡支付 -->
+            <div class="payment-card" data-payment-type="bankcard">
+              <div class="flex items-center">
+                <div class="w-10 h-10 bg-purple-50 rounded-full flex items-center justify-center mr-3">
+                  <i class="fa fa-credit-card text-purple-500 text-xl"></i>
+                </div>
+                <div class="flex-1">
+                  <div class="font-medium text-gray-800">银行卡支付</div>
+                  <div class="text-xs text-gray-500 mt-0.5">支持储蓄卡、信用卡</div>
+                </div>
+                <div class="w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 发票信息 -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold text-gray-800 flex items-center">
+              <i class="fa fa-receipt text-primary mr-2"></i>
+              发票信息
+            </h2>
+            <label class="inline-flex items-center">
+              <input type="checkbox" id="need-invoice" class="h-4 w-4 text-primary border-gray-300 rounded">
+              <span class="ml-2 text-sm text-gray-600">需要发票</span>
+            </label>
+          </div>
+
+          <div id="invoice-form" class="hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="form-label">发票类型</label>
+                <select class="input-form">
+                  <option value="personal">个人发票</option>
+                  <option value="company">企业发票</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label">发票抬头</label>
+                <input type="text" class="input-form" placeholder="请输入发票抬头">
+              </div>
+              <div class="md:col-span-2">
+                <label class="form-label">接收邮箱</label>
+                <input type="email" class="input-form" placeholder="请输入接收邮箱">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右侧：支付详情 -->
+      <div class="lg:col-span-1">
+        <div class="bg-white rounded-lg shadow-md p-6 sticky top-20">
+          <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+            <i class="fa fa-money-bill-wave text-primary mr-2"></i>
+            支付详情
+          </h2>
+
+          <div class="space-y-3 text-sm text-gray-600 mb-6">
+            <div class="flex justify-between">
+              <span>航班：CA1234</span>
+              <span>经济舱</span>
+            </div>
+            <div class="flex justify-between">
+              <span>日期：2024-01-20</span>
+              <span>1成人</span>
+            </div>
+            <div class="flex justify-between">
+              <span>航程：北京 - 上海</span>
+            </div>
+            <div class="flex justify-between">
+              <span>乘客：张三</span>
+            </div>
+          </div>
+
+          <div class="border-t border-b border-gray-100 py-4 mb-4">
+            <div class="space-y-3 text-sm">
+              <div class="flex justify-between">
+                <span class="text-gray-600">机票费用</span>
+                <span class="text-gray-800">¥980.00</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-600">机建费</span>
+                <span class="text-gray-800">¥50.00</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-600">燃油附加费</span>
+                <span class="text-gray-800">¥120.00</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-600">选座服务</span>
+                <span class="text-gray-800">¥0.00</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-gray-800">支付金额</span>
+              <span class="text-2xl font-bold text-danger">¥1,150.00</span>
+            </div>
+            <p class="text-xs text-gray-500 mt-1">已包含所有税费</p>
+          </div>
+
+          <!-- 优惠券 -->
+          <div class="mb-6">
+            <button
+              class="w-full flex items-center justify-between border border-gray-300 rounded-md px-4 py-2 hover:border-primary transition-all">
+              <span class="text-gray-600 flex items-center">
+                <i class="fa fa-ticket-alt text-primary mr-2"></i>
+                优惠券/积分
+              </span>
+              <span class="text-gray-500">可用 2 张</span>
+            </button>
+          </div>
+
+          <!-- 支付按钮 -->
+          <button id="confirm-payment" class="w-full btn-primary py-3">
+            确认支付 ¥1,150.00
+          </button>
+
+          <div class="mt-4 text-center">
+            <span class="text-xs text-gray-500">
+              <i class="fa fa-lock mr-1"></i>
+              支付安全由 <a href="#" class="text-primary hover:underline">SEUAirline安全支付中心</a> 提供保障
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- 支付确认对话框 -->
+  <div id="payment-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+    <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+    <div class="relative bg-white rounded-lg shadow-xl p-6 max-w-md w-full mx-4 transform transition-all">
+      <div class="text-center">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 mb-4">
+          <i class="fa fa-alipay text-blue-500 text-3xl"></i>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">请使用支付宝扫码支付</h3>
+        <p class="text-sm text-gray-500 mb-4">订单金额：¥1,150.00</p>
+
+        <!-- 模拟支付二维码 -->
+        <div class="bg-white p-4 border border-gray-200 rounded-md mb-4 inline-block">
+          <img src="https://picsum.photos/200/200" alt="支付二维码" class="w-48 h-48">
+        </div>
+
+        <div class="mb-4">
+          <p class="text-xs text-gray-500 mb-2">支付倒计时：<span class="countdown" id="qr-countdown">15:00</span></p>
+          <p class="text-xs text-gray-500">请在15分钟内完成支付，超时订单将自动取消</p>
+        </div>
+
+        <div class="flex space-x-3">
+          <button id="cancel-payment"
+            class="flex-1 border border-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-50 transition-all">
+            取消支付
+          </button>
+          <button id="confirm-paid" class="flex-1 btn-primary">
+            已完成支付
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="../../data/mock-api.js"></script>
+  <script>
+    // 获取元素
+    const paymentCards = document.querySelectorAll('.payment-card');
+    const needInvoiceCheckbox = document.getElementById('need-invoice');
+    const invoiceForm = document.getElementById('invoice-form');
+    const confirmPaymentButton = document.getElementById('confirm-payment');
+    const paymentModal = document.getElementById('payment-modal');
+    const cancelPaymentButton = document.getElementById('cancel-payment');
+    const confirmPaidButton = document.getElementById('confirm-paid');
+    const paymentCountdown = document.getElementById('payment-countdown');
+    const qrCountdown = document.getElementById('qr-countdown');
+
+    let selectedPaymentType = 'alipay';
+
+    // 支付方式选择
+    paymentCards.forEach(card => {
+      card.addEventListener('click', () => {
+        // 移除所有卡片的选中状态
+        paymentCards.forEach(c => {
+          c.classList.remove('payment-card-active');
+          c.querySelector('.w-5').classList.remove('border-primary');
+          c.querySelector('.w-5').classList.add('border-gray-300');
+          c.querySelector('.w-3').remove();
+        });
+
+        // 添加当前卡片的选中状态
+        card.classList.add('payment-card-active');
+        card.querySelector('.w-5').classList.remove('border-gray-300');
+        card.querySelector('.w-5').classList.add('border-primary');
+
+        if (!card.querySelector('.w-3')) {
+          const innerCircle = document.createElement('div');
+          innerCircle.className = 'w-3 h-3 rounded-full bg-primary';
+          card.querySelector('.w-5').appendChild(innerCircle);
+        }
+
+        // 更新选中的支付方式
+        selectedPaymentType = card.dataset.paymentType;
+      });
+    });
+
+    // 发票复选框事件
+    needInvoiceCheckbox.addEventListener('change', () => {
+      if (needInvoiceCheckbox.checked) {
+        invoiceForm.classList.remove('hidden');
+      } else {
+        invoiceForm.classList.add('hidden');
+      }
+    });
+
+    // 确认支付按钮事件
+    confirmPaymentButton.addEventListener('click', () => {
+      // 显示支付对话框
+      paymentModal.classList.remove('hidden');
+
+      // 启动倒计时
+      startCountdown(qrCountdown, 15 * 60);
+    });
+
+    // 取消支付按钮事件
+    cancelPaymentButton.addEventListener('click', () => {
+      paymentModal.classList.add('hidden');
+    });
+
+    // 已完成支付按钮事件
+    confirmPaidButton.addEventListener('click', () => {
+      // 更新订单状态
+      const orderId = localStorage.getItem('currentOrderId');
+      if (orderId) {
+        MockAPI.updateOrderStatus(orderId, '已支付');
+      }
+
+      // 跳转到订单成功页面
+      window.location.href = 'order_success.html';
+    });
+
+    // 倒计时函数
+    function startCountdown(element, seconds) {
+      let timeLeft = seconds;
+
+      const countdownInterval = setInterval(() => {
+        const minutes = Math.floor(timeLeft / 60);
+        const remainingSeconds = timeLeft % 60;
+
+        element.textContent = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+
+        timeLeft--;
+
+        if (timeLeft < 0) {
+          clearInterval(countdownInterval);
+
+          if (element === paymentCountdown) {
+            alert('订单支付超时，请重新下单');
+            window.location.href = 'homepage.html';
+          } else {
+            alert('支付二维码已过期，请重新获取');
+            paymentModal.classList.add('hidden');
+          }
+        }
+      }, 1000);
+    }
+
+    // 检查用户登录状态
+    function checkLoginStatus() {
+      const user = MockAPI.getCurrentUser();
+      if (user) {
+        document.getElementById('user-info').classList.remove('hidden');
+        document.getElementById('user-info').classList.add('flex');
+        document.getElementById('username').textContent = user.username || '用户';
+      }
+    }
+
+    // 页面加载时执行
+    window.addEventListener('DOMContentLoaded', () => {
+      checkLoginStatus();
+
+      // 启动支付倒计时
+      startCountdown(paymentCountdown, 30 * 60);
+
+      // 获取订单信息
+      const orderId = localStorage.getItem('currentOrderId');
+      if (orderId) {
+        console.log('Current order ID:', orderId);
+      }
+    });
+  </script>
+</body>
+
+</html>
