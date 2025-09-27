@@ -8,7 +8,7 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome -->
-  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/7.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
   <!-- 自定义样式 -->
   <script>
@@ -149,7 +149,8 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">设置密码</label>
             <div class="relative">
               <i class="fa fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-              <input type="password" id="set-password" class="input-field pl-10" placeholder="请设置6-20位密码" autocomplete="new-password">
+              <input type="password" id="set-password" class="input-field pl-10" placeholder="请设置6-20位密码"
+                autocomplete="new-password">
               <button type="button" id="toggle-password-visibility"
                 class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                 <i class="fa fa-eye"></i>
@@ -234,7 +235,9 @@
       <!-- 登录提示 -->
       <div class="mt-6 text-center">
         <span class="text-gray-600">已有账号？</span>
-        <a href="login.html" onclick="if (parent && parent.switchPage) { parent.switchPage('pages/user/login.html'); return false; }" class="text-primary font-medium hover:text-primary/80 ml-1">立即登录</a>
+        <a href="login.html"
+          onclick="if (parent && parent.switchPage) { parent.switchPage('pages/user/login.html'); return false; }"
+          class="text-primary font-medium hover:text-primary/80 ml-1">立即登录</a>
       </div>
     </div>
   </main>
@@ -473,7 +476,7 @@
     });
 
     document.getElementById('go-to-login').addEventListener('click', () => {
-      if(parent && parent.switchPage){
+      if (parent && parent.switchPage) {
         parent.switchPage('pages/user/login.html');
       } else {
         window.location.href = 'login.html';

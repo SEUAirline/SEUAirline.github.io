@@ -8,7 +8,7 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome -->
-  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/7.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
   <!-- 自定义样式 -->
   <script>
@@ -79,7 +79,8 @@
           <button id="sidebar-toggle" class="mr-4 text-gray-500 hover:text-primary">
             <i class="fa fa-bars text-xl"></i>
           </button>
-          <a href="dashboard.html" class="flex items-center">
+          <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/dashboard.html')"
+            class="flex items-center">
             <i class="fa fa-cube text-primary text-2xl mr-2"></i>
             <span class="text-xl font-bold text-primary">SEUAirline 管理系统</span>
           </a>
@@ -120,23 +121,24 @@
         <div class="mb-6">
           <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">主菜单</h3>
           <div class="space-y-2">
-            <a href="dashboard.html" class="sidebar-link">
+            <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/dashboard.html')" class="sidebar-link">
               <i class="fa fa-tachometer w-5 mr-3"></i>
               <span>仪表盘</span>
             </a>
-            <a href="flights.html" class="sidebar-link active">
+            <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/flights.html')"
+              class="sidebar-link active">
               <i class="fa fa-plane w-5 mr-3"></i>
               <span>航班管理</span>
             </a>
-            <a href="orders.html" class="sidebar-link">
+            <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/orders.html')" class="sidebar-link">
               <i class="fa fa-file-text-o w-5 mr-3"></i>
               <span>订单管理</span>
             </a>
-            <a href="users.html" class="sidebar-link">
+            <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/users.html')" class="sidebar-link">
               <i class="fa fa-users w-5 mr-3"></i>
               <span>用户管理</span>
             </a>
-            <a href="airports.html" class="sidebar-link">
+            <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/airports.html')" class="sidebar-link">
               <i class="fa fa-building-o w-5 mr-3"></i>
               <span>机场管理</span>
             </a>
@@ -146,15 +148,17 @@
         <div class="mb-6">
           <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">系统设置</h3>
           <div class="space-y-2">
-            <a href="system-settings.html" class="sidebar-link">
+            <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/system-settings.html')"
+              class="sidebar-link">
               <i class="fa fa-cog w-5 mr-3"></i>
               <span>系统设置</span>
             </a>
-            <a href="admin-accounts.html" class="sidebar-link">
+            <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/admin-accounts.html')"
+              class="sidebar-link">
               <i class="fa fa-user-circle-o w-5 mr-3"></i>
               <span>管理员账户</span>
             </a>
-            <a href="logs.html" class="sidebar-link">
+            <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/logs.html')" class="sidebar-link">
               <i class="fa fa-history w-5 mr-3"></i>
               <span>系统日志</span>
             </a>
@@ -809,7 +813,7 @@
 
       if (!adminToken || !currentAdmin) {
         // 未登录，跳转到登录页面
-        window.location.href = 'login.html';
+        parent.switchPage('pages/admin/login.html');
         return;
       }
 
@@ -821,7 +825,7 @@
           localStorage.removeItem('adminToken');
           sessionStorage.removeItem('adminToken');
           localStorage.removeItem('currentAdmin');
-          window.location.href = 'login.html';
+          parent.switchPage('pages/admin/login.html');
           return;
         }
 
@@ -837,7 +841,7 @@
         localStorage.removeItem('adminToken');
         sessionStorage.removeItem('adminToken');
         localStorage.removeItem('currentAdmin');
-        window.location.href = 'login.html';
+        parent.switchPage('pages/admin/login.html');
       }
     }
 

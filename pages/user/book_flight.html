@@ -8,7 +8,7 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome -->
-  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/7.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
   <!-- 自定义样式 -->
   <script>
@@ -59,20 +59,25 @@
     <div class="container mx-auto px-4">
       <div class="flex justify-between items-center h-16">
         <div class="flex items-center">
-          <a href="homepage.html" class="flex items-center" onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/homepage.html'); return false; } else { window.location.href = 'homepage.html'; }">
+          <a href="homepage.html" class="flex items-center"
+            onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/homepage.html'); return false; } else { window.location.href = 'homepage.html'; }">
             <i class="fa fa-plane text-primary text-2xl mr-2"></i>
             <span class="text-xl font-bold text-primary">SEUAirline</span>
           </a>
         </div>
 
         <div class="hidden md:flex space-x-8">
-          <a href="homepage.html" class="text-gray-600 hover:text-primary" onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/homepage.html'); return false; } else { window.location.href = 'homepage.html'; }">首页</a>
-          <a href="view_orders.html" class="text-gray-600 hover:text-primary" onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/view_orders.html'); return false; } else { window.location.href = 'view_orders.html'; }">我的订单</a>
-          <a href="user_center.html" class="text-gray-600 hover:text-primary" onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/user_center.html'); return false; } else { window.location.href = 'user_center.html'; }">个人中心</a>
+          <a href="homepage.html" class="text-gray-600 hover:text-primary"
+            onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/homepage.html'); return false; } else { window.location.href = 'homepage.html'; }">首页</a>
+          <a href="view_orders.html" class="text-gray-600 hover:text-primary"
+            onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/view_orders.html'); return false; } else { window.location.href = 'view_orders.html'; }">我的订单</a>
+          <a href="user_center.html" class="text-gray-600 hover:text-primary"
+            onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/user_center.html'); return false; } else { window.location.href = 'user_center.html'; }">个人中心</a>
         </div>
 
         <div class="flex items-center space-x-4">
-          <div id="user-info" class="hidden items-center space-x-2 cursor-pointer" onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/user_center.html'); } else { window.location.href = 'user_center.html'; }">
+          <div id="user-info" class="hidden items-center space-x-2 cursor-pointer"
+            onclick="if (parent && typeof parent.switchPage === 'function') { parent.switchPage('pages/user/user_center.html'); } else { window.location.href = 'user_center.html'; }">
             <img src="https://picsum.photos/32/32" alt="用户头像" class="w-8 h-8 rounded-full">
             <span class="text-gray-700"><span id="username">游客</span> <i
                 class="fa fa-vip-card text-yellow-500"></i></span>
@@ -145,7 +150,8 @@
                   <div class="relative w-40 h-0.5 my-2">
                     <div class="absolute left-0 right-0 top-0 flex justify-between items-center">
                       <div class="w-2 h-2 bg-primary rounded-full -mt-1"></div>
-                      <div class="absolute left-1/2 transform -translate-x-1/2 hidden md:block"><i class="fa fa-plane text-primary transform rotate-45"></i></div>
+                      <div class="absolute left-1/2 transform -translate-x-1/2 hidden md:block"><i
+                          class="fa fa-plane text-primary transform rotate-45"></i></div>
                       <div class="w-2 h-2 bg-primary rounded-full -mt-1"></div>
                     </div>
                   </div>
