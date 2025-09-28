@@ -518,15 +518,22 @@
 
     // 根据状态筛选订单
     function filterOrdersByStatus(status) {
-      // 实际应用中，这里应该根据状态筛选订单
-      console.log(`筛选订单状态：${status}`);
-
       // 简单的模拟筛选逻辑
       if (status === '全部订单') {
         orderCards.forEach(card => card.classList.remove('hidden'));
       } else if (status === '待支付') {
         orderCards.forEach(card => {
           if (card.querySelector('.status-badge').textContent.includes('待支付')) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      } else if (status === '已支付') {
+        orderCards.forEach(card => {
+          const badgeText = card.querySelector('.status-badge').textContent;
+          // 已支付状态可能包括已出票和已完成
+          if (badgeText.includes('已出票') || badgeText.includes('已完成')) {
             card.classList.remove('hidden');
           } else {
             card.classList.add('hidden');
@@ -551,6 +558,17 @@
       } else if (status === '已取消') {
         orderCards.forEach(card => {
           if (card.querySelector('.status-badge').textContent.includes('已取消')) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      } else if (status === '退票/改签') {
+        orderCards.forEach(card => {
+          // 实际应用中，这里应该根据具体的退票/改签状态进行筛选
+          // 这里简单模拟，显示所有非取消状态的订单
+          const badgeText = card.querySelector('.status-badge').textContent;
+          if (!badgeText.includes('已取消') && !badgeText.includes('待支付')) {
             card.classList.remove('hidden');
           } else {
             card.classList.add('hidden');
