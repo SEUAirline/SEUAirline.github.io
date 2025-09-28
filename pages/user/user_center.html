@@ -1,428 +1,540 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SEUAirline - 个人中心</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SEUAirline - 个人中心</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- FontAwesome -->
-  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- 自定义样式 -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#1E3A8A",
+              secondary: "#3B82F6",
+              accent: "#F8FAFC",
+              success: "#10B981",
+              warning: "#F59E0B",
+              danger: "#EF4444",
+              info: "#3B82F6",
+            },
+          },
+        },
+      };
+    </script>
 
-  <!-- 自定义样式 -->
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#1E3A8A',
-            secondary: '#3B82F6',
-            accent: '#F8FAFC',
-            success: '#10B981',
-            warning: '#F59E0B',
-            danger: '#EF4444',
-            info: '#3B82F6'
-          }
+    <style type="text/tailwindcss">
+      @layer utilities {
+        .content-auto {
+          content-visibility: auto;
+        }
+        .btn-primary {
+          @apply bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-all duration-300;
+        }
+        .btn-secondary {
+          @apply bg-white text-primary border border-primary px-4 py-2 rounded-md hover:bg-gray-50 transition-all duration-300;
+        }
+        .btn-outline {
+          @apply bg-white text-gray-600 border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50 transition-all duration-300;
+        }
+        .sidebar-link {
+          @apply flex items-center px-4 py-3 text-gray-600 hover:bg-blue-50 hover:text-primary transition-all duration-200 rounded-lg;
+        }
+        .sidebar-link.active {
+          @apply bg-blue-50 text-primary font-medium;
+        }
+        .info-card {
+          @apply bg-white rounded-lg shadow-sm p-5 border border-gray-100;
         }
       }
-    }
-  </script>
+    </style>
+  </head>
 
-  <style type="text/tailwindcss">
-    @layer utilities {
-      .content-auto { content-visibility: auto; }
-      .btn-primary { 
-        @apply bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-all duration-300;
-      }
-      .btn-secondary { 
-        @apply bg-white text-primary border border-primary px-4 py-2 rounded-md hover:bg-gray-50 transition-all duration-300;
-      }
-      .btn-outline { 
-        @apply bg-white text-gray-600 border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50 transition-all duration-300;
-      }
-      .sidebar-link {
-        @apply flex items-center px-4 py-3 text-gray-600 hover:bg-blue-50 hover:text-primary transition-all duration-200 rounded-lg;
-      }
-      .sidebar-link.active {
-        @apply bg-blue-50 text-primary font-medium;
-      }
-      .info-card {
-        @apply bg-white rounded-lg shadow-sm p-5 border border-gray-100;
-      }
-    }
-  </style>
-</head>
-
-<body class="bg-gray-50 min-h-screen">
-  <!-- 导航栏 -->
-  <nav class="bg-white shadow-sm sticky top-0 z-30">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between items-center h-16">
-        <div class="flex items-center">
-          <a href="javascript:void(0)" onclick="parent.switchPage('pages/user/homepage.html')"
-            class="flex items-center">
-            <i class="fas fa-plane text-primary text-2xl mr-2"></i>
-            <span class="text-xl font-bold text-primary">SEUAirline</span>
-          </a>
-        </div>
-
-        <div class="hidden md:flex space-x-8">
-          <a href="javascript:void(0)" onclick="parent.switchPage('pages/user/homepage.html')"
-            class="text-gray-600 hover:text-primary">首页</a>
-          <a href="javascript:void(0)" onclick="parent.switchPage('pages/user/view_orders.html')"
-            class="text-gray-600 hover:text-primary">我的订单</a>
-          <a href="javascript:void(0)" onclick="parent.switchPage('pages/user/user_center.html')"
-            class="text-primary font-medium border-b-2 border-primary">个人中心</a>
-        </div>
-
-        <div class="flex items-center space-x-4">
-          <div id="user-info" class="hidden items-center space-x-2 cursor-pointer"
-            onclick="if(parent && parent.switchPage){parent.switchPage('pages/user/user_center.html');}">
-            <img id="user-avatar" src="https://picsum.photos/32/32" alt="用户头像" class="w-8 h-8 rounded-full">
-            <span class="text-gray-700"><span id="username">游客</span> <i
-                class="fas fa-id-card text-yellow-500"></i></span>
-          </div>
-          <button class="md:hidden text-gray-600">
-            <i class="fas fa-bars text-xl"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-  </nav>
-
-  <!-- 主要内容区 -->
-  <main class="container mx-auto px-4 py-6">
-    <div class="flex flex-col md:flex-row gap-6">
-      <!-- 左侧导航栏 -->
-      <div class="md:w-64 lg:w-72 shrink-0">
-        <div class="bg-white rounded-lg shadow-md p-5">
-          <div class="flex flex-col items-center mb-6">
-            <div class="relative mb-3">
-              <img id="profile-avatar" src="https://picsum.photos/100/100" alt="用户头像"
-                class="w-24 h-24 rounded-full object-cover border-2 border-primary">
-              <div
-                class="absolute bottom-0 right-0 bg-primary text-white w-6 h-6 rounded-full flex items-center justify-center cursor-pointer">
-                <i class="fas fa-camera text-xs"></i>
-              </div>
-            </div>
-            <h3 id="profile-username" class="text-lg font-medium">张三</h3>
-            <p class="text-sm text-gray-500">普通会员</p>
-          </div>
-
-          <div class="space-y-2">
-            <a href="#" class="sidebar-link active">
-              <i class="fas fa-user-circle w-5 mr-3"></i>
-              <span>个人信息</span>
-            </a>
-            <a href="#" class="sidebar-link">
-              <i class="fas fa-shield w-5 mr-3"></i>
-              <span>账户安全</span>
-            </a>
-            <a href="#" class="sidebar-link">
-              <i class="fas fa-users w-5 mr-3"></i>
-              <span>常用旅客</span>
-            </a>
-            <a href="#" class="sidebar-link">
-              <i class="fas fa-heart w-5 mr-3"></i>
-              <span>我的收藏</span>
-            </a>
-            <a href="#" class="sidebar-link">
-              <i class="fas fa-cog w-5 mr-3"></i>
-              <span>设置</span>
+  <body class="bg-gray-50 min-h-screen">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-sm sticky top-0 z-30">
+      <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center">
+            <a
+              href="javascript:void(0)"
+              onclick="parent.switchPage('pages/user/homepage.html')"
+              class="flex items-center">
+              <i class="fas fa-plane text-primary text-2xl mr-2"></i>
+              <span class="text-xl font-bold text-primary">SEUAirline</span>
             </a>
           </div>
-        </div>
-      </div>
 
-      <!-- 右侧内容区 -->
-      <div class="flex-1">
-        <!-- 个人信息卡片 -->
-        <div class="info-card mb-6">
-          <h2 class="text-xl font-medium mb-4">基本信息</h2>
-          <form id="profile-form">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">姓名</label>
-                <input type="text" name="fullName" value="张三"
-                  class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">身份证号</label>
-                <input type="text" name="idCard" value="3****************X"
-                  class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">手机号</label>
-                <input type="tel" name="phone" value="138****8888"
-                  class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">邮箱</label>
-                <input type="email" name="email" value="zhang***@example.com"
-                  class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">性别</label>
-                <div class="flex items-center space-x-4 pt-1">
-                  <label class="inline-flex items-center">
-                    <input type="radio" name="gender" value="male" class="text-primary focus:ring-primary" checked>
-                    <span class="ml-2">男</span>
-                  </label>
-                  <label class="inline-flex items-center">
-                    <input type="radio" name="gender" value="female" class="text-primary focus:ring-primary">
-                    <span class="ml-2">女</span>
-                  </label>
-                </div>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">生日</label>
-                <input type="date" name="birthday" value="1990-01-01"
-                  class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all">
-              </div>
-            </div>
-            <div class="flex justify-end">
-              <button type="button" class="btn-outline mr-3">取消</button>
-              <button type="submit" class="btn-primary">保存修改</button>
-            </div>
-          </form>
-        </div>
+          <div class="hidden md:flex space-x-8">
+            <a
+              href="javascript:void(0)"
+              onclick="parent.switchPage('pages/user/homepage.html')"
+              class="text-gray-600 hover:text-primary"
+              >首页</a
+            >
+            <a
+              href="javascript:void(0)"
+              onclick="parent.switchPage('pages/user/view_orders.html')"
+              class="text-gray-600 hover:text-primary"
+              >我的订单</a
+            >
+            <a
+              href="javascript:void(0)"
+              onclick="parent.switchPage('pages/user/user_center.html')"
+              class="text-primary font-medium border-b-2 border-primary"
+              >个人中心</a
+            >
+          </div>
 
-        <!-- 常用联系人信息卡片 -->
-        <div class="info-card mb-6">
-          <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-medium">常用联系人</h2>
-            <button id="add-passenger-btn" class="btn-secondary">
-              <i class="fas fa-plus-circle mr-1"></i> 添加联系人
+          <div class="flex items-center space-x-4">
+            <div
+              id="user-info"
+              class="hidden items-center space-x-2 cursor-pointer"
+              onclick="if(parent && parent.switchPage){parent.switchPage('pages/user/user_center.html');}">
+              <img
+                id="user-avatar"
+                src="https://picsum.photos/32/32"
+                alt="用户头像"
+                class="w-8 h-8 rounded-full" />
+              <span class="text-gray-700"
+                ><span id="username">游客</span>
+                <i class="fas fa-id-card text-yellow-500"></i
+              ></span>
+            </div>
+            <button class="md:hidden text-gray-600">
+              <i class="fas fa-bars text-xl"></i>
             </button>
           </div>
+        </div>
+      </div>
+    </nav>
 
-          <div class="space-y-4">
-            <!-- 联系人1 -->
-            <div class="border border-gray-200 rounded-lg p-4">
-              <div class="flex justify-between mb-3">
-                <div class="flex items-center">
-                  <h3 class="font-medium">张三（本人）</h3>
-                  <span class="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">默认</span>
-                </div>
-                <div class="flex space-x-2">
-                  <button class="text-primary text-sm hover:text-primary/80 transition-colors">
-                    <i class="fas fa-pencil-alt mr-1"></i> 编辑
-                  </button>
-                  <button class="text-gray-500 text-sm hover:text-gray-700 transition-colors">
-                    <i class="fas fa-trash mr-1"></i> 删除
-                  </button>
-                </div>
-              </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                <div>
-                  <span class="text-gray-500">身份证号：</span>
-                  <span>3****************X</span>
-                </div>
-                <div>
-                  <span class="text-gray-500">手机号：</span>
-                  <span>138****8888</span>
+    <!-- 主要内容区 -->
+    <main class="container mx-auto px-4 py-6">
+      <div class="flex flex-col md:flex-row gap-6">
+        <!-- 左侧导航栏 -->
+        <div class="md:w-64 lg:w-72 shrink-0">
+          <div class="bg-white rounded-lg shadow-md p-5">
+            <div class="flex flex-col items-center mb-6">
+              <div class="relative mb-3">
+                <img
+                  id="profile-avatar"
+                  src="https://picsum.photos/100/100"
+                  alt="用户头像"
+                  class="w-24 h-24 rounded-full object-cover border-2 border-primary" />
+                <div
+                  class="absolute bottom-0 right-0 bg-primary text-white w-6 h-6 rounded-full flex items-center justify-center cursor-pointer">
+                  <i class="fas fa-camera text-xs"></i>
                 </div>
               </div>
+              <h3 id="profile-username" class="text-lg font-medium">张三</h3>
+              <p class="text-sm text-gray-500">普通会员</p>
             </div>
 
-            <!-- 联系人2 -->
-            <div class="border border-gray-200 rounded-lg p-4">
-              <div class="flex justify-between mb-3">
-                <h3 class="font-medium">李四</h3>
-                <div class="flex space-x-2">
-                  <button class="text-primary text-sm hover:text-primary/80 transition-colors">
-                    <i class="fas fa-pencil-alt mr-1"></i> 编辑
-                  </button>
-                  <button class="text-gray-500 text-sm hover:text-gray-700 transition-colors">
-                    <i class="fas fa-trash mr-1"></i> 删除
-                  </button>
-                </div>
-              </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                <div>
-                  <span class="text-gray-500">身份证号：</span>
-                  <span>4****************X</span>
-                </div>
-                <div>
-                  <span class="text-gray-500">手机号：</span>
-                  <span>139****9999</span>
-                </div>
-              </div>
+            <div class="space-y-2">
+              <a href="#" class="sidebar-link active">
+                <i class="fas fa-user-circle w-5 mr-3"></i>
+                <span>个人信息</span>
+              </a>
+              <a href="#" class="sidebar-link">
+                <i class="fas fa-shield-alt w-5 mr-3"></i>
+                <span>账户安全</span>
+              </a>
+              <a href="#" class="sidebar-link">
+                <i class="fas fa-users w-5 mr-3"></i>
+                <span>常用旅客</span>
+              </a>
+              <a href="#" class="sidebar-link">
+                <i class="fas fa-heart w-5 mr-3"></i>
+                <span>我的收藏</span>
+              </a>
+              <a href="#" class="sidebar-link">
+                <i class="fas fa-cog w-5 mr-3"></i>
+                <span>设置</span>
+              </a>
             </div>
           </div>
         </div>
 
-        <!-- 账户安全卡片 -->
-        <div class="info-card">
-          <h2 class="text-xl font-medium mb-4">账户安全</h2>
-          <div class="space-y-4">
-            <div class="flex justify-between items-center py-3 border-b border-gray-100">
-              <div>
-                <h3 class="font-medium">登录密码</h3>
-                <p class="text-sm text-gray-500 mt-1">定期修改密码可提高账户安全性</p>
+        <!-- 右侧内容区 -->
+        <div class="flex-1">
+          <!-- 个人信息卡片 -->
+          <div class="info-card mb-6">
+            <h2 class="text-xl font-medium mb-4">基本信息</h2>
+            <form id="profile-form">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >姓名</label
+                  >
+                  <input
+                    type="text"
+                    name="fullName"
+                    value="张三"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all" />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >身份证号</label
+                  >
+                  <input
+                    type="text"
+                    name="idCard"
+                    value="3****************X"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all" />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >手机号</label
+                  >
+                  <input
+                    type="tel"
+                    name="phone"
+                    value="138****8888"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all" />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >邮箱</label
+                  >
+                  <input
+                    type="email"
+                    name="email"
+                    value="zhang***@example.com"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all" />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >性别</label
+                  >
+                  <div class="flex items-center space-x-4 pt-1">
+                    <label class="inline-flex items-center">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="male"
+                        class="text-primary focus:ring-primary"
+                        checked />
+                      <span class="ml-2">男</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="female"
+                        class="text-primary focus:ring-primary" />
+                      <span class="ml-2">女</span>
+                    </label>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >生日</label
+                  >
+                  <input
+                    type="date"
+                    name="birthday"
+                    value="1990-01-01"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all" />
+                </div>
               </div>
-              <button class="btn-secondary">
-                修改密码
+              <div class="flex justify-end">
+                <button type="button" class="btn-outline mr-3">取消</button>
+                <button type="submit" class="btn-primary">保存修改</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- 常用联系人信息卡片 -->
+          <div class="info-card mb-6">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-xl font-medium">常用联系人</h2>
+              <button id="add-passenger-btn" class="btn-secondary">
+                <i class="fas fa-plus-circle mr-1"></i> 添加联系人
               </button>
             </div>
 
-            <div class="flex justify-between items-center py-3 border-b border-gray-100">
-              <div>
-                <h3 class="font-medium">手机验证</h3>
-                <p class="text-sm text-gray-500 mt-1">138****8888</p>
+            <div class="space-y-4">
+              <!-- 联系人1 -->
+              <div class="border border-gray-200 rounded-lg p-4">
+                <div class="flex justify-between mb-3">
+                  <div class="flex items-center">
+                    <h3 class="font-medium">张三（本人）</h3>
+                    <span
+                      class="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded"
+                      >默认</span
+                    >
+                  </div>
+                  <div class="flex space-x-2">
+                    <button
+                      class="text-primary text-sm hover:text-primary/80 transition-colors">
+                      <i class="fas fa-pencil-alt mr-1"></i> 编辑
+                    </button>
+                    <button
+                      class="text-gray-500 text-sm hover:text-gray-700 transition-colors">
+                      <i class="fas fa-trash mr-1"></i> 删除
+                    </button>
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                  <div>
+                    <span class="text-gray-500">身份证号：</span>
+                    <span>3****************X</span>
+                  </div>
+                  <div>
+                    <span class="text-gray-500">手机号：</span>
+                    <span>138****8888</span>
+                  </div>
+                </div>
               </div>
-              <button class="text-primary font-medium">
-                <i class="fas fa-check-circle text-success mr-1"></i> 已验证
-              </button>
-            </div>
 
-            <div class="flex justify-between items-center py-3 border-b border-gray-100">
-              <div>
-                <h3 class="font-medium">邮箱验证</h3>
-                <p class="text-sm text-gray-500 mt-1">zhang***@example.com</p>
+              <!-- 联系人2 -->
+              <div class="border border-gray-200 rounded-lg p-4">
+                <div class="flex justify-between mb-3">
+                  <h3 class="font-medium">李四</h3>
+                  <div class="flex space-x-2">
+                    <button
+                      class="text-primary text-sm hover:text-primary/80 transition-colors">
+                      <i class="fas fa-pencil-alt mr-1"></i> 编辑
+                    </button>
+                    <button
+                      class="text-gray-500 text-sm hover:text-gray-700 transition-colors">
+                      <i class="fas fa-trash mr-1"></i> 删除
+                    </button>
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                  <div>
+                    <span class="text-gray-500">身份证号：</span>
+                    <span>4****************X</span>
+                  </div>
+                  <div>
+                    <span class="text-gray-500">手机号：</span>
+                    <span>139****9999</span>
+                  </div>
+                </div>
               </div>
-              <button class="text-primary font-medium">
-                <i class="fas fa-check-circle text-success mr-1"></i> 已验证
-              </button>
             </div>
+          </div>
 
-            <div class="flex justify-between items-center py-3 border-b border-gray-100">
-              <div>
-                <h3 class="font-medium">实名认证</h3>
-                <p class="text-sm text-gray-500 mt-1">张三，3****************X</p>
+          <!-- 账户安全卡片 -->
+          <div class="info-card">
+            <h2 class="text-xl font-medium mb-4">账户安全</h2>
+            <div class="space-y-4">
+              <div
+                class="flex justify-between items-center py-3 border-b border-gray-100">
+                <div>
+                  <h3 class="font-medium">登录密码</h3>
+                  <p class="text-sm text-gray-500 mt-1">
+                    定期修改密码可提高账户安全性
+                  </p>
+                </div>
+                <button class="btn-secondary">修改密码</button>
               </div>
-              <button class="text-primary font-medium">
-                <i class="fas fa-check-circle text-success mr-1"></i> 已认证
-              </button>
-            </div>
 
-            <div class="flex justify-between items-center py-3">
-              <div>
-                <h3 class="font-medium">支付密码</h3>
-                <p class="text-sm text-gray-500 mt-1">设置支付密码保护您的资金安全</p>
+              <div
+                class="flex justify-between items-center py-3 border-b border-gray-100">
+                <div>
+                  <h3 class="font-medium">手机验证</h3>
+                  <p class="text-sm text-gray-500 mt-1">138****8888</p>
+                </div>
+                <button class="text-primary font-medium">
+                  <i class="fas fa-check-circle text-success mr-1"></i> 已验证
+                </button>
               </div>
-              <button class="btn-secondary">
-                立即设置
-              </button>
+
+              <div
+                class="flex justify-between items-center py-3 border-b border-gray-100">
+                <div>
+                  <h3 class="font-medium">邮箱验证</h3>
+                  <p class="text-sm text-gray-500 mt-1">zhang***@example.com</p>
+                </div>
+                <button class="text-primary font-medium">
+                  <i class="fas fa-check-circle text-success mr-1"></i> 已验证
+                </button>
+              </div>
+
+              <div
+                class="flex justify-between items-center py-3 border-b border-gray-100">
+                <div>
+                  <h3 class="font-medium">实名认证</h3>
+                  <p class="text-sm text-gray-500 mt-1">
+                    张三，3****************X
+                  </p>
+                </div>
+                <button class="text-primary font-medium">
+                  <i class="fas fa-check-circle text-success mr-1"></i> 已认证
+                </button>
+              </div>
+
+              <div class="flex justify-between items-center py-3">
+                <div>
+                  <h3 class="font-medium">支付密码</h3>
+                  <p class="text-sm text-gray-500 mt-1">
+                    设置支付密码保护您的资金安全
+                  </p>
+                </div>
+                <button class="btn-secondary">立即设置</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </main>
+    </main>
 
-  <!-- 添加联系人模态框 -->
-  <div id="add-passenger-modal"
-    class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
-    <div class="bg-white rounded-lg shadow-xl w-full max-w-lg mx-4">
-      <div class="p-5 border-b border-gray-200">
-        <div class="flex justify-between items-center">
-          <h3 class="text-lg font-medium">添加常用联系人</h3>
-          <button id="close-modal-btn" class="text-gray-400 hover:text-gray-500">
-            <i class="fas fa-times text-xl"></i>
-          </button>
+    <!-- 添加联系人模态框 -->
+    <div
+      id="add-passenger-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+      <div class="bg-white rounded-lg shadow-xl w-full max-w-lg mx-4">
+        <div class="p-5 border-b border-gray-200">
+          <div class="flex justify-between items-center">
+            <h3 class="text-lg font-medium">添加常用联系人</h3>
+            <button
+              id="close-modal-btn"
+              class="text-gray-400 hover:text-gray-500">
+              <i class="fas fa-times text-xl"></i>
+            </button>
+          </div>
         </div>
-      </div>
-      <form id="passenger-form" class="p-5">
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">姓名 <span class="text-red-500">*</span></label>
-            <input type="text" name="passengerName"
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-              required>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">身份证号 <span class="text-red-500">*</span></label>
-            <input type="text" name="passengerIdCard"
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-              required>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">手机号 <span class="text-red-500">*</span></label>
-            <input type="tel" name="passengerPhone"
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-              required>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">性别 <span class="text-red-500">*</span></label>
-            <div class="flex items-center space-x-4 pt-1">
-              <label class="inline-flex items-center">
-                <input type="radio" name="passengerGender" value="male" class="text-primary focus:ring-primary" checked>
-                <span class="ml-2">男</span>
-              </label>
-              <label class="inline-flex items-center">
-                <input type="radio" name="passengerGender" value="female" class="text-primary focus:ring-primary">
-                <span class="ml-2">女</span>
-              </label>
+        <form id="passenger-form" class="p-5">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >姓名 <span class="text-red-500">*</span></label
+              >
+              <input
+                type="text"
+                name="passengerName"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                required />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >身份证号 <span class="text-red-500">*</span></label
+              >
+              <input
+                type="text"
+                name="passengerIdCard"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                required />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >手机号 <span class="text-red-500">*</span></label
+              >
+              <input
+                type="tel"
+                name="passengerPhone"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                required />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >性别 <span class="text-red-500">*</span></label
+              >
+              <div class="flex items-center space-x-4 pt-1">
+                <label class="inline-flex items-center">
+                  <input
+                    type="radio"
+                    name="passengerGender"
+                    value="male"
+                    class="text-primary focus:ring-primary"
+                    checked />
+                  <span class="ml-2">男</span>
+                </label>
+                <label class="inline-flex items-center">
+                  <input
+                    type="radio"
+                    name="passengerGender"
+                    value="female"
+                    class="text-primary focus:ring-primary" />
+                  <span class="ml-2">女</span>
+                </label>
+              </div>
+            </div>
+            <div class="flex items-center">
+              <input
+                type="checkbox"
+                id="default-passenger"
+                name="defaultPassenger"
+                class="text-primary focus:ring-primary h-4 w-4" />
+              <label
+                for="default-passenger"
+                class="ml-2 block text-sm text-gray-700"
+                >设为默认联系人</label
+              >
             </div>
           </div>
-          <div class="flex items-center">
-            <input type="checkbox" id="default-passenger" name="defaultPassenger"
-              class="text-primary focus:ring-primary h-4 w-4">
-            <label for="default-passenger" class="ml-2 block text-sm text-gray-700">设为默认联系人</label>
+          <div class="flex justify-end space-x-3 mt-6">
+            <button type="button" id="cancel-add-btn" class="btn-outline">
+              取消
+            </button>
+            <button type="submit" class="btn-primary">确定添加</button>
           </div>
-        </div>
-        <div class="flex justify-end space-x-3 mt-6">
-          <button type="button" id="cancel-add-btn" class="btn-outline">取消</button>
-          <button type="submit" class="btn-primary">确定添加</button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
-  </div>
 
-  <!-- JavaScript -->
-  <script src="../../data/mock-api.js"></script>
-  <script>
-    // 获取元素
-    const addPassengerBtn = document.getElementById('add-passenger-btn');
-    const addPassengerModal = document.getElementById('add-passenger-modal');
-    const closeModalBtn = document.getElementById('close-modal-btn');
-    const cancelAddBtn = document.getElementById('cancel-add-btn');
-    const passengerForm = document.getElementById('passenger-form');
-    const profileForm = document.getElementById('profile-form');
+    <!-- JavaScript -->
+    <script src="../../data/mock-api.js"></script>
+    <script>
+      // 获取元素
+      const addPassengerBtn = document.getElementById("add-passenger-btn");
+      const addPassengerModal = document.getElementById("add-passenger-modal");
+      const closeModalBtn = document.getElementById("close-modal-btn");
+      const cancelAddBtn = document.getElementById("cancel-add-btn");
+      const passengerForm = document.getElementById("passenger-form");
+      const profileForm = document.getElementById("profile-form");
 
-    // 打开添加联系人模态框
-    addPassengerBtn.addEventListener('click', () => {
-      addPassengerModal.classList.remove('hidden');
-    });
+      // 打开添加联系人模态框
+      addPassengerBtn.addEventListener("click", () => {
+        addPassengerModal.classList.remove("hidden");
+      });
 
-    // 关闭添加联系人模态框
-    const closeModal = () => {
-      addPassengerModal.classList.add('hidden');
-      passengerForm.reset();
-    };
+      // 关闭添加联系人模态框
+      const closeModal = () => {
+        addPassengerModal.classList.add("hidden");
+        passengerForm.reset();
+      };
 
-    closeModalBtn.addEventListener('click', closeModal);
-    cancelAddBtn.addEventListener('click', closeModal);
+      closeModalBtn.addEventListener("click", closeModal);
+      cancelAddBtn.addEventListener("click", closeModal);
 
-    // 点击模态框外部关闭
-    addPassengerModal.addEventListener('click', (e) => {
-      if (e.target === addPassengerModal) {
+      // 点击模态框外部关闭
+      addPassengerModal.addEventListener("click", (e) => {
+        if (e.target === addPassengerModal) {
+          closeModal();
+        }
+      });
+
+      // 提交添加联系人表单
+      passengerForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        // 获取表单数据
+        const formData = new FormData(passengerForm);
+        const passengerData = Object.fromEntries(formData.entries());
+
+        // 在实际应用中，这里应该调用API保存联系人信息
+        console.log("添加联系人:", passengerData);
+
+        // 显示成功消息
+        alert("联系人添加成功！");
         closeModal();
-      }
-    });
 
-    // 提交添加联系人表单
-    passengerForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      // 获取表单数据
-      const formData = new FormData(passengerForm);
-      const passengerData = Object.fromEntries(formData.entries());
-
-      // 在实际应用中，这里应该调用API保存联系人信息
-      console.log('添加联系人:', passengerData);
-
-      // 显示成功消息
-      alert('联系人添加成功！');
-      closeModal();
-
-      // 模拟更新页面
-      const contactList = document.querySelector('.space-y-4');
-      const newContact = document.createElement('div');
-      newContact.className = 'border border-gray-200 rounded-lg p-4';
-      newContact.innerHTML = `
+        // 模拟更新页面
+        const contactList = document.querySelector(".space-y-4");
+        const newContact = document.createElement("div");
+        newContact.className = "border border-gray-200 rounded-lg p-4";
+        newContact.innerHTML = `
         <div class="flex justify-between mb-3">
           <h3 class="font-medium">${passengerData.passengerName}</h3>
           <div class="flex space-x-2">
@@ -446,73 +558,75 @@
         </div>
       `;
 
-      contactList.appendChild(newContact);
-    });
+        contactList.appendChild(newContact);
+      });
 
-    // 提交个人信息表单
-    profileForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      // 获取表单数据
-      const formData = new FormData(profileForm);
-      const profileData = Object.fromEntries(formData.entries());
-
-      // 在实际应用中，这里应该调用API保存个人信息
-      console.log('更新个人信息:', profileData);
-
-      // 更新显示的用户名
-      document.getElementById('profile-username').textContent = profileData.fullName;
-      document.getElementById('username').textContent = profileData.fullName;
-
-      // 显示成功消息
-      alert('个人信息更新成功！');
-    });
-
-    // 检查用户登录状态
-    function checkLoginStatus() {
-      const user = MockAPI.getCurrentUser();
-      if (user) {
-        document.getElementById('user-info').classList.remove('hidden');
-        document.getElementById('user-info').classList.add('flex');
-        document.getElementById('username').textContent = user.username || '用户';
-        document.getElementById('profile-username').textContent = user.fullName || user.username || '用户';
-
-        // 如果有头像URL，更新头像
-        if (user.avatar) {
-          document.getElementById('user-avatar').src = user.avatar;
-          document.getElementById('profile-avatar').src = user.avatar;
-        }
-      } else {
-        // 如果用户未登录，跳转到登录页面
-        // parent.switchPage('pages/user/login.html');
-      }
-    }
-
-    // 侧边栏链接点击事件
-    const sidebarLinks = document.querySelectorAll('.sidebar-link');
-    sidebarLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
+      // 提交个人信息表单
+      profileForm.addEventListener("submit", (e) => {
         e.preventDefault();
 
-        // 移除所有链接的活动状态
-        sidebarLinks.forEach(l => l.classList.remove('active'));
+        // 获取表单数据
+        const formData = new FormData(profileForm);
+        const profileData = Object.fromEntries(formData.entries());
 
-        // 添加当前链接的活动状态
-        link.classList.add('active');
+        // 在实际应用中，这里应该调用API保存个人信息
+        console.log("更新个人信息:", profileData);
 
-        // 模拟页面切换效果
-        const sectionId = link.querySelector('span').textContent;
-        console.log(`切换到${sectionId}部分`);
+        // 更新显示的用户名
+        document.getElementById("profile-username").textContent =
+          profileData.fullName;
+        document.getElementById("username").textContent = profileData.fullName;
 
-        // 在实际应用中，这里应该加载相应的页面内容
+        // 显示成功消息
+        alert("个人信息更新成功！");
       });
-    });
 
-    // 页面加载时执行
-    window.addEventListener('DOMContentLoaded', () => {
-      checkLoginStatus();
-    });
-  </script>
-</body>
+      // 检查用户登录状态
+      function checkLoginStatus() {
+        const user = MockAPI.getCurrentUser();
+        if (user) {
+          document.getElementById("user-info").classList.remove("hidden");
+          document.getElementById("user-info").classList.add("flex");
+          document.getElementById("username").textContent =
+            user.username || "用户";
+          document.getElementById("profile-username").textContent =
+            user.fullName || user.username || "用户";
 
+          // 如果有头像URL，更新头像
+          if (user.avatar) {
+            document.getElementById("user-avatar").src = user.avatar;
+            document.getElementById("profile-avatar").src = user.avatar;
+          }
+        } else {
+          // 如果用户未登录，跳转到登录页面
+          // parent.switchPage('pages/user/login.html');
+        }
+      }
+
+      // 侧边栏链接点击事件
+      const sidebarLinks = document.querySelectorAll(".sidebar-link");
+      sidebarLinks.forEach((link) => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+
+          // 移除所有链接的活动状态
+          sidebarLinks.forEach((l) => l.classList.remove("active"));
+
+          // 添加当前链接的活动状态
+          link.classList.add("active");
+
+          // 模拟页面切换效果
+          const sectionId = link.querySelector("span").textContent;
+          console.log(`切换到${sectionId}部分`);
+
+          // 在实际应用中，这里应该加载相应的页面内容
+        });
+      });
+
+      // 页面加载时执行
+      window.addEventListener("DOMContentLoaded", () => {
+        checkLoginStatus();
+      });
+    </script>
+  </body>
 </html>

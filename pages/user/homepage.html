@@ -68,7 +68,7 @@
             </a>
           </div>
 
-          <div class="hidden md:flex space-x-8">
+          <div class="md:flex space-x-8">
             <a
               href="javascript:void(0)"
               onclick="parent.switchPage('pages/user/homepage.html')"
@@ -98,7 +98,7 @@
             </button>
             <button
               id="register-btn"
-              class="btn-primary hidden md:block"
+              class="btn-primary md:block hidden"
               onclick="parent.switchPage('pages/user/register.html')">
               <i class="fas fa-user-plus mr-2"></i>注册
             </button>
@@ -760,8 +760,13 @@
       function checkLoginStatus() {
         const user = MockAPI.getCurrentUser();
         if (user) {
-          document.getElementById("login-btn").classList.add("hidden");
-          document.getElementById("register-btn").classList.add("hidden");
+          // 添加md:hidden确保在中等屏幕尺寸下也能隐藏按钮
+          document
+            .getElementById("login-btn")
+            .classList.add("hidden", "md:hidden");
+          document
+            .getElementById("register-btn")
+            .classList.add("hidden", "md:hidden");
           document.getElementById("user-info").classList.remove("hidden");
           document.getElementById("user-info").classList.add("flex");
           document.getElementById("username").textContent =

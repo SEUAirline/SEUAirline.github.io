@@ -1,470 +1,573 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SEUAirline - 用户登录</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SEUAirline - 用户登录</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- FontAwesome -->
-  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- 自定义样式 -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#1E3A8A",
+              secondary: "#3B82F6",
+              accent: "#F8FAFC",
+            },
+          },
+        },
+      };
+    </script>
 
-  <!-- 自定义样式 -->
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#1E3A8A',
-            secondary: '#3B82F6',
-            accent: '#F8FAFC'
-          }
+    <style type="text/tailwindcss">
+      @layer utilities {
+        .content-auto {
+          content-visibility: auto;
+        }
+        .form-group {
+          @apply mb-4;
+        }
+        .btn-primary {
+          @apply bg-primary text-white px-6 py-3 rounded-md hover:bg-primary/90 transition-all duration-300 font-medium;
+        }
+        .btn-secondary {
+          @apply bg-white text-primary border border-primary px-4 py-2 rounded-md hover:bg-gray-50 transition-all duration-300;
+        }
+        .input-field {
+          @apply w-full pl-10 pr-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary;
+        }
+        .card-shadow {
+          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
         }
       }
-    }
-  </script>
+    </style>
+  </head>
 
-  <style type="text/tailwindcss">
-    @layer utilities {
-      .content-auto { content-visibility: auto; }
-      .form-group { @apply mb-4; }
-      .btn-primary { 
-        @apply bg-primary text-white px-6 py-3 rounded-md hover:bg-primary/90 transition-all duration-300 font-medium;
-      }
-      .btn-secondary { 
-        @apply bg-white text-primary border border-primary px-4 py-2 rounded-md hover:bg-gray-50 transition-all duration-300;
-      }
-      .input-field { 
-        @apply w-full pl-10 pr-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary;
-      }
-      .card-shadow { 
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-      }
-    }
-  </style>
-</head>
+  <body class="bg-gray-50 min-h-screen">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-sm">
+      <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center">
+            <a
+              href="javascript:void(0)"
+              onclick="parent.switchPage('pages/user/homepage.html')"
+              class="flex items-center">
+              <i class="fas fa-plane text-primary text-2xl mr-2"></i>
+              <span class="text-xl font-bold text-primary">SEUAirline</span>
+            </a>
+          </div>
 
-<body class="bg-gray-50 min-h-screen">
-  <!-- 导航栏 -->
-  <nav class="bg-white shadow-sm">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between items-center h-16">
-        <div class="flex items-center">
-          <a href="javascript:void(0)" onclick="parent.switchPage('pages/user/homepage.html')" class="flex items-center">
-            <i class="fas fa-plane text-primary text-2xl mr-2"></i>
-            <span class="text-xl font-bold text-primary">SEUAirline</span>
-          </a>
-        </div>
+          <div class="hidden md:flex space-x-8">
+            <a
+              href="javascript:void(0)"
+              onclick="parent.switchPage('pages/user/homepage.html')"
+              class="text-gray-600 hover:text-primary"
+              >首页</a
+            >
+            <a
+              href="javascript:void(0)"
+              onclick="parent.switchPage('pages/user/view_orders.html')"
+              class="text-gray-600 hover:text-primary"
+              >我的订单</a
+            >
+            <a
+              href="javascript:void(0)"
+              onclick="parent.switchPage('pages/user/user_center.html')"
+              class="text-gray-600 hover:text-primary"
+              >个人中心</a
+            >
+          </div>
 
-        <div class="hidden md:flex space-x-8">
-          <a href="javascript:void(0)" onclick="parent.switchPage('pages/user/homepage.html')" class="text-gray-600 hover:text-primary">首页</a>
-          <a href="javascript:void(0)" onclick="parent.switchPage('pages/user/view_orders.html')" class="text-gray-600 hover:text-primary">我的订单</a>
-          <a href="javascript:void(0)" onclick="parent.switchPage('pages/user/user_center.html')" class="text-gray-600 hover:text-primary">个人中心</a>
-        </div>
-
-        <div class="flex items-center">
-          <button class="md:hidden text-gray-600">
-            <i class="fas fa-bars text-xl"></i>
-          </button>
+          <div class="flex items-center">
+            <button class="md:hidden text-gray-600">
+              <i class="fas fa-bars text-xl"></i>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </nav>
+    </nav>
 
-  <!-- 主要内容区 -->
-  <main class="container mx-auto px-4 py-12">
-    <div class="max-w-md mx-auto">
-      <div class="text-center mb-8">
-        <h1 class="text-2xl md:text-3xl font-bold text-gray-800">欢迎登录SEUAirline</h1>
-        <p class="text-gray-600 mt-2">登录后享受更多会员专享服务</p>
-      </div>
-
-      <!-- 登录卡片 -->
-      <div class="bg-white rounded-xl p-8 card-shadow">
-        <!-- 登录方式切换 -->
-        <div class="flex border-b border-gray-200 mb-6">
-          <button id="tab-password" class="flex-1 py-3 text-primary font-medium border-b-2 border-primary">
-            密码登录
-          </button>
-          <button id="tab-phone" class="flex-1 py-3 text-gray-500 border-b-2 border-transparent hover:text-gray-700">
-            手机登录
-          </button>
-          <button id="tab-idcard" class="flex-1 py-3 text-gray-500 border-b-2 border-transparent hover:text-gray-700">
-            身份证登录
-          </button>
+    <!-- 主要内容区 -->
+    <main class="container mx-auto px-4 py-12">
+      <div class="max-w-md mx-auto">
+        <div class="text-center mb-8">
+          <h1 class="text-2xl md:text-3xl font-bold text-gray-800">
+            欢迎登录SEUAirline
+          </h1>
+          <p class="text-gray-600 mt-2">登录后享受更多会员专享服务</p>
         </div>
 
-        <!-- 密码登录表单 -->
-        <form id="password-login-form" class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">用户名/邮箱</label>
-            <div class="relative">
-              <i class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-              <input type="text" id="username" class="input-field pl-10" placeholder="请输入用户名或邮箱"
-                autocomplete="username">
-            </div>
+        <!-- 登录卡片 -->
+        <div class="bg-white rounded-xl p-8 card-shadow">
+          <!-- 登录方式切换 -->
+          <div class="flex border-b border-gray-200 mb-6">
+            <button
+              id="tab-password"
+              class="flex-1 py-3 text-primary font-medium border-b-2 border-primary">
+              密码登录
+            </button>
+            <button
+              id="tab-phone"
+              class="flex-1 py-3 text-gray-500 border-b-2 border-transparent hover:text-gray-700">
+              手机登录
+            </button>
+            <button
+              id="tab-idcard"
+              class="flex-1 py-3 text-gray-500 border-b-2 border-transparent hover:text-gray-700">
+              身份证登录
+            </button>
           </div>
 
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">密码</label>
-            <div class="relative">
-              <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-              <input type="password" id="password" class="input-field pl-10" placeholder="请输入密码"
-                autocomplete="current-password">
-              <button type="button" id="toggle-password"
-                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                <i class="fas fa-eye"></i>
-              </button>
-            </div>
-          </div>
-
-          <div class="flex justify-between items-center">
-            <label class="flex items-center">
-              <input type="checkbox" id="remember-me" class="h-4 w-4 text-primary border-gray-300 rounded">
-              <span class="ml-2 block text-sm text-gray-600">记住密码</span>
-            </label>
-            <a href="#" class="text-sm text-primary hover:text-primary/80">忘记密码？</a>
-          </div>
-
-          <div id="error-message" class="hidden bg-red-50 text-red-600 p-3 rounded-md text-sm"></div>
-
-          <button type="submit" class="w-full btn-primary">
-            登录
-          </button>
-        </form>
-
-        <!-- 手机登录表单 (默认隐藏) -->
-        <form id="phone-login-form" class="space-y-4 hidden">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">手机号码</label>
-            <div class="relative">
-              <i class="fas fa-mobile absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl"></i>
-              <input type="tel" id="phone-number" class="input-field pl-10" placeholder="请输入手机号码">
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">验证码</label>
-            <div class="flex space-x-2">
-              <div class="relative flex-1">
-                <i class="fas fa-shield absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                <input type="text" id="sms-code" class="input-field pl-10" placeholder="请输入验证码">
+          <!-- 密码登录表单 -->
+          <form id="password-login-form" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >用户名/邮箱</label
+              >
+              <div class="relative">
+                <i
+                  class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <input
+                  type="text"
+                  id="username"
+                  class="input-field pl-10"
+                  placeholder="请输入用户名或邮箱"
+                  autocomplete="username" />
               </div>
-              <button type="button" id="send-code"
-                class="px-4 py-3 bg-blue-50 text-primary font-medium rounded-md whitespace-nowrap">
-                获取验证码
-              </button>
             </div>
-          </div>
 
-          <button type="submit" class="w-full btn-primary">
-            登录
-          </button>
-        </form>
-
-        <!-- 身份证登录表单 (默认隐藏) -->
-        <form id="idcard-login-form" class="space-y-4 hidden">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">身份证号</label>
-            <div class="relative">
-              <i class="fas fa-id-card absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-              <input type="text" id="idcard-number" class="input-field pl-10" placeholder="请输入身份证号">
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">验证码</label>
-            <div class="flex space-x-2">
-              <div class="relative flex-1">
-                <i class="fas fa-shield absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                <input type="text" id="idcard-sms-code" class="input-field pl-10" placeholder="请输入验证码">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >密码</label
+              >
+              <div class="relative">
+                <i
+                  class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <input
+                  type="password"
+                  id="password"
+                  class="input-field pl-10"
+                  placeholder="请输入密码"
+                  autocomplete="current-password" />
+                <button
+                  type="button"
+                  id="toggle-password"
+                  class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                  <i class="fas fa-eye"></i>
+                </button>
               </div>
-              <button type="button" id="send-idcard-code"
-                class="px-4 py-3 bg-blue-50 text-primary font-medium rounded-md whitespace-nowrap">
-                获取验证码
+            </div>
+
+            <div class="flex justify-between items-center">
+              <label class="flex items-center">
+                <input
+                  type="checkbox"
+                  id="remember-me"
+                  class="h-4 w-4 text-primary border-gray-300 rounded" />
+                <span class="ml-2 block text-sm text-gray-600">记住密码</span>
+              </label>
+              <a href="#" class="text-sm text-primary hover:text-primary/80"
+                >忘记密码？</a
+              >
+            </div>
+
+            <div
+              id="error-message"
+              class="hidden bg-red-50 text-red-600 p-3 rounded-md text-sm"></div>
+
+            <button type="submit" class="w-full btn-primary">登录</button>
+          </form>
+
+          <!-- 手机登录表单 (默认隐藏) -->
+          <form id="phone-login-form" class="space-y-4 hidden">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >手机号码</label
+              >
+              <div class="relative">
+                <i
+                  class="fas fa-mobile absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl"></i>
+                <input
+                  type="tel"
+                  id="phone-number"
+                  class="input-field pl-10"
+                  placeholder="请输入手机号码" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >验证码</label
+              >
+              <div class="flex space-x-2">
+                <div class="relative flex-1">
+                  <i
+                    class="fas fa-shield-alt absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                  <input
+                    type="text"
+                    id="sms-code"
+                    class="input-field pl-10"
+                    placeholder="请输入验证码" />
+                </div>
+                <button
+                  type="button"
+                  id="send-code"
+                  class="px-4 py-3 bg-blue-50 text-primary font-medium rounded-md whitespace-nowrap">
+                  获取验证码
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" class="w-full btn-primary">登录</button>
+          </form>
+
+          <!-- 身份证登录表单 (默认隐藏) -->
+          <form id="idcard-login-form" class="space-y-4 hidden">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >身份证号</label
+              >
+              <div class="relative">
+                <i
+                  class="fas fa-id-card absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <input
+                  type="text"
+                  id="idcard-number"
+                  class="input-field pl-10"
+                  placeholder="请输入身份证号" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >验证码</label
+              >
+              <div class="flex space-x-2">
+                <div class="relative flex-1">
+                  <i
+                    class="fas fa-shield-alt absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                  <input
+                    type="text"
+                    id="idcard-sms-code"
+                    class="input-field pl-10"
+                    placeholder="请输入验证码" />
+                </div>
+                <button
+                  type="button"
+                  id="send-idcard-code"
+                  class="px-4 py-3 bg-blue-50 text-primary font-medium rounded-md whitespace-nowrap">
+                  获取验证码
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" class="w-full btn-primary">登录</button>
+          </form>
+
+          <!-- 注册提示 -->
+          <div class="mt-6 text-center">
+            <span class="text-gray-600">还没有账号？</span>
+            <a
+              href="javascript:void(0)"
+              onclick="parent.switchPage('pages/user/register.html')"
+              class="text-primary font-medium hover:text-primary/80 ml-1"
+              >立即注册</a
+            >
+          </div>
+
+          <!-- 其他登录方式 -->
+          <div class="mt-8">
+            <div class="relative">
+              <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-200"></div>
+              </div>
+              <div class="relative flex justify-center text-sm">
+                <span class="px-2 bg-white text-gray-500">其他登录方式</span>
+              </div>
+            </div>
+
+            <div class="flex justify-center space-x-6 mt-4">
+              <button
+                class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-500 hover:bg-red-100 transition-colors">
+                <i class="fab fa-weibo text-lg"></i>
+              </button>
+              <button
+                class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-green-500 hover:bg-green-100 transition-colors">
+                <i class="fab fa-weixin text-lg"></i>
+              </button>
+              <button
+                class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-500 hover:bg-blue-100 transition-colors">
+                <i class="fas fa-qq text-lg"></i>
               </button>
             </div>
-          </div>
-
-          <button type="submit" class="w-full btn-primary">
-            登录
-          </button>
-        </form>
-
-        <!-- 注册提示 -->
-        <div class="mt-6 text-center">
-          <span class="text-gray-600">还没有账号？</span>
-          <a href="javascript:void(0)" onclick="parent.switchPage('pages/user/register.html')" class="text-primary font-medium hover:text-primary/80 ml-1">立即注册</a>
-        </div>
-
-        <!-- 其他登录方式 -->
-        <div class="mt-8">
-          <div class="relative">
-            <div class="absolute inset-0 flex items-center">
-              <div class="w-full border-t border-gray-200"></div>
-            </div>
-            <div class="relative flex justify-center text-sm">
-              <span class="px-2 bg-white text-gray-500">其他登录方式</span>
-            </div>
-          </div>
-
-          <div class="flex justify-center space-x-6 mt-4">
-            <button
-              class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-500 hover:bg-red-100 transition-colors">
-              <i class="fab fa-weibo text-lg"></i>
-            </button>
-            <button
-              class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-green-500 hover:bg-green-100 transition-colors">
-              <i class="fab fa-weixin text-lg"></i>
-            </button>
-            <button
-              class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-500 hover:bg-blue-100 transition-colors">
-              <i class="fas fa-qq text-lg"></i>
-            </button>
           </div>
         </div>
       </div>
-    </div>
-  </main>
+    </main>
 
-  <!-- 页脚 -->
-  <footer class="mt-12 py-6 bg-white border-t border-gray-200">
-    <div class="container mx-auto px-4 text-center">
-      <p class="text-gray-500 text-sm">© 2024 SEUAirline. 保留所有权利。</p>
-      <p class="text-gray-400 text-xs mt-1">登录即表示您同意我们的用户协议和隐私政策</p>
-    </div>
-  </footer>
+    <!-- 页脚 -->
+    <footer class="mt-12 py-6 bg-white border-t border-gray-200">
+      <div class="container mx-auto px-4 text-center">
+        <p class="text-gray-500 text-sm">© 2024 SEUAirline. 保留所有权利。</p>
+        <p class="text-gray-400 text-xs mt-1">
+          登录即表示您同意我们的用户协议和隐私政策
+        </p>
+      </div>
+    </footer>
 
-  <!-- JavaScript -->
-  <script src="../../data/mock-api.js"></script>
-  <script>
-    // 登录方式切换
-    const tabPassword = document.getElementById('tab-password');
-    const tabPhone = document.getElementById('tab-phone');
-    const tabIdcard = document.getElementById('tab-idcard');
+    <!-- JavaScript -->
+    <script src="../../data/mock-api.js"></script>
+    <script>
+      // 登录方式切换
+      const tabPassword = document.getElementById("tab-password");
+      const tabPhone = document.getElementById("tab-phone");
+      const tabIdcard = document.getElementById("tab-idcard");
 
-    const passwordForm = document.getElementById('password-login-form');
-    const phoneForm = document.getElementById('phone-login-form');
-    const idcardForm = document.getElementById('idcard-login-form');
+      const passwordForm = document.getElementById("password-login-form");
+      const phoneForm = document.getElementById("phone-login-form");
+      const idcardForm = document.getElementById("idcard-login-form");
 
-    tabPassword.addEventListener('click', () => {
-      // 激活密码登录
-      tabPassword.classList.add('text-primary', 'border-primary');
-      tabPassword.classList.remove('text-gray-500', 'border-transparent');
-      tabPhone.classList.remove('text-primary', 'border-primary');
-      tabPhone.classList.add('text-gray-500', 'border-transparent');
-      tabIdcard.classList.remove('text-primary', 'border-primary');
-      tabIdcard.classList.add('text-gray-500', 'border-transparent');
+      tabPassword.addEventListener("click", () => {
+        // 激活密码登录
+        tabPassword.classList.add("text-primary", "border-primary");
+        tabPassword.classList.remove("text-gray-500", "border-transparent");
+        tabPhone.classList.remove("text-primary", "border-primary");
+        tabPhone.classList.add("text-gray-500", "border-transparent");
+        tabIdcard.classList.remove("text-primary", "border-primary");
+        tabIdcard.classList.add("text-gray-500", "border-transparent");
 
-      passwordForm.classList.remove('hidden');
-      phoneForm.classList.add('hidden');
-      idcardForm.classList.add('hidden');
-    });
+        passwordForm.classList.remove("hidden");
+        phoneForm.classList.add("hidden");
+        idcardForm.classList.add("hidden");
+      });
 
-    tabPhone.addEventListener('click', () => {
-      // 激活手机登录
-      tabPhone.classList.add('text-primary', 'border-primary');
-      tabPhone.classList.remove('text-gray-500', 'border-transparent');
-      tabPassword.classList.remove('text-primary', 'border-primary');
-      tabPassword.classList.add('text-gray-500', 'border-transparent');
-      tabIdcard.classList.remove('text-primary', 'border-primary');
-      tabIdcard.classList.add('text-gray-500', 'border-transparent');
+      tabPhone.addEventListener("click", () => {
+        // 激活手机登录
+        tabPhone.classList.add("text-primary", "border-primary");
+        tabPhone.classList.remove("text-gray-500", "border-transparent");
+        tabPassword.classList.remove("text-primary", "border-primary");
+        tabPassword.classList.add("text-gray-500", "border-transparent");
+        tabIdcard.classList.remove("text-primary", "border-primary");
+        tabIdcard.classList.add("text-gray-500", "border-transparent");
 
-      phoneForm.classList.remove('hidden');
-      passwordForm.classList.add('hidden');
-      idcardForm.classList.add('hidden');
-    });
+        phoneForm.classList.remove("hidden");
+        passwordForm.classList.add("hidden");
+        idcardForm.classList.add("hidden");
+      });
 
-    tabIdcard.addEventListener('click', () => {
-      // 激活身份证登录
-      tabIdcard.classList.add('text-primary', 'border-primary');
-      tabIdcard.classList.remove('text-gray-500', 'border-transparent');
-      tabPassword.classList.remove('text-primary', 'border-primary');
-      tabPassword.classList.add('text-gray-500', 'border-transparent');
-      tabPhone.classList.remove('text-primary', 'border-primary');
-      tabPhone.classList.add('text-gray-500', 'border-transparent');
+      tabIdcard.addEventListener("click", () => {
+        // 激活身份证登录
+        tabIdcard.classList.add("text-primary", "border-primary");
+        tabIdcard.classList.remove("text-gray-500", "border-transparent");
+        tabPassword.classList.remove("text-primary", "border-primary");
+        tabPassword.classList.add("text-gray-500", "border-transparent");
+        tabPhone.classList.remove("text-primary", "border-primary");
+        tabPhone.classList.add("text-gray-500", "border-transparent");
 
-      idcardForm.classList.remove('hidden');
-      passwordForm.classList.add('hidden');
-      phoneForm.classList.add('hidden');
-    });
+        idcardForm.classList.remove("hidden");
+        passwordForm.classList.add("hidden");
+        phoneForm.classList.add("hidden");
+      });
 
-    // 密码显示切换
-    const togglePassword = document.getElementById('toggle-password');
-    const passwordInput = document.getElementById('password');
+      // 密码显示切换
+      const togglePassword = document.getElementById("toggle-password");
+      const passwordInput = document.getElementById("password");
 
-    togglePassword.addEventListener('click', () => {
-      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-      passwordInput.setAttribute('type', type);
-      togglePassword.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
-    });
+      togglePassword.addEventListener("click", () => {
+        const type =
+          passwordInput.getAttribute("type") === "password"
+            ? "text"
+            : "password";
+        passwordInput.setAttribute("type", type);
+        togglePassword.innerHTML =
+          type === "password"
+            ? '<i class="fas fa-eye"></i>'
+            : '<i class="fas fa-eye-slash"></i>';
+      });
 
-    // 密码登录表单提交
-    passwordForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
+      // 密码登录表单提交
+      passwordForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value.trim();
-      const rememberMe = document.getElementById('remember-me').checked;
-      const errorMessage = document.getElementById('error-message');
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const rememberMe = document.getElementById("remember-me").checked;
+        const errorMessage = document.getElementById("error-message");
 
-      // 简单验证
-      if (!username || !password) {
-        errorMessage.textContent = '请输入用户名和密码';
-        errorMessage.classList.remove('hidden');
-        return;
-      }
+        // 简单验证
+        if (!username || !password) {
+          errorMessage.textContent = "请输入用户名和密码";
+          errorMessage.classList.remove("hidden");
+          return;
+        }
 
-      try {
-        // 调用登录API
-        const result = MockAPI.login(username, password);
+        try {
+          // 调用登录API
+          const result = MockAPI.login(username, password);
+
+          if (result.success) {
+            // 登录成功，保存登录状态
+            if (rememberMe) {
+              localStorage.setItem("rememberedUser", username);
+            }
+
+            // 跳转到首页
+            if (parent && parent.switchPage) {
+              parent.switchPage("pages/user/homepage.html");
+            } else {
+              window.location.href = "homepage.html";
+            }
+          } else {
+            errorMessage.textContent =
+              result.message || "登录失败，请检查用户名和密码";
+            errorMessage.classList.remove("hidden");
+          }
+        } catch (error) {
+          errorMessage.textContent = "登录失败，请稍后重试";
+          errorMessage.classList.remove("hidden");
+        }
+      });
+
+      // 手机登录表单提交
+      phoneForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const phoneNumber = document
+          .getElementById("phone-number")
+          .value.trim();
+        const smsCode = document.getElementById("sms-code").value.trim();
+
+        // 简单验证
+        if (!phoneNumber || !smsCode) {
+          alert("请输入手机号码和验证码");
+          return;
+        }
+
+        // 模拟手机登录（实际应调用专门的手机登录API）
+        const result = MockAPI.login(phoneNumber, "phone-login");
 
         if (result.success) {
-          // 登录成功，保存登录状态
-          if (rememberMe) {
-            localStorage.setItem('rememberedUser', username);
-          }
-
-          // 跳转到首页
           if (parent && parent.switchPage) {
-            parent.switchPage('pages/user/homepage.html');
+            parent.switchPage("pages/user/homepage.html");
           } else {
-            window.location.href = 'homepage.html';
+            window.location.href = "homepage.html";
           }
         } else {
-          errorMessage.textContent = result.message || '登录失败，请检查用户名和密码';
-          errorMessage.classList.remove('hidden');
+          alert("登录失败，请检查验证码是否正确");
         }
-      } catch (error) {
-        errorMessage.textContent = '登录失败，请稍后重试';
-        errorMessage.classList.remove('hidden');
-      }
-    });
+      });
 
-    // 手机登录表单提交
-    phoneForm.addEventListener('submit', (e) => {
-      e.preventDefault();
+      // 身份证登录表单提交
+      idcardForm.addEventListener("submit", (e) => {
+        e.preventDefault();
 
-      const phoneNumber = document.getElementById('phone-number').value.trim();
-      const smsCode = document.getElementById('sms-code').value.trim();
+        const idcardNumber = document
+          .getElementById("idcard-number")
+          .value.trim();
+        const idcardSmsCode = document
+          .getElementById("idcard-sms-code")
+          .value.trim();
 
-      // 简单验证
-      if (!phoneNumber || !smsCode) {
-        alert('请输入手机号码和验证码');
-        return;
-      }
+        // 简单验证
+        if (!idcardNumber || !idcardSmsCode) {
+          alert("请输入身份证号和验证码");
+          return;
+        }
 
-      // 模拟手机登录（实际应调用专门的手机登录API）
-      const result = MockAPI.login(phoneNumber, 'phone-login');
+        // 模拟身份证登录
+        const result = MockAPI.login(idcardNumber, "idcard-login");
 
-      if (result.success) {
-        if (parent && parent.switchPage) {
-          parent.switchPage('pages/user/homepage.html');
+        if (result.success) {
+          if (parent && parent.switchPage) {
+            parent.switchPage("pages/user/homepage.html");
+          } else {
+            window.location.href = "homepage.html";
+          }
         } else {
-          window.location.href = 'homepage.html';
+          alert("登录失败，请检查验证码是否正确");
         }
-      } else {
-        alert('登录失败，请检查验证码是否正确');
-      }
-    });
+      });
 
-    // 身份证登录表单提交
-    idcardForm.addEventListener('submit', (e) => {
-      e.preventDefault();
+      // 发送验证码按钮
+      const sendCodeBtn = document.getElementById("send-code");
+      sendCodeBtn.addEventListener("click", () => {
+        const phoneNumber = document
+          .getElementById("phone-number")
+          .value.trim();
 
-      const idcardNumber = document.getElementById('idcard-number').value.trim();
-      const idcardSmsCode = document.getElementById('idcard-sms-code').value.trim();
-
-      // 简单验证
-      if (!idcardNumber || !idcardSmsCode) {
-        alert('请输入身份证号和验证码');
-        return;
-      }
-
-      // 模拟身份证登录
-      const result = MockAPI.login(idcardNumber, 'idcard-login');
-
-      if (result.success) {
-        if (parent && parent.switchPage) {
-          parent.switchPage('pages/user/homepage.html');
-        } else {
-          window.location.href = 'homepage.html';
+        if (!/^1[3-9]\d{9}$/.test(phoneNumber)) {
+          alert("请输入正确的手机号码");
+          return;
         }
-      } else {
-        alert('登录失败，请检查验证码是否正确');
-      }
-    });
 
-    // 发送验证码按钮
-    const sendCodeBtn = document.getElementById('send-code');
-    sendCodeBtn.addEventListener('click', () => {
-      const phoneNumber = document.getElementById('phone-number').value.trim();
-
-      if (!/^1[3-9]\d{9}$/.test(phoneNumber)) {
-        alert('请输入正确的手机号码');
-        return;
-      }
-
-      // 倒计时
-      let countdown = 60;
-      sendCodeBtn.disabled = true;
-      sendCodeBtn.textContent = `${countdown}秒后重发`;
-
-      const timer = setInterval(() => {
-        countdown--;
+        // 倒计时
+        let countdown = 60;
+        sendCodeBtn.disabled = true;
         sendCodeBtn.textContent = `${countdown}秒后重发`;
 
-        if (countdown <= 0) {
-          clearInterval(timer);
-          sendCodeBtn.disabled = false;
-          sendCodeBtn.textContent = '获取验证码';
+        const timer = setInterval(() => {
+          countdown--;
+          sendCodeBtn.textContent = `${countdown}秒后重发`;
+
+          if (countdown <= 0) {
+            clearInterval(timer);
+            sendCodeBtn.disabled = false;
+            sendCodeBtn.textContent = "获取验证码";
+          }
+        }, 1000);
+
+        // 模拟发送验证码
+        alert(`验证码已发送至 ${phoneNumber}`);
+      });
+
+      // 发送身份证验证码按钮
+      const sendIdcardCodeBtn = document.getElementById("send-idcard-code");
+      sendIdcardCodeBtn.addEventListener("click", () => {
+        const idcardNumber = document
+          .getElementById("idcard-number")
+          .value.trim();
+
+        if (!/^\d{17}[\dXx]$/.test(idcardNumber)) {
+          alert("请输入正确的身份证号");
+          return;
         }
-      }, 1000);
 
-      // 模拟发送验证码
-      alert(`验证码已发送至 ${phoneNumber}`);
-    });
-
-    // 发送身份证验证码按钮
-    const sendIdcardCodeBtn = document.getElementById('send-idcard-code');
-    sendIdcardCodeBtn.addEventListener('click', () => {
-      const idcardNumber = document.getElementById('idcard-number').value.trim();
-
-      if (!/^\d{17}[\dXx]$/.test(idcardNumber)) {
-        alert('请输入正确的身份证号');
-        return;
-      }
-
-      // 倒计时
-      let countdown = 60;
-      sendIdcardCodeBtn.disabled = true;
-      sendIdcardCodeBtn.textContent = `${countdown}秒后重发`;
-
-      const timer = setInterval(() => {
-        countdown--;
+        // 倒计时
+        let countdown = 60;
+        sendIdcardCodeBtn.disabled = true;
         sendIdcardCodeBtn.textContent = `${countdown}秒后重发`;
 
-        if (countdown <= 0) {
-          clearInterval(timer);
-          sendIdcardCodeBtn.disabled = false;
-          sendIdcardCodeBtn.textContent = '获取验证码';
+        const timer = setInterval(() => {
+          countdown--;
+          sendIdcardCodeBtn.textContent = `${countdown}秒后重发`;
+
+          if (countdown <= 0) {
+            clearInterval(timer);
+            sendIdcardCodeBtn.disabled = false;
+            sendIdcardCodeBtn.textContent = "获取验证码";
+          }
+        }, 1000);
+
+        // 模拟发送验证码
+        alert("验证码已发送至您的手机");
+      });
+
+      // 检查是否有记住的用户
+      window.addEventListener("DOMContentLoaded", () => {
+        const rememberedUser = localStorage.getItem("rememberedUser");
+        if (rememberedUser) {
+          document.getElementById("username").value = rememberedUser;
+          document.getElementById("remember-me").checked = true;
         }
-      }, 1000);
-
-      // 模拟发送验证码
-      alert('验证码已发送至您的手机');
-    });
-
-    // 检查是否有记住的用户
-    window.addEventListener('DOMContentLoaded', () => {
-      const rememberedUser = localStorage.getItem('rememberedUser');
-      if (rememberedUser) {
-        document.getElementById('username').value = rememberedUser;
-        document.getElementById('remember-me').checked = true;
-      }
-    });
-  </script>
-</body>
-
+      });
+    </script>
+  </body>
 </html>
