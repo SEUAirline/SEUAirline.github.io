@@ -1,858 +1,1079 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SEUAirline - 文档中心</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SEUAirline - 文档中心</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- FontAwesome -->
-  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- 自定义样式 -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#1E3A8A",
+              secondary: "#3B82F6",
+              accent: "#F8FAFC",
+              success: "#10B981",
+              warning: "#F59E0B",
+              danger: "#EF4444",
+              info: "#3B82F6",
+              dark: "#1E293B",
+            },
+          },
+        },
+      };
+    </script>
 
-  <!-- 自定义样式 -->
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#1E3A8A',
-            secondary: '#3B82F6',
-            accent: '#F8FAFC',
-            success: '#10B981',
-            warning: '#F59E0B',
-            danger: '#EF4444',
-            info: '#3B82F6',
-            dark: '#1E293B'
-          }
+    <style type="text/tailwindcss">
+      @layer utilities {
+        .content-auto {
+          content-visibility: auto;
+        }
+        .sidebar-link {
+          @apply flex items-center px-4 py-3 text-gray-600 hover:bg-blue-50 hover:text-primary transition-all duration-200 rounded-lg;
+        }
+        .sidebar-link.active {
+          @apply bg-blue-50 text-primary font-medium;
+        }
+        .btn-primary {
+          @apply bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-all duration-300;
+        }
+        .btn-secondary {
+          @apply bg-white text-primary border border-primary px-4 py-2 rounded-md hover:bg-blue-50 transition-all duration-300;
+        }
+        .btn-outline {
+          @apply bg-white text-gray-600 border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50 transition-all duration-300;
+        }
+        .btn-sm {
+          @apply px-3 py-1 text-sm rounded-md;
+        }
+        .input-field {
+          @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all;
+        }
+        .card {
+          @apply bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden;
+        }
+        .card-header {
+          @apply px-5 py-4 border-b border-gray-100;
+        }
+        .card-body {
+          @apply px-5 py-4;
+        }
+        .doc-card {
+          @apply card hover:shadow-md transition-shadow duration-300 hover:translate-y-[-4px] cursor-pointer;
+        }
+        .doc-badge {
+          @apply px-2 py-1 text-xs font-medium rounded-full;
+        }
+        .badge-new {
+          @apply bg-green-100 text-green-800;
+        }
+        .badge-updated {
+          @apply bg-blue-100 text-blue-800;
+        }
+        .badge-popular {
+          @apply bg-orange-100 text-orange-800;
+        }
+        .category-tab {
+          @apply px-4 py-2 rounded-t-lg border border-gray-200 border-b-0 text-gray-600 cursor-pointer transition-all duration-200;
+        }
+        .category-tab.active {
+          @apply bg-white text-primary border-primary font-medium -mb-px;
+        }
+        .search-container {
+          @apply relative;
+        }
+        .search-input {
+          @apply w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all;
+        }
+        .search-icon {
+          @apply absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400;
+        }
+        .doc-tree {
+          @apply border border-gray-200 rounded-lg bg-gray-50 max-h-[600px] overflow-y-auto;
+        }
+        .doc-tree-item {
+          @apply py-2 px-4 text-gray-700 hover:bg-blue-50 cursor-pointer transition-colors;
+        }
+        .doc-tree-item.active {
+          @apply bg-blue-50 text-primary font-medium;
+        }
+        .doc-tree-subitems {
+          @apply pl-6 border-l-2 border-gray-200 ml-4 hidden;
+        }
+        .doc-tree-item.expanded + .doc-tree-subitems {
+          @apply block;
+        }
+        .doc-tree-item.has-children::before {
+          content: "►";
+          @apply inline-block w-4 text-gray-400 transition-transform;
+        }
+        .doc-tree-item.expanded.has-children::before {
+          @apply transform rotate-90;
         }
       }
-    }
-  </script>
+    </style>
+  </head>
 
-  <style type="text/tailwindcss">
-    @layer utilities {
-      .content-auto { content-visibility: auto; }
-      .sidebar-link {
-        @apply flex items-center px-4 py-3 text-gray-600 hover:bg-blue-50 hover:text-primary transition-all duration-200 rounded-lg;
-      }
-      .sidebar-link.active {
-        @apply bg-blue-50 text-primary font-medium;
-      }
-      .btn-primary { 
-        @apply bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-all duration-300;
-      }
-      .btn-secondary { 
-        @apply bg-white text-primary border border-primary px-4 py-2 rounded-md hover:bg-blue-50 transition-all duration-300;
-      }
-      .btn-outline { 
-        @apply bg-white text-gray-600 border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50 transition-all duration-300;
-      }
-      .btn-sm {
-        @apply px-3 py-1 text-sm rounded-md;
-      }
-      .input-field {
-        @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all;
-      }
-      .card {
-        @apply bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden;
-      }
-      .card-header {
-        @apply px-5 py-4 border-b border-gray-100;
-      }
-      .card-body {
-        @apply px-5 py-4;
-      }
-      .doc-card {
-        @apply card hover:shadow-md transition-shadow duration-300 hover:translate-y-[-4px] cursor-pointer;
-      }
-      .doc-badge {
-        @apply px-2 py-1 text-xs font-medium rounded-full;
-      }
-      .badge-new {
-        @apply bg-green-100 text-green-800;
-      }
-      .badge-updated {
-        @apply bg-blue-100 text-blue-800;
-      }
-      .badge-popular {
-        @apply bg-orange-100 text-orange-800;
-      }
-      .category-tab {
-        @apply px-4 py-2 rounded-t-lg border border-gray-200 border-b-0 text-gray-600 cursor-pointer transition-all duration-200;
-      }
-      .category-tab.active {
-        @apply bg-white text-primary border-primary font-medium -mb-px;
-      }
-      .search-container {
-        @apply relative;
-      }
-      .search-input {
-        @apply w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all;
-      }
-      .search-icon {
-        @apply absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400;
-      }
-      .doc-tree {
-        @apply border border-gray-200 rounded-lg bg-gray-50 max-h-[600px] overflow-y-auto;
-      }
-      .doc-tree-item {
-        @apply py-2 px-4 text-gray-700 hover:bg-blue-50 cursor-pointer transition-colors;
-      }
-      .doc-tree-item.active {
-        @apply bg-blue-50 text-primary font-medium;
-      }
-      .doc-tree-subitems {
-        @apply pl-6 border-l-2 border-gray-200 ml-4 hidden;
-      }
-      .doc-tree-item.expanded + .doc-tree-subitems {
-        @apply block;
-      }
-      .doc-tree-item.has-children::before {
-        content: '►';
-        @apply inline-block w-4 text-gray-400 transition-transform;
-      }
-      .doc-tree-item.expanded.has-children::before {
-        @apply transform rotate-90;
-      }
-    }
-  </style>
-</head>
+  <body class="bg-gray-50 min-h-screen">
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-sm sticky top-0 z-30">
+      <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center">
+            <button
+              id="sidebar-toggle"
+              class="mr-4 text-gray-500 hover:text-primary">
+              <i class="fas fa-bars text-xl"></i>
+            </button>
+            <a
+              href="javascript:void(0)"
+              onclick="parent.switchPage('pages/admin/dashboard.html')"
+              class="flex items-center">
+              <i class="fas fa-cube text-primary text-2xl mr-2"></i>
+              <span class="text-xl font-bold text-primary"
+                >SEUAirline 管理系统</span
+              >
+            </a>
+          </div>
 
-<body class="bg-gray-50 min-h-screen">
-  <!-- 顶部导航栏 -->
-  <header class="bg-white shadow-sm sticky top-0 z-30">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between items-center h-16">
-        <div class="flex items-center">
-          <button id="sidebar-toggle" class="mr-4 text-gray-500 hover:text-primary">
-            <i class="fas fa-bars text-xl"></i>
-          </button>
-          <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/dashboard.html')" class="flex items-center">
-            <i class="fas fa-cube text-primary text-2xl mr-2"></i>
-            <span class="text-xl font-bold text-primary">SEUAirline 管理系统</span>
-          </a>
+          <div class="flex items-center space-x-4">
+            <!-- 通知图标 -->
+            <div class="relative">
+              <button
+                class="text-gray-500 hover:text-primary focus:outline-none">
+                <i class="far fa-bell text-xl"></i>
+                <span
+                  class="absolute top-0 right-0 h-4 w-4 rounded-full bg-red-500 text-xs text-white flex items-center justify-center"
+                  >3</span
+                >
+              </button>
+            </div>
+
+            <!-- 用户信息 -->
+            <div class="flex items-center space-x-2">
+              <img
+                id="admin-avatar"
+                src="https://picsum.photos/32/32"
+                alt="管理员头像"
+                class="w-8 h-8 rounded-full" />
+              <div class="hidden md:block">
+                <div class="text-sm font-medium text-gray-700" id="admin-name">
+                  管理员
+                </div>
+                <div class="text-xs text-gray-500">系统管理员</div>
+              </div>
+              <button id="logout-btn" class="text-gray-500 hover:text-primary">
+                <i class="fas fa-sign-out-alt"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 主要内容区 -->
+    <div class="flex">
+      <!-- 侧边栏 -->
+      <aside
+        id="sidebar"
+        class="w-64 flex-shrink-0 bg-white border-r border-gray-200 h-[calc(100vh-4rem)] sticky top-16 overflow-y-auto transition-all duration-300 transform">
+        <nav class="p-4">
+          <div class="mb-6">
+            <h3
+              class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+              主菜单
+            </h3>
+            <div class="space-y-2">
+              <a
+                href="javascript:void(0)"
+                onclick="parent.switchPage('pages/admin/dashboard.html')"
+                class="sidebar-link">
+                <i class="fas fa-tachometer-alt w-5 mr-3"></i>
+                <span>仪表盘</span>
+              </a>
+              <a
+                href="javascript:void(0)"
+                onclick="parent.switchPage('pages/admin/flights.html')"
+                class="sidebar-link">
+                <i class="fas fa-plane w-5 mr-3"></i>
+                <span>航班管理</span>
+              </a>
+              <a
+                href="javascript:void(0)"
+                onclick="parent.switchPage('pages/admin/orders.html')"
+                class="sidebar-link">
+                <i class="far fa-file-alt w-5 mr-3"></i>
+                <span>订单管理</span>
+              </a>
+              <a
+                href="javascript:void(0)"
+                onclick="parent.switchPage('pages/admin/users.html')"
+                class="sidebar-link">
+                <i class="fas fa-users w-5 mr-3"></i>
+                <span>用户管理</span>
+              </a>
+              <a
+                href="javascript:void(0)"
+                onclick="parent.switchPage('pages/admin/airports.html')"
+                class="sidebar-link">
+                <i class="far fa-building w-5 mr-3"></i>
+                <span>机场管理</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <h3
+              class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+              系统设置
+            </h3>
+            <div class="space-y-2">
+              <a
+                href="javascript:void(0)"
+                onclick="parent.switchPage('pages/admin/system-settings.html')"
+                class="sidebar-link">
+                <i class="fas fa-cog w-5 mr-3"></i>
+                <span>系统设置</span>
+              </a>
+              <a
+                href="javascript:void(0)"
+                onclick="parent.switchPage('pages/admin/admin-accounts.html')"
+                class="sidebar-link">
+                <i class="far fa-user-circle w-5 mr-3"></i>
+                <span>管理员账户</span>
+              </a>
+              <a
+                href="javascript:void(0)"
+                onclick="parent.switchPage('pages/admin/logs.html')"
+                class="sidebar-link">
+                <i class="fas fa-history w-5 mr-3"></i>
+                <span>系统日志</span>
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <h3
+              class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+              帮助与支持
+            </h3>
+            <div class="space-y-2">
+              <a
+                href="javascript:void(0)"
+                onclick="parent.switchPage('pages/admin/help-center.html')"
+                class="sidebar-link">
+                <i class="far fa-question-circle w-5 mr-3"></i>
+                <span>帮助中心</span>
+              </a>
+              <a
+                href="javascript:void(0)"
+                onclick="parent.switchPage('pages/admin/documentation-center.html')"
+                class="sidebar-link active">
+                <i class="fas fa-file-alt w-5 mr-3"></i>
+                <span>文档中心</span>
+              </a>
+            </div>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- 内容区域 -->
+      <main class="flex-1 p-6">
+        <!-- 页面标题 -->
+        <div class="mb-8">
+          <h1 class="text-3xl font-bold text-gray-800">文档中心</h1>
+          <p class="text-gray-500 mt-2">浏览系统使用文档、API参考和用户手册</p>
         </div>
 
-        <div class="flex items-center space-x-4">
-          <!-- 通知图标 -->
+        <!-- 搜索框 -->
+        <div class="search-container mb-8">
           <div class="relative">
-            <button class="text-gray-500 hover:text-primary focus:outline-none">
-              <i class="far fa-bell text-xl"></i>
-              <span
-                class="absolute top-0 right-0 h-4 w-4 rounded-full bg-red-500 text-xs text-white flex items-center justify-center">3</span>
+            <i class="fas fa-search search-icon"></i>
+            <input
+              type="text"
+              id="doc-search"
+              class="search-input"
+              placeholder="搜索文档、API或用户手册..." />
+          </div>
+        </div>
+
+        <!-- 文档分类选项卡 -->
+        <div class="mb-6 border-b border-gray-200">
+          <div class="flex overflow-x-auto whitespace-nowrap pb-2 -mb-px">
+            <button class="category-tab active mr-2" data-category="all">
+              全部文档
+            </button>
+            <button class="category-tab mr-2" data-category="system">
+              系统文档
+            </button>
+            <button class="category-tab mr-2" data-category="api">
+              API文档
+            </button>
+            <button class="category-tab mr-2" data-category="user-guide">
+              用户手册
+            </button>
+            <button class="category-tab mr-2" data-category="developer">
+              开发者指南
+            </button>
+            <button class="category-tab mr-2" data-category="release-notes">
+              发布说明
             </button>
           </div>
+        </div>
 
-          <!-- 用户信息 -->
-          <div class="flex items-center space-x-2">
-            <img id="admin-avatar" src="https://picsum.photos/32/32" alt="管理员头像" class="w-8 h-8 rounded-full">
-            <div class="hidden md:block">
-              <div class="text-sm font-medium text-gray-700" id="admin-name">管理员</div>
-              <div class="text-xs text-gray-500">系统管理员</div>
+        <!-- 文档查看区域（响应式布局） -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <!-- 左侧文档树（大屏幕显示） -->
+          <div class="hidden lg:block">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="font-semibold">文档目录</h3>
+              </div>
+              <div class="card-body p-0">
+                <div class="doc-tree">
+                  <!-- 系统文档 -->
+                  <div class="doc-tree-item has-children expanded">
+                    系统文档
+                  </div>
+                  <div class="doc-tree-subitems">
+                    <div class="doc-tree-item active">系统概述</div>
+                    <div class="doc-tree-item">系统架构</div>
+                    <div class="doc-tree-item">功能模块说明</div>
+                    <div class="doc-tree-item">系统配置指南</div>
+                  </div>
+
+                  <!-- API文档 -->
+                  <div class="doc-tree-item has-children">API文档</div>
+                  <div class="doc-tree-subitems">
+                    <div class="doc-tree-item">API概述</div>
+                    <div class="doc-tree-item">认证方式</div>
+                    <div class="doc-tree-item">航班API</div>
+                    <div class="doc-tree-item">订单API</div>
+                    <div class="doc-tree-item">用户API</div>
+                    <div class="doc-tree-item">支付API</div>
+                  </div>
+
+                  <!-- 用户手册 -->
+                  <div class="doc-tree-item has-children">用户手册</div>
+                  <div class="doc-tree-subitems">
+                    <div class="doc-tree-item">系统登录</div>
+                    <div class="doc-tree-item">航班管理</div>
+                    <div class="doc-tree-item">订单处理</div>
+                    <div class="doc-tree-item">用户管理</div>
+                    <div class="doc-tree-item">数据统计</div>
+                  </div>
+
+                  <!-- 开发者指南 -->
+                  <div class="doc-tree-item has-children">开发者指南</div>
+                  <div class="doc-tree-subitems">
+                    <div class="doc-tree-item">开发环境搭建</div>
+                    <div class="doc-tree-item">代码规范</div>
+                    <div class="doc-tree-item">数据库设计</div>
+                    <div class="doc-tree-item">测试策略</div>
+                    <div class="doc-tree-item">部署指南</div>
+                  </div>
+
+                  <!-- 发布说明 -->
+                  <div class="doc-tree-item has-children">发布说明</div>
+                  <div class="doc-tree-subitems">
+                    <div class="doc-tree-item">最新版本</div>
+                    <div class="doc-tree-item">历史版本</div>
+                    <div class="doc-tree-item">更新日志</div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <button id="logout-btn" class="text-gray-500 hover:text-primary">
-              <i class="fas fa-sign-out-alt"></i>
-            </button>
           </div>
-        </div>
-      </div>
-    </div>
-  </header>
 
-  <!-- 主要内容区 -->
-  <div class="flex">
-    <!-- 侧边栏 -->
-    <aside id="sidebar"
-      class="w-64 flex-shrink-0 bg-white border-r border-gray-200 h-[calc(100vh-4rem)] sticky top-16 overflow-y-auto transition-all duration-300 transform">
-      <nav class="p-4">
-        <div class="mb-6">
-          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">主菜单</h3>
-          <div class="space-y-2">
-            <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/dashboard.html')" class="sidebar-link">
-              <i class="fas fa-tachometer-alt w-5 mr-3"></i>
-              <span>仪表盘</span>
-            </a>
-            <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/flights.html')" class="sidebar-link">
-              <i class="fas fa-plane w-5 mr-3"></i>
-              <span>航班管理</span>
-            </a>
-            <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/orders.html')" class="sidebar-link">
-              <i class="far fa-file-alt w-5 mr-3"></i>
-              <span>订单管理</span>
-            </a>
-            <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/users.html')" class="sidebar-link">
-              <i class="fas fa-users w-5 mr-3"></i>
-              <span>用户管理</span>
-            </a>
-            <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/airports.html')" class="sidebar-link">
-              <i class="far fa-building w-5 mr-3"></i>
-              <span>机场管理</span>
-            </a>
-          </div>
-        </div>
-
-        <div class="mb-6">
-          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">系统设置</h3>
-          <div class="space-y-2">
-            <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/system-settings.html')" class="sidebar-link">
-              <i class="fas fa-cog w-5 mr-3"></i>
-              <span>系统设置</span>
-            </a>
-            <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/admin-accounts.html')" class="sidebar-link">
-              <i class="far fa-user-circle w-5 mr-3"></i>
-              <span>管理员账户</span>
-            </a>
-            <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/logs.html')" class="sidebar-link">
-              <i class="fas fa-history w-5 mr-3"></i>
-              <span>系统日志</span>
-            </a>
-          </div>
-        </div>
-
-        <div>
-          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">帮助与支持</h3>
-          <div class="space-y-2">
-            <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/help-center.html')" class="sidebar-link">
-              <i class="far fa-question-circle w-5 mr-3"></i>
-              <span>帮助中心</span>
-            </a>
-            <a href="javascript:void(0)" onclick="parent.switchPage('pages/admin/documentation-center.html')" class="sidebar-link active">
-              <i class="fas fa-file-alt w-5 mr-3"></i>
-              <span>文档中心</span>
-            </a>
-          </div>
-        </div>
-      </nav>
-    </aside>
-
-    <!-- 内容区域 -->
-    <main class="flex-1 p-6">
-      <!-- 页面标题 -->
-      <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-800">文档中心</h1>
-        <p class="text-gray-500 mt-2">浏览系统使用文档、API参考和用户手册</p>
-      </div>
-
-      <!-- 搜索框 -->
-      <div class="search-container mb-8">
-        <div class="relative">
-          <i class="fas fa-search search-icon"></i>
-          <input type="text" id="doc-search" class="search-input" placeholder="搜索文档、API或用户手册...">
-        </div>
-      </div>
-
-      <!-- 文档分类选项卡 -->
-      <div class="mb-6 border-b border-gray-200">
-        <div class="flex overflow-x-auto whitespace-nowrap pb-2 -mb-px">
-          <button class="category-tab active mr-2" data-category="all">全部文档</button>
-          <button class="category-tab mr-2" data-category="system">系统文档</button>
-          <button class="category-tab mr-2" data-category="api">API文档</button>
-          <button class="category-tab mr-2" data-category="user-guide">用户手册</button>
-          <button class="category-tab mr-2" data-category="developer">开发者指南</button>
-          <button class="category-tab mr-2" data-category="release-notes">发布说明</button>
-        </div>
-      </div>
-
-      <!-- 文档查看区域（响应式布局） -->
-      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        <!-- 左侧文档树（大屏幕显示） -->
-        <div class="hidden lg:block">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="font-semibold">文档目录</h3>
+          <!-- 中间和右侧内容 -->
+          <div class="lg:col-span-3">
+            <!-- 移动端文档分类下拉菜单 -->
+            <div class="lg:hidden mb-6">
+              <select id="mobile-doc-category" class="input-field">
+                <option value="all">全部文档</option>
+                <option value="system">系统文档</option>
+                <option value="api">API文档</option>
+                <option value="user-guide">用户手册</option>
+                <option value="developer">开发者指南</option>
+                <option value="release-notes">发布说明</option>
+              </select>
             </div>
-            <div class="card-body p-0">
-              <div class="doc-tree">
+
+            <!-- 热门文档 -->
+            <div class="mb-8">
+              <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-800">热门文档</h2>
+                <a href="#" class="text-primary text-sm hover:underline"
+                  >查看全部</a
+                >
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- 热门文档1 -->
+                <div class="doc-card">
+                  <div class="card-header flex justify-between items-center">
+                    <h3 class="font-semibold">系统管理操作指南</h3>
+                    <span class="doc-badge badge-popular">热门</span>
+                  </div>
+                  <div class="card-body">
+                    <p class="text-gray-700 mb-3">
+                      详细介绍系统管理员的日常操作，包括航班管理、订单处理、用户管理等核心功能的使用方法。
+                    </p>
+                    <div
+                      class="flex justify-between items-center text-sm text-gray-500">
+                      <span><i class="far fa-folder mr-1"></i> 用户手册</span>
+                      <span
+                        ><i class="fas fa-clock mr-1"></i> 2023-06-15更新</span
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 热门文档2 -->
+                <div class="doc-card">
+                  <div class="card-header flex justify-between items-center">
+                    <h3 class="font-semibold">API接口文档</h3>
+                    <span class="doc-badge badge-updated">已更新</span>
+                  </div>
+                  <div class="card-body">
+                    <p class="text-gray-700 mb-3">
+                      完整的API接口参考文档，包括认证方法、请求参数、响应格式及错误码说明。
+                    </p>
+                    <div
+                      class="flex justify-between items-center text-sm text-gray-500">
+                      <span><i class="far fa-folder mr-1"></i> API文档</span>
+                      <span
+                        ><i class="fas fa-clock mr-1"></i> 2023-07-10更新</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 最新文档 -->
+            <div class="mb-8">
+              <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-800">最新文档</h2>
+                <a href="#" class="text-primary text-sm hover:underline"
+                  >查看全部</a
+                >
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- 最新文档1 -->
+                <div class="doc-card">
+                  <div class="card-header flex justify-between items-center">
+                    <h3 class="font-semibold">数据分析报表功能</h3>
+                    <span class="doc-badge badge-new">新</span>
+                  </div>
+                  <div class="card-body">
+                    <p class="text-gray-700 mb-3">
+                      介绍新上线的数据分析报表功能，包括销售统计、用户增长等数据可视化展示。
+                    </p>
+                    <div
+                      class="flex justify-between items-center text-sm text-gray-500">
+                      <span><i class="far fa-folder mr-1"></i> 系统文档</span>
+                      <span><i class="fas fa-clock mr-1"></i> 2023-07-14</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 最新文档2 -->
+                <div class="doc-card">
+                  <div class="card-header flex justify-between items-center">
+                    <h3 class="font-semibold">安全加固指南</h3>
+                    <span class="doc-badge badge-updated">已更新</span>
+                  </div>
+                  <div class="card-body">
+                    <p class="text-gray-700 mb-3">
+                      详细的系统安全加固方案，包括密码策略、访问控制、数据加密等安全措施。
+                    </p>
+                    <div
+                      class="flex justify-between items-center text-sm text-gray-500">
+                      <span><i class="far fa-folder mr-1"></i> 系统文档</span>
+                      <span><i class="fas fa-clock mr-1"></i> 2023-07-12</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 最新文档3 -->
+                <div class="doc-card">
+                  <div class="card-header flex justify-between items-center">
+                    <h3 class="font-semibold">开发者API示例代码</h3>
+                    <span class="doc-badge badge-new">新</span>
+                  </div>
+                  <div class="card-body">
+                    <p class="text-gray-700 mb-3">
+                      各编程语言的API调用示例代码，包括Python、Java、JavaScript等多种实现方式。
+                    </p>
+                    <div
+                      class="flex justify-between items-center text-sm text-gray-500">
+                      <span><i class="far fa-folder mr-1"></i> 开发者指南</span>
+                      <span><i class="fas fa-clock mr-1"></i> 2023-07-11</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 文档分类浏览 -->
+            <div class="mb-8">
+              <h2 class="text-xl font-bold text-gray-800 mb-4">文档分类</h2>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- 系统文档 -->
-                <div class="doc-tree-item has-children expanded">系统文档</div>
-                <div class="doc-tree-subitems">
-                  <div class="doc-tree-item active">系统概述</div>
-                  <div class="doc-tree-item">系统架构</div>
-                  <div class="doc-tree-item">功能模块说明</div>
-                  <div class="doc-tree-item">系统配置指南</div>
+                <div class="card">
+                  <div class="card-header">
+                    <div class="flex items-center">
+                      <i class="fas fa-cube text-primary text-xl mr-3"></i>
+                      <h3 class="font-semibold">系统文档</h3>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <p class="text-gray-700 mb-4">
+                      系统架构、功能模块和配置指南等系统级文档。
+                    </p>
+                    <ul class="space-y-2">
+                      <li class="flex items-center justify-between">
+                        <span
+                          class="text-gray-700 hover:text-primary cursor-pointer"
+                          >系统概述</span
+                        >
+                        <span class="text-xs text-gray-500">2023-06-10</span>
+                      </li>
+                      <li class="flex items-center justify-between">
+                        <span
+                          class="text-gray-700 hover:text-primary cursor-pointer"
+                          >系统架构</span
+                        >
+                        <span class="text-xs text-gray-500">2023-06-10</span>
+                      </li>
+                      <li class="flex items-center justify-between">
+                        <span
+                          class="text-gray-700 hover:text-primary cursor-pointer"
+                          >功能模块说明</span
+                        >
+                        <span class="text-xs text-gray-500">2023-06-12</span>
+                      </li>
+                      <li class="flex items-center justify-between">
+                        <span
+                          class="text-gray-700 hover:text-primary cursor-pointer"
+                          >系统配置指南</span
+                        >
+                        <span class="text-xs text-gray-500">2023-06-15</span>
+                      </li>
+                      <li class="flex items-center justify-between">
+                        <span
+                          class="text-gray-700 hover:text-primary cursor-pointer"
+                          >系统维护手册</span
+                        >
+                        <span class="text-xs text-gray-500">2023-06-18</span>
+                      </li>
+                    </ul>
+                    <div class="mt-4 text-center">
+                      <a href="#" class="text-primary text-sm hover:underline"
+                        >查看全部系统文档</a
+                      >
+                    </div>
+                  </div>
                 </div>
 
                 <!-- API文档 -->
-                <div class="doc-tree-item has-children">API文档</div>
-                <div class="doc-tree-subitems">
-                  <div class="doc-tree-item">API概述</div>
-                  <div class="doc-tree-item">认证方式</div>
-                  <div class="doc-tree-item">航班API</div>
-                  <div class="doc-tree-item">订单API</div>
-                  <div class="doc-tree-item">用户API</div>
-                  <div class="doc-tree-item">支付API</div>
+                <div class="card">
+                  <div class="card-header">
+                    <div class="flex items-center">
+                      <i class="fas fa-code text-secondary text-xl mr-3"></i>
+                      <h3 class="font-semibold">API文档</h3>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <p class="text-gray-700 mb-4">
+                      完整的API接口参考文档，包括接口说明、参数规范和示例代码。
+                    </p>
+                    <ul class="space-y-2">
+                      <li class="flex items-center justify-between">
+                        <span
+                          class="text-gray-700 hover:text-primary cursor-pointer"
+                          >API概述</span
+                        >
+                        <span class="text-xs text-gray-500">2023-06-20</span>
+                      </li>
+                      <li class="flex items-center justify-between">
+                        <span
+                          class="text-gray-700 hover:text-primary cursor-pointer"
+                          >认证方式</span
+                        >
+                        <span class="text-xs text-gray-500">2023-06-20</span>
+                      </li>
+                      <li class="flex items-center justify-between">
+                        <span
+                          class="text-gray-700 hover:text-primary cursor-pointer"
+                          >航班API</span
+                        >
+                        <span class="text-xs text-gray-500">2023-07-05</span>
+                      </li>
+                      <li class="flex items-center justify-between">
+                        <span
+                          class="text-gray-700 hover:text-primary cursor-pointer"
+                          >订单API</span
+                        >
+                        <span class="text-xs text-gray-500">2023-07-05</span>
+                      </li>
+                      <li class="flex items-center justify-between">
+                        <span
+                          class="text-gray-700 hover:text-primary cursor-pointer"
+                          >用户API</span
+                        >
+                        <span class="text-xs text-gray-500">2023-07-05</span>
+                      </li>
+                    </ul>
+                    <div class="mt-4 text-center">
+                      <a href="#" class="text-primary text-sm hover:underline"
+                        >查看全部API文档</a
+                      >
+                    </div>
+                  </div>
                 </div>
 
                 <!-- 用户手册 -->
-                <div class="doc-tree-item has-children">用户手册</div>
-                <div class="doc-tree-subitems">
-                  <div class="doc-tree-item">系统登录</div>
-                  <div class="doc-tree-item">航班管理</div>
-                  <div class="doc-tree-item">订单处理</div>
-                  <div class="doc-tree-item">用户管理</div>
-                  <div class="doc-tree-item">数据统计</div>
+                <div class="card">
+                  <div class="card-header">
+                    <div class="flex items-center">
+                      <i class="fas fa-book text-warning text-xl mr-3"></i>
+                      <h3 class="font-semibold">用户手册</h3>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <p class="text-gray-700 mb-4">
+                      系统功能使用指南，帮助管理员快速掌握系统操作。
+                    </p>
+                    <ul class="space-y-2">
+                      <li class="flex items-center justify-between">
+                        <span
+                          class="text-gray-700 hover:text-primary cursor-pointer"
+                          >系统登录</span
+                        >
+                        <span class="text-xs text-gray-500">2023-06-25</span>
+                      </li>
+                      <li class="flex items-center justify-between">
+                        <span
+                          class="text-gray-700 hover:text-primary cursor-pointer"
+                          >航班管理</span
+                        >
+                        <span class="text-xs text-gray-500">2023-06-25</span>
+                      </li>
+                      <li class="flex items-center justify-between">
+                        <span
+                          class="text-gray-700 hover:text-primary cursor-pointer"
+                          >订单处理</span
+                        >
+                        <span class="text-xs text-gray-500">2023-06-25</span>
+                      </li>
+                      <li class="flex items-center justify-between">
+                        <span
+                          class="text-gray-700 hover:text-primary cursor-pointer"
+                          >用户管理</span
+                        >
+                        <span class="text-xs text-gray-500">2023-06-26</span>
+                      </li>
+                      <li class="flex items-center justify-between">
+                        <span
+                          class="text-gray-700 hover:text-primary cursor-pointer"
+                          >数据统计</span
+                        >
+                        <span class="text-xs text-gray-500">2023-06-28</span>
+                      </li>
+                    </ul>
+                    <div class="mt-4 text-center">
+                      <a href="#" class="text-primary text-sm hover:underline"
+                        >查看全部用户手册</a
+                      >
+                    </div>
+                  </div>
                 </div>
+              </div>
+            </div>
 
-                <!-- 开发者指南 -->
-                <div class="doc-tree-item has-children">开发者指南</div>
-                <div class="doc-tree-subitems">
-                  <div class="doc-tree-item">开发环境搭建</div>
-                  <div class="doc-tree-item">代码规范</div>
-                  <div class="doc-tree-item">数据库设计</div>
-                  <div class="doc-tree-item">测试策略</div>
-                  <div class="doc-tree-item">部署指南</div>
+            <!-- 文档阅读器示例 -->
+            <div class="mb-8">
+              <h2 class="text-xl font-bold text-gray-800 mb-4">文档阅读器</h2>
+              <p class="text-gray-600 mb-4">
+                点击任意文档即可在右侧阅读区域查看详细内容
+              </p>
+
+              <div class="card">
+                <div class="card-header flex justify-between items-center">
+                  <h3 class="font-semibold">系统概述</h3>
+                  <div class="flex items-center space-x-3">
+                    <button
+                      class="text-gray-500 hover:text-primary"
+                      title="下载">
+                      <i class="fas fa-download"></i>
+                    </button>
+                    <button
+                      class="text-gray-500 hover:text-primary"
+                      title="打印">
+                      <i class="fas fa-print"></i>
+                    </button>
+                    <button
+                      class="text-gray-500 hover:text-primary"
+                      title="分享">
+                      <i class="fas fa-share-alt"></i>
+                    </button>
+                  </div>
                 </div>
+                <div class="card-body">
+                  <div class="prose max-w-none">
+                    <h2>SEUAirline系统概述</h2>
+                    <p>
+                      SEUAirline是一个全面的航空管理系统，旨在为航空公司提供从航班管理、票务预订到订单处理的一体化解决方案。本系统采用现代化的Web技术开发，具有高度的可扩展性和稳定性。
+                    </p>
 
-                <!-- 发布说明 -->
-                <div class="doc-tree-item has-children">发布说明</div>
-                <div class="doc-tree-subitems">
-                  <div class="doc-tree-item">最新版本</div>
-                  <div class="doc-tree-item">历史版本</div>
-                  <div class="doc-tree-item">更新日志</div>
+                    <h3>系统功能模块</h3>
+                    <ul>
+                      <li>
+                        <strong>航班管理</strong
+                        >：管理航班信息、时刻表、价格和座位
+                      </li>
+                      <li>
+                        <strong>订单管理</strong>：处理用户订单、支付和退款
+                      </li>
+                      <li><strong>用户管理</strong>：管理乘客和管理员账户</li>
+                      <li><strong>机场管理</strong>：管理机场信息和航线</li>
+                      <li>
+                        <strong>统计报表</strong
+                        >：提供销售、用户和运营数据的统计分析
+                      </li>
+                    </ul>
+
+                    <h3>系统架构</h3>
+                    <p>SEUAirline采用前后端分离的架构设计：</p>
+                    <ul>
+                      <li>
+                        <strong>前端</strong
+                        >：使用React.js构建，提供用户友好的界面
+                      </li>
+                      <li>
+                        <strong>后端</strong>：采用Spring Boot开发RESTful API
+                      </li>
+                      <li>
+                        <strong>数据库</strong
+                        >：使用MySQL存储业务数据，Redis用于缓存
+                      </li>
+                      <li>
+                        <strong>安全</strong
+                        >：基于JWT的身份验证和基于RBAC的权限控制
+                      </li>
+                    </ul>
+
+                    <h3>系统特点</h3>
+                    <ul>
+                      <li>
+                        <strong>可扩展性</strong>：模块化设计，易于扩展新功能
+                      </li>
+                      <li><strong>安全性</strong>：严格的数据加密和访问控制</li>
+                      <li>
+                        <strong>高性能</strong>：优化的数据库查询和缓存机制
+                      </li>
+                      <li>
+                        <strong>用户友好</strong>：直观的界面设计，易于操作
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 文档反馈 -->
+            <div>
+              <h2 class="text-xl font-bold text-gray-800 mb-4">文档反馈</h2>
+              <p class="text-gray-600 mb-4">
+                我们持续改进文档质量，如有任何建议或问题，请告诉我们
+              </p>
+
+              <div class="card">
+                <div class="card-body">
+                  <form id="doc-feedback-form">
+                    <div class="mb-4">
+                      <label
+                        for="feedback-type"
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >反馈类型</label
+                      >
+                      <select id="feedback-type" class="input-field">
+                        <option value="suggestion">内容建议</option>
+                        <option value="error">内容错误</option>
+                        <option value="clarification">需要澄清</option>
+                        <option value="missing">缺少内容</option>
+                        <option value="other">其他</option>
+                      </select>
+                    </div>
+
+                    <div class="mb-4">
+                      <label
+                        for="feedback-doc"
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >相关文档</label
+                      >
+                      <input
+                        type="text"
+                        id="feedback-doc"
+                        class="input-field"
+                        placeholder="请输入相关文档名称" />
+                    </div>
+
+                    <div class="mb-4">
+                      <label
+                        for="feedback-content"
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >反馈内容</label
+                      >
+                      <textarea
+                        id="feedback-content"
+                        rows="4"
+                        class="input-field"
+                        placeholder="请详细描述您的反馈内容..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary">提交反馈</button>
+                  </form>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </main>
+    </div>
 
-        <!-- 中间和右侧内容 -->
-        <div class="lg:col-span-3">
-          <!-- 移动端文档分类下拉菜单 -->
-          <div class="lg:hidden mb-6">
-            <select id="mobile-doc-category" class="input-field">
-              <option value="all">全部文档</option>
-              <option value="system">系统文档</option>
-              <option value="api">API文档</option>
-              <option value="user-guide">用户手册</option>
-              <option value="developer">开发者指南</option>
-              <option value="release-notes">发布说明</option>
-            </select>
-          </div>
+    <!-- 成功提示 -->
+    <div
+      id="toast"
+      class="fixed bottom-6 right-6 bg-success text-white px-6 py-3 rounded-lg shadow-lg flex items-center transform translate-y-10 opacity-0 transition-all duration-300 z-50">
+      <i class="fas fa-check-circle mr-2"></i>
+      <span>操作成功</span>
+    </div>
 
-          <!-- 热门文档 -->
-          <div class="mb-8">
-            <div class="flex justify-between items-center mb-4">
-              <h2 class="text-xl font-bold text-gray-800">热门文档</h2>
-              <a href="#" class="text-primary text-sm hover:underline">查看全部</a>
-            </div>
+    <!-- JavaScript -->
+    <script src="../../data/mock-api.js"></script>
+    <script>
+      // 获取元素
+      const sidebarToggle = document.getElementById("sidebar-toggle");
+      const sidebar = document.getElementById("sidebar");
+      const logoutBtn = document.getElementById("logout-btn");
+      const docSearch = document.getElementById("doc-search");
+      const categoryTabs = document.querySelectorAll(".category-tab");
+      const mobileDocCategory = document.getElementById("mobile-doc-category");
+      const docFeedbackForm = document.getElementById("doc-feedback-form");
+      const toast = document.getElementById("toast");
+      const docTreeItems = document.querySelectorAll(".doc-tree-item");
+      const docCards = document.querySelectorAll(".doc-card");
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <!-- 热门文档1 -->
-              <div class="doc-card">
-                <div class="card-header flex justify-between items-center">
-                  <h3 class="font-semibold">系统管理操作指南</h3>
-                  <span class="doc-badge badge-popular">热门</span>
-                </div>
-                <div class="card-body">
-                  <p class="text-gray-700 mb-3">详细介绍系统管理员的日常操作，包括航班管理、订单处理、用户管理等核心功能的使用方法。</p>
-                  <div class="flex justify-between items-center text-sm text-gray-500">
-                    <span><i class="fas fa-folder-o mr-1"></i> 用户手册</span>
-                    <span><i class="fas fa-clock mr-1"></i> 2023-06-15更新</span>
-                  </div>
-                </div>
-              </div>
+      // 侧边栏切换
+      sidebarToggle.addEventListener("click", () => {
+        sidebar.classList.toggle("-translate-x-full");
+      });
 
-              <!-- 热门文档2 -->
-              <div class="doc-card">
-                <div class="card-header flex justify-between items-center">
-                  <h3 class="font-semibold">API接口文档</h3>
-                  <span class="doc-badge badge-updated">已更新</span>
-                </div>
-                <div class="card-body">
-                  <p class="text-gray-700 mb-3">完整的API接口参考文档，包括认证方法、请求参数、响应格式及错误码说明。</p>
-                  <div class="flex justify-between items-center text-sm text-gray-500">
-                    <span><i class="fas fa-folder-o mr-1"></i> API文档</span>
-                    <span><i class="fas fa-clock mr-1"></i> 2023-07-10更新</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+      // 管理员登出
+      logoutBtn.addEventListener("click", () => {
+        if (confirm("确定要退出登录吗？")) {
+          // 清除登录状态
+          localStorage.removeItem("adminToken");
+          sessionStorage.removeItem("adminToken");
+          localStorage.removeItem("currentAdmin");
 
-          <!-- 最新文档 -->
-          <div class="mb-8">
-            <div class="flex justify-between items-center mb-4">
-              <h2 class="text-xl font-bold text-gray-800">最新文档</h2>
-              <a href="#" class="text-primary text-sm hover:underline">查看全部</a>
-            </div>
+          // 跳转到登录页面
+          window.location.href = "login.html";
+        }
+      });
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <!-- 最新文档1 -->
-              <div class="doc-card">
-                <div class="card-header flex justify-between items-center">
-                  <h3 class="font-semibold">数据分析报表功能</h3>
-                  <span class="doc-badge badge-new">新</span>
-                </div>
-                <div class="card-body">
-                  <p class="text-gray-700 mb-3">介绍新上线的数据分析报表功能，包括销售统计、用户增长等数据可视化展示。</p>
-                  <div class="flex justify-between items-center text-sm text-gray-500">
-                    <span><i class="fas fa-folder-o mr-1"></i> 系统文档</span>
-                    <span><i class="fas fa-clock mr-1"></i> 2023-07-14</span>
-                  </div>
-                </div>
-              </div>
+      // 显示提示框
+      function showToast(message = "操作成功") {
+        const toastMessage = toast.querySelector("span");
+        toastMessage.textContent = message;
 
-              <!-- 最新文档2 -->
-              <div class="doc-card">
-                <div class="card-header flex justify-between items-center">
-                  <h3 class="font-semibold">安全加固指南</h3>
-                  <span class="doc-badge badge-updated">已更新</span>
-                </div>
-                <div class="card-body">
-                  <p class="text-gray-700 mb-3">详细的系统安全加固方案，包括密码策略、访问控制、数据加密等安全措施。</p>
-                  <div class="flex justify-between items-center text-sm text-gray-500">
-                    <span><i class="fas fa-folder-o mr-1"></i> 系统文档</span>
-                    <span><i class="fas fa-clock mr-1"></i> 2023-07-12</span>
-                  </div>
-                </div>
-              </div>
+        toast.classList.remove("translate-y-10", "opacity-0");
+        toast.classList.add("translate-y-0", "opacity-100");
 
-              <!-- 最新文档3 -->
-              <div class="doc-card">
-                <div class="card-header flex justify-between items-center">
-                  <h3 class="font-semibold">开发者API示例代码</h3>
-                  <span class="doc-badge badge-new">新</span>
-                </div>
-                <div class="card-body">
-                  <p class="text-gray-700 mb-3">各编程语言的API调用示例代码，包括Python、Java、JavaScript等多种实现方式。</p>
-                  <div class="flex justify-between items-center text-sm text-gray-500">
-                    <span><i class="fas fa-folder-o mr-1"></i> 开发者指南</span>
-                    <span><i class="fas fa-clock mr-1"></i> 2023-07-11</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 文档分类浏览 -->
-          <div class="mb-8">
-            <h2 class="text-xl font-bold text-gray-800 mb-4">文档分类</h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <!-- 系统文档 -->
-              <div class="card">
-                <div class="card-header">
-                  <div class="flex items-center">
-                    <i class="fas fa-cube text-primary text-xl mr-3"></i>
-                    <h3 class="font-semibold">系统文档</h3>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <p class="text-gray-700 mb-4">系统架构、功能模块和配置指南等系统级文档。</p>
-                  <ul class="space-y-2">
-                    <li class="flex items-center justify-between">
-                      <span class="text-gray-700 hover:text-primary cursor-pointer">系统概述</span>
-                      <span class="text-xs text-gray-500">2023-06-10</span>
-                    </li>
-                    <li class="flex items-center justify-between">
-                      <span class="text-gray-700 hover:text-primary cursor-pointer">系统架构</span>
-                      <span class="text-xs text-gray-500">2023-06-10</span>
-                    </li>
-                    <li class="flex items-center justify-between">
-                      <span class="text-gray-700 hover:text-primary cursor-pointer">功能模块说明</span>
-                      <span class="text-xs text-gray-500">2023-06-12</span>
-                    </li>
-                    <li class="flex items-center justify-between">
-                      <span class="text-gray-700 hover:text-primary cursor-pointer">系统配置指南</span>
-                      <span class="text-xs text-gray-500">2023-06-15</span>
-                    </li>
-                    <li class="flex items-center justify-between">
-                      <span class="text-gray-700 hover:text-primary cursor-pointer">系统维护手册</span>
-                      <span class="text-xs text-gray-500">2023-06-18</span>
-                    </li>
-                  </ul>
-                  <div class="mt-4 text-center">
-                    <a href="#" class="text-primary text-sm hover:underline">查看全部系统文档</a>
-                  </div>
-                </div>
-              </div>
-
-              <!-- API文档 -->
-              <div class="card">
-                <div class="card-header">
-                  <div class="flex items-center">
-                    <i class="fas fa-code text-secondary text-xl mr-3"></i>
-                    <h3 class="font-semibold">API文档</h3>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <p class="text-gray-700 mb-4">完整的API接口参考文档，包括接口说明、参数规范和示例代码。</p>
-                  <ul class="space-y-2">
-                    <li class="flex items-center justify-between">
-                      <span class="text-gray-700 hover:text-primary cursor-pointer">API概述</span>
-                      <span class="text-xs text-gray-500">2023-06-20</span>
-                    </li>
-                    <li class="flex items-center justify-between">
-                      <span class="text-gray-700 hover:text-primary cursor-pointer">认证方式</span>
-                      <span class="text-xs text-gray-500">2023-06-20</span>
-                    </li>
-                    <li class="flex items-center justify-between">
-                      <span class="text-gray-700 hover:text-primary cursor-pointer">航班API</span>
-                      <span class="text-xs text-gray-500">2023-07-05</span>
-                    </li>
-                    <li class="flex items-center justify-between">
-                      <span class="text-gray-700 hover:text-primary cursor-pointer">订单API</span>
-                      <span class="text-xs text-gray-500">2023-07-05</span>
-                    </li>
-                    <li class="flex items-center justify-between">
-                      <span class="text-gray-700 hover:text-primary cursor-pointer">用户API</span>
-                      <span class="text-xs text-gray-500">2023-07-05</span>
-                    </li>
-                  </ul>
-                  <div class="mt-4 text-center">
-                    <a href="#" class="text-primary text-sm hover:underline">查看全部API文档</a>
-                  </div>
-                </div>
-              </div>
-
-              <!-- 用户手册 -->
-              <div class="card">
-                <div class="card-header">
-                  <div class="flex items-center">
-                    <i class="fas fa-book text-warning text-xl mr-3"></i>
-                    <h3 class="font-semibold">用户手册</h3>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <p class="text-gray-700 mb-4">系统功能使用指南，帮助管理员快速掌握系统操作。</p>
-                  <ul class="space-y-2">
-                    <li class="flex items-center justify-between">
-                      <span class="text-gray-700 hover:text-primary cursor-pointer">系统登录</span>
-                      <span class="text-xs text-gray-500">2023-06-25</span>
-                    </li>
-                    <li class="flex items-center justify-between">
-                      <span class="text-gray-700 hover:text-primary cursor-pointer">航班管理</span>
-                      <span class="text-xs text-gray-500">2023-06-25</span>
-                    </li>
-                    <li class="flex items-center justify-between">
-                      <span class="text-gray-700 hover:text-primary cursor-pointer">订单处理</span>
-                      <span class="text-xs text-gray-500">2023-06-25</span>
-                    </li>
-                    <li class="flex items-center justify-between">
-                      <span class="text-gray-700 hover:text-primary cursor-pointer">用户管理</span>
-                      <span class="text-xs text-gray-500">2023-06-26</span>
-                    </li>
-                    <li class="flex items-center justify-between">
-                      <span class="text-gray-700 hover:text-primary cursor-pointer">数据统计</span>
-                      <span class="text-xs text-gray-500">2023-06-28</span>
-                    </li>
-                  </ul>
-                  <div class="mt-4 text-center">
-                    <a href="#" class="text-primary text-sm hover:underline">查看全部用户手册</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 文档阅读器示例 -->
-          <div class="mb-8">
-            <h2 class="text-xl font-bold text-gray-800 mb-4">文档阅读器</h2>
-            <p class="text-gray-600 mb-4">点击任意文档即可在右侧阅读区域查看详细内容</p>
-
-            <div class="card">
-              <div class="card-header flex justify-between items-center">
-                <h3 class="font-semibold">系统概述</h3>
-                <div class="flex items-center space-x-3">
-                  <button class="text-gray-500 hover:text-primary" title="下载">
-                    <i class="fas fa-download"></i>
-                  </button>
-                  <button class="text-gray-500 hover:text-primary" title="打印">
-                    <i class="fas fa-print"></i>
-                  </button>
-                  <button class="text-gray-500 hover:text-primary" title="分享">
-                    <i class="fas fa-share-alt"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="prose max-w-none">
-                  <h2>SEUAirline系统概述</h2>
-                  <p>SEUAirline是一个全面的航空管理系统，旨在为航空公司提供从航班管理、票务预订到订单处理的一体化解决方案。本系统采用现代化的Web技术开发，具有高度的可扩展性和稳定性。</p>
-
-                  <h3>系统功能模块</h3>
-                  <ul>
-                    <li><strong>航班管理</strong>：管理航班信息、时刻表、价格和座位</li>
-                    <li><strong>订单管理</strong>：处理用户订单、支付和退款</li>
-                    <li><strong>用户管理</strong>：管理乘客和管理员账户</li>
-                    <li><strong>机场管理</strong>：管理机场信息和航线</li>
-                    <li><strong>统计报表</strong>：提供销售、用户和运营数据的统计分析</li>
-                  </ul>
-
-                  <h3>系统架构</h3>
-                  <p>SEUAirline采用前后端分离的架构设计：</p>
-                  <ul>
-                    <li><strong>前端</strong>：使用React.js构建，提供用户友好的界面</li>
-                    <li><strong>后端</strong>：采用Spring Boot开发RESTful API</li>
-                    <li><strong>数据库</strong>：使用MySQL存储业务数据，Redis用于缓存</li>
-                    <li><strong>安全</strong>：基于JWT的身份验证和基于RBAC的权限控制</li>
-                  </ul>
-
-                  <h3>系统特点</h3>
-                  <ul>
-                    <li><strong>可扩展性</strong>：模块化设计，易于扩展新功能</li>
-                    <li><strong>安全性</strong>：严格的数据加密和访问控制</li>
-                    <li><strong>高性能</strong>：优化的数据库查询和缓存机制</li>
-                    <li><strong>用户友好</strong>：直观的界面设计，易于操作</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 文档反馈 -->
-          <div>
-            <h2 class="text-xl font-bold text-gray-800 mb-4">文档反馈</h2>
-            <p class="text-gray-600 mb-4">我们持续改进文档质量，如有任何建议或问题，请告诉我们</p>
-
-            <div class="card">
-              <div class="card-body">
-                <form id="doc-feedback-form">
-                  <div class="mb-4">
-                    <label for="feedback-type" class="block text-sm font-medium text-gray-700 mb-1">反馈类型</label>
-                    <select id="feedback-type" class="input-field">
-                      <option value="suggestion">内容建议</option>
-                      <option value="error">内容错误</option>
-                      <option value="clarification">需要澄清</option>
-                      <option value="missing">缺少内容</option>
-                      <option value="other">其他</option>
-                    </select>
-                  </div>
-
-                  <div class="mb-4">
-                    <label for="feedback-doc" class="block text-sm font-medium text-gray-700 mb-1">相关文档</label>
-                    <input type="text" id="feedback-doc" class="input-field" placeholder="请输入相关文档名称">
-                  </div>
-
-                  <div class="mb-4">
-                    <label for="feedback-content" class="block text-sm font-medium text-gray-700 mb-1">反馈内容</label>
-                    <textarea id="feedback-content" rows="4" class="input-field"
-                      placeholder="请详细描述您的反馈内容..."></textarea>
-                  </div>
-
-                  <button type="submit" class="btn-primary">提交反馈</button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-  </div>
-
-  <!-- 成功提示 -->
-  <div id="toast"
-    class="fixed bottom-6 right-6 bg-success text-white px-6 py-3 rounded-lg shadow-lg flex items-center transform translate-y-10 opacity-0 transition-all duration-300 z-50">
-    <i class="fas fa-check-circle mr-2"></i>
-    <span>操作成功</span>
-  </div>
-
-  <!-- JavaScript -->
-  <script src="../../data/mock-api.js"></script>
-  <script>
-    // 获取元素
-    const sidebarToggle = document.getElementById('sidebar-toggle');
-    const sidebar = document.getElementById('sidebar');
-    const logoutBtn = document.getElementById('logout-btn');
-    const docSearch = document.getElementById('doc-search');
-    const categoryTabs = document.querySelectorAll('.category-tab');
-    const mobileDocCategory = document.getElementById('mobile-doc-category');
-    const docFeedbackForm = document.getElementById('doc-feedback-form');
-    const toast = document.getElementById('toast');
-    const docTreeItems = document.querySelectorAll('.doc-tree-item');
-    const docCards = document.querySelectorAll('.doc-card');
-
-    // 侧边栏切换
-    sidebarToggle.addEventListener('click', () => {
-      sidebar.classList.toggle('-translate-x-full');
-    });
-
-    // 管理员登出
-    logoutBtn.addEventListener('click', () => {
-      if (confirm('确定要退出登录吗？')) {
-        // 清除登录状态
-        localStorage.removeItem('adminToken');
-        sessionStorage.removeItem('adminToken');
-        localStorage.removeItem('currentAdmin');
-
-        // 跳转到登录页面
-        window.location.href = 'login.html';
+        setTimeout(() => {
+          toast.classList.remove("translate-y-0", "opacity-100");
+          toast.classList.add("translate-y-10", "opacity-0");
+        }, 3000);
       }
-    });
 
-    // 显示提示框
-    function showToast(message = '操作成功') {
-      const toastMessage = toast.querySelector('span');
-      toastMessage.textContent = message;
+      // 文档搜索
+      docSearch.addEventListener("input", (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        // 在实际应用中，这里应该实现实时搜索功能
+        console.log("搜索文档:", searchTerm);
+      });
 
-      toast.classList.remove('translate-y-10', 'opacity-0');
-      toast.classList.add('translate-y-0', 'opacity-100');
+      // 分类选项卡切换
+      categoryTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          // 移除所有选项卡的active状态
+          categoryTabs.forEach((t) => t.classList.remove("active"));
+          // 添加当前选项卡的active状态
+          tab.classList.add("active");
 
-      setTimeout(() => {
-        toast.classList.remove('translate-y-0', 'opacity-100');
-        toast.classList.add('translate-y-10', 'opacity-0');
-      }, 3000);
-    }
+          // 获取选中的分类
+          const category = tab.getAttribute("data-category");
+          console.log("选择文档分类:", category);
 
-    // 文档搜索
-    docSearch.addEventListener('input', (e) => {
-      const searchTerm = e.target.value.toLowerCase();
-      // 在实际应用中，这里应该实现实时搜索功能
-      console.log('搜索文档:', searchTerm);
-    });
+          // 更新移动端下拉菜单
+          mobileDocCategory.value = category;
 
-    // 分类选项卡切换
-    categoryTabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        // 移除所有选项卡的active状态
-        categoryTabs.forEach(t => t.classList.remove('active'));
-        // 添加当前选项卡的active状态
-        tab.classList.add('active');
+          // 在实际应用中，这里应该根据选中的分类筛选文档列表
+        });
+      });
 
-        // 获取选中的分类
-        const category = tab.getAttribute('data-category');
-        console.log('选择文档分类:', category);
+      // 移动端分类切换
+      mobileDocCategory.addEventListener("change", () => {
+        const category = mobileDocCategory.value;
 
-        // 更新移动端下拉菜单
-        mobileDocCategory.value = category;
+        // 更新桌面端选项卡
+        categoryTabs.forEach((tab) => {
+          if (tab.getAttribute("data-category") === category) {
+            tab.classList.add("active");
+          } else {
+            tab.classList.remove("active");
+          }
+        });
 
+        console.log("移动端选择文档分类:", category);
         // 在实际应用中，这里应该根据选中的分类筛选文档列表
       });
-    });
 
-    // 移动端分类切换
-    mobileDocCategory.addEventListener('change', () => {
-      const category = mobileDocCategory.value;
+      // 文档树交互
+      docTreeItems.forEach((item) => {
+        item.addEventListener("click", () => {
+          // 如果有子项，切换展开/折叠状态
+          if (item.classList.contains("has-children")) {
+            item.classList.toggle("expanded");
+          }
 
-      // 更新桌面端选项卡
-      categoryTabs.forEach(tab => {
-        if (tab.getAttribute('data-category') === category) {
-          tab.classList.add('active');
-        } else {
-          tab.classList.remove('active');
-        }
+          // 如果不是父节点或者是最后一级节点，则设置为当前活动项
+          if (
+            !item.classList.contains("has-children") ||
+            (item.classList.contains("has-children") &&
+              !item.nextElementSibling)
+          ) {
+            // 移除其他项的active状态
+            document
+              .querySelectorAll(".doc-tree-item")
+              .forEach((i) => i.classList.remove("active"));
+            // 添加当前项的active状态
+            item.classList.add("active");
+          }
+
+          // 在实际应用中，这里应该加载并显示对应的文档内容
+        });
       });
 
-      console.log('移动端选择文档分类:', category);
-      // 在实际应用中，这里应该根据选中的分类筛选文档列表
-    });
+      // 文档卡片点击事件
+      docCards.forEach((card) => {
+        card.addEventListener("click", () => {
+          const title = card.querySelector("h3").textContent;
+          console.log("查看文档:", title);
 
-    // 文档树交互
-    docTreeItems.forEach(item => {
-      item.addEventListener('click', () => {
-        // 如果有子项，切换展开/折叠状态
-        if (item.classList.contains('has-children')) {
-          item.classList.toggle('expanded');
-        }
-
-        // 如果不是父节点或者是最后一级节点，则设置为当前活动项
-        if (!item.classList.contains('has-children') ||
-          (item.classList.contains('has-children') && !item.nextElementSibling)) {
-          // 移除其他项的active状态
-          document.querySelectorAll('.doc-tree-item').forEach(i => i.classList.remove('active'));
-          // 添加当前项的active状态
-          item.classList.add('active');
-        }
-
-        // 在实际应用中，这里应该加载并显示对应的文档内容
+          // 在实际应用中，这里应该在文档阅读器中加载并显示所选文档
+          // 可以在console.log之后添加实际的加载逻辑
+        });
       });
-    });
 
-    // 文档卡片点击事件
-    docCards.forEach(card => {
-      card.addEventListener('click', () => {
-        const title = card.querySelector('h3').textContent;
-        console.log('查看文档:', title);
+      // 提交文档反馈
+      docFeedbackForm.addEventListener("submit", (e) => {
+        e.preventDefault();
 
-        // 在实际应用中，这里应该在文档阅读器中加载并显示所选文档
-        // 可以在console.log之后添加实际的加载逻辑
-      });
-    });
+        // 获取表单数据
+        const type = document.getElementById("feedback-type").value;
+        const doc = document.getElementById("feedback-doc").value;
+        const content = document.getElementById("feedback-content").value;
 
-    // 提交文档反馈
-    docFeedbackForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      // 获取表单数据
-      const type = document.getElementById('feedback-type').value;
-      const doc = document.getElementById('feedback-doc').value;
-      const content = document.getElementById('feedback-content').value;
-
-      // 简单验证
-      if (!content.trim()) {
-        alert('请输入反馈内容');
-        return;
-      }
-
-      // 在实际应用中，这里应该调用API提交反馈
-      // 模拟提交过程
-      showToast('感谢您的反馈，我们会尽快处理');
-
-      // 重置表单
-      docFeedbackForm.reset();
-    });
-
-    // 检查管理员登录状态
-    function checkAdminLoginStatus() {
-      const adminToken = localStorage.getItem('adminToken') || sessionStorage.getItem('adminToken');
-      const currentAdmin = localStorage.getItem('currentAdmin');
-
-      if (!adminToken || !currentAdmin) {
-        // 未登录，跳转到登录页面
-        window.location.href = 'login.html';
-        return;
-      }
-
-      try {
-        // 验证token
-        const isTokenValid = MockAPI.validateAdminToken(adminToken);
-        if (!isTokenValid) {
-          // token无效
-          localStorage.removeItem('adminToken');
-          sessionStorage.removeItem('adminToken');
-          localStorage.removeItem('currentAdmin');
-          window.location.href = 'login.html';
+        // 简单验证
+        if (!content.trim()) {
+          alert("请输入反馈内容");
           return;
         }
 
-        // 更新管理员信息显示
-        const adminInfo = JSON.parse(currentAdmin);
-        document.getElementById('admin-name').textContent = adminInfo.username || '管理员';
-        if (adminInfo.avatar) {
-          document.getElementById('admin-avatar').src = adminInfo.avatar;
-        }
-      } catch (error) {
-        console.error('验证管理员状态时发生错误:', error);
-        // 发生错误，清除状态并跳转到登录页
-        localStorage.removeItem('adminToken');
-        sessionStorage.removeItem('adminToken');
-        localStorage.removeItem('currentAdmin');
-        window.location.href = 'login.html';
-      }
-    }
+        // 在实际应用中，这里应该调用API提交反馈
+        // 模拟提交过程
+        showToast("感谢您的反馈，我们会尽快处理");
 
-    // 页面加载时执行
-    window.addEventListener('DOMContentLoaded', () => {
-      // 检查登录状态
-      checkAdminLoginStatus();
-
-      // 设置侧边栏链接活动状态
-      const sidebarLinks = document.querySelectorAll('.sidebar-link');
-      const currentPath = window.location.pathname;
-
-      sidebarLinks.forEach(link => {
-        // 重置所有链接
-        link.classList.remove('active');
-
-        // 匹配当前页面
-        const linkPath = link.getAttribute('href');
-        if (currentPath.endsWith(linkPath)) {
-          link.classList.add('active');
-        }
+        // 重置表单
+        docFeedbackForm.reset();
       });
-    });
-  </script>
-</body>
 
+      // 检查管理员登录状态
+      function checkAdminLoginStatus() {
+        const adminToken =
+          localStorage.getItem("adminToken") ||
+          sessionStorage.getItem("adminToken");
+        const currentAdmin = localStorage.getItem("currentAdmin");
+
+        if (!adminToken || !currentAdmin) {
+          // 未登录，跳转到登录页面
+          window.location.href = "login.html";
+          return;
+        }
+
+        try {
+          // 验证token
+          const isTokenValid = MockAPI.validateAdminToken(adminToken);
+          if (!isTokenValid) {
+            // token无效
+            localStorage.removeItem("adminToken");
+            sessionStorage.removeItem("adminToken");
+            localStorage.removeItem("currentAdmin");
+            window.location.href = "login.html";
+            return;
+          }
+
+          // 更新管理员信息显示
+          const adminInfo = JSON.parse(currentAdmin);
+          document.getElementById("admin-name").textContent =
+            adminInfo.username || "管理员";
+          if (adminInfo.avatar) {
+            document.getElementById("admin-avatar").src = adminInfo.avatar;
+          }
+        } catch (error) {
+          console.error("验证管理员状态时发生错误:", error);
+          // 发生错误，清除状态并跳转到登录页
+          localStorage.removeItem("adminToken");
+          sessionStorage.removeItem("adminToken");
+          localStorage.removeItem("currentAdmin");
+          window.location.href = "login.html";
+        }
+      }
+
+      // 页面加载时执行
+      window.addEventListener("DOMContentLoaded", () => {
+        // 检查登录状态
+        checkAdminLoginStatus();
+
+        // 设置侧边栏链接活动状态
+        const sidebarLinks = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        sidebarLinks.forEach((link) => {
+          // 重置所有链接
+          link.classList.remove("active");
+
+          // 匹配当前页面
+          const linkPath = link.getAttribute("href");
+          if (currentPath.endsWith(linkPath)) {
+            link.classList.add("active");
+          }
+        });
+      });
+    </script>
+  </body>
 </html>
