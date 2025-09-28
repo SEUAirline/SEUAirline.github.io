@@ -57,19 +57,16 @@
     <div class="container mx-auto px-4">
       <div class="flex justify-between items-center h-16">
         <div class="flex items-center">
-          <a href="homepage.html" class="flex items-center">
+          <a href="javascript:void(0)" onclick="parent.switchPage('pages/user/homepage.html')" class="flex items-center">
             <i class="fas fa-plane text-primary text-2xl mr-2"></i>
             <span class="text-xl font-bold text-primary">SEUAirline</span>
           </a>
         </div>
 
         <div class="hidden md:flex space-x-8">
-          <a href="homepage.html" class="text-gray-600 hover:text-primary"
-            onclick="event.preventDefault(); if(parent && parent.switchPage){parent.switchPage('pages/user/homepage.html');}">首页</a>
-          <a href="view_orders.html" class="text-primary font-medium border-b-2 border-primary"
-            onclick="event.preventDefault(); if(parent && parent.switchPage){parent.switchPage('pages/user/view_orders.html');}">我的订单</a>
-          <a href="user_center.html" class="text-gray-600 hover:text-primary"
-            onclick="event.preventDefault(); if(parent && parent.switchPage){parent.switchPage('pages/user/user_center.html');}">个人中心</a>
+          <a href="javascript:void(0)" onclick="parent.switchPage('pages/user/homepage.html')" class="text-gray-600 hover:text-primary">首页</a>
+          <a href="javascript:void(0)" onclick="parent.switchPage('pages/user/view_orders.html')" class="text-primary font-medium border-b-2 border-primary">我的订单</a>
+          <a href="javascript:void(0)" onclick="parent.switchPage('pages/user/user_center.html')" class="text-gray-600 hover:text-primary">个人中心</a>
         </div>
 
         <div class="flex items-center space-x-4">
@@ -567,7 +564,7 @@
         document.getElementById('username').textContent = user.username || '用户';
       } else {
         // 如果用户未登录，跳转到登录页面
-        // window.location.href = 'login.html';
+        // window.location.href = 'javascript:void(0)'; parent.switchPage('pages/user/login.html');
       }
     }
 

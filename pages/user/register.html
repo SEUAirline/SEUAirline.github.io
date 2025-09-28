@@ -65,18 +65,18 @@
     <div class="container mx-auto px-4">
       <div class="flex justify-between items-center h-16">
         <div class="flex items-center">
-          <a href="homepage.html" class="flex items-center">
+          <a href="javascript:void(0)" onclick="parent.switchPage('pages/user/homepage.html')" class="flex items-center">
             <i class="fas fa-plane text-primary text-2xl mr-2"></i>
             <span class="text-xl font-bold text-primary">SEUAirline</span>
           </a>
         </div>
 
         <div class="hidden md:flex space-x-8">
-          <a href="homepage.html" class="text-gray-600 hover:text-primary"
+          <a href="javascript:void(0)" onclick="parent.switchPage('pages/user/homepage.html')" class="text-gray-600 hover:text-primary"
             onclick="event.preventDefault(); if(parent && parent.switchPage){parent.switchPage('pages/user/homepage.html');}">首页</a>
-          <a href="view_orders.html" class="text-gray-600 hover:text-primary"
+          <a href="javascript:void(0)" onclick="parent.switchPage('pages/user/view_orders.html')" class="text-gray-600 hover:text-primary"
             onclick="event.preventDefault(); if(parent && parent.switchPage){parent.switchPage('pages/user/view_orders.html');}">我的订单</a>
-          <a href="user_center.html" class="text-gray-600 hover:text-primary"
+          <a href="javascript:void(0)" onclick="parent.switchPage('pages/user/user_center.html')" class="text-gray-600 hover:text-primary"
             onclick="event.preventDefault(); if(parent && parent.switchPage){parent.switchPage('pages/user/user_center.html');}">个人中心</a>
         </div>
 
@@ -235,7 +235,7 @@
       <!-- 登录提示 -->
       <div class="mt-6 text-center">
         <span class="text-gray-600">已有账号？</span>
-        <a href="login.html"
+        <a href="javascript:void(0)" onclick="parent.switchPage('pages/user/login.html')"
           onclick="if (parent && parent.switchPage) { parent.switchPage('pages/user/login.html'); return false; }"
           class="text-primary font-medium hover:text-primary/80 ml-1">立即登录</a>
       </div>
