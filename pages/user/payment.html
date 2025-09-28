@@ -474,7 +474,10 @@
           c.classList.remove('payment-card-active');
           c.querySelector('.w-5').classList.remove('border-primary');
           c.querySelector('.w-5').classList.add('border-gray-300');
-          c.querySelector('.w-3').remove();
+          const innerCircle = c.querySelector('.w-3');
+          if (innerCircle) {
+            innerCircle.remove();
+          }
         });
 
         // 添加当前卡片的选中状态
