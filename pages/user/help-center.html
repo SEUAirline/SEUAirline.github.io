@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>客服中心 - SEU航空</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 定义品牌主色（此处使用 blue-700 对应的颜色） */
+        :root {
+            --brand-blue: #1E3A8A; /* blue-800, 模拟主页面的 primary */
+            --secondary-blue: #3B82F6; /* blue-500, 模拟主页面的 secondary 用于渐变 */
+            --brand-light-blue: #d0d9ff; /* blue-100 */
+        }
+        
+        /* 侧边栏和主内容区域的布局优化 */
+        .sidebar {
+            width: 280px;
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(0); 
+        }
+        .main-content {
+            margin-left: 280px;
+            transition: margin-left 0.3s ease-in-out;
+        }
+
+        /* 响应式设计：移动端侧边栏默认隐藏 */
+        @media (max-width: 1023px) {
+            .sidebar {
+                transform: translateX(-280px); 
+                box-shadow: 2px 0 5px rgba(0,0,0,0.1); 
+            }
+            .sidebar.active {
+                transform: translateX(0); 
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        /* ---------------------------------------------------- */
+        /* 顶栏渐变效果 */
+        /* ---------------------------------------------------- */
+        .top-nav-gradient {
+            background: linear-gradient(to right, var(--brand-blue), var(--secondary-blue)); /* 左深右浅渐变 */
+        }
+
+        /* ---------------------------------------------------- */
+        /* AI智能客服模态框 - 居中和渐变效果 */
+        /* ---------------------------------------------------- */
+        .ai-chat-overlay {
+            /* 全屏覆盖，居中 */
+            display: none; /* 默认隐藏 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* 半透明黑色背景 */
+            z-index: 1000;
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+        }
+        
+        .ai-chat-modal-content {
+            background: white;
+            width: 90%;
+            max-width: 450px; /* 居中模态框的最大宽度 */
+            height: 80%;
+            max-height: 600px; /* 居中模态框的最大高度 */
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            /* 初始状态缩小/透明，用于动画 */
+            transform: scale(0.9);
+            opacity: 0;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+        }
+
+        .ai-chat-modal-content.active {
+            /* 激活时放大/显示 */
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .ai-chat-header {
+            padding: 15px;
+            /* 渐变效果：从 secondary-blue 到 brand-blue */
+            background: linear-gradient(to right, var(--brand-blue), var(--secondary-blue)); 
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            flex-shrink: 0; /* 防止被内容挤压 */
+        }
+
+        /* 消息气泡样式 */
+        .ai-chat-messages {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .message {
+            max-width: 75%;
+            padding: 10px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .user-message {
+            background: var(--brand-light-blue); /* 浅蓝色背景 */
+            color: #333;
+            margin-left: auto; /* 靠右对齐 */
+            border-bottom-right-radius: 4px; /* 右下角圆角小一点 */
+        }
+
+        .ai-message {
+            background: var(--brand-blue);
+            color: white;
+            margin-right: auto; /* 靠左对齐 */
+            border-bottom-left-radius: 4px; /* 左下角圆角小一点 */
+        }
+        
+        /* 输入容器 */
+        .ai-chat-input-container {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #eee;
+            flex-shrink: 0;
+        }
+
+        .ai-chat-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px 0 0 20px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .ai-chat-input:focus {
+            border-color: var(--brand-blue);
+        }
+
+        .ai-chat-send {
+            /* 发送按钮渐变色 */
+            background: linear-gradient(to right, var(--secondary-blue), var(--brand-blue));
+            color: white;
+            border: none;
+            padding: 0 15px;
+            border-radius: 0 20px 20px 0;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .ai-chat-send:hover {
+            opacity: 0.9;
+        }
+
+        /* 思考动画样式 */
+        .thinking { 
+            display: flex;
+            align-items: center; 
+            margin-bottom: 5px;
+            margin-right: auto;
+            padding: 10px 12px;
+            background: var(--brand-blue);
+            border-radius: 15px;
+            border-bottom-left-radius: 4px;
+            width: fit-content;
+        }
+        .dot { 
+            width: 6px; 
+            height: 6px; 
+            background: white; 
+            border-radius: 50%; 
+            margin: 0 3px; 
+            animation: bounce 1s infinite;
+        }
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-4px); }
+        }
+
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="top-nav-gradient text-white p-4 shadow-xl fixed w-full z-20 top-0">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center">
+                <button id="sidebar-toggle" class="mr-4 lg:hidden p-2 rounded hover:bg-blue-600 transition">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <h1 class="text-2xl font-extrabold tracking-wide">SEU航空客服中心</h1>
+            </div>
+            <div>
+                <a href="homepage.html" class="flex items-center text-sm font-medium p-2 rounded hover:bg-blue-600 transition">
+                    <i class="fas fa-home mr-2"></i> 返回首页
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="sidebar bg-white shadow-lg fixed top-0 left-0 h-full lg:pt-20 pt-16 z-10">
+        <div class="p-6">
+            <h2 class="text-xl font-bold mb-6 text-blue-700">服务导航</h2>
+            <ul>
+                <li class="mb-1">
+                    <a href="#faq" class="flex items-center p-3 text-gray-700 font-medium hover:bg-blue-50 hover:text-blue-700 rounded-lg transition duration-200">
+                        <i class="fas fa-question-circle mr-4 w-5"></i>
+                        <span>常见问题</span>
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="#policies" class="flex items-center p-3 text-gray-700 font-medium hover:bg-blue-50 hover:text-blue-700 rounded-lg transition duration-200">
+                        <i class="fas fa-file-alt mr-4 w-5"></i>
+                        <span>政策条款</span>
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="#baggage" class="flex items-center p-3 text-gray-700 font-medium hover:bg-blue-50 hover:text-blue-700 rounded-lg transition duration-200">
+                        <i class="fas fa-suitcase-rolling mr-4 w-5"></i>
+                        <span>行李规定</span>
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="#contact" class="flex items-center p-3 text-gray-700 font-medium hover:bg-blue-50 hover:text-blue-700 rounded-lg transition duration-200">
+                        <i class="fas fa-headset mr-4 w-5"></i>
+                        <span>联系我们</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-content pt-20 pb-10 px-4">
+        <div class="container mx-auto max-w-6xl">
+            
+            <section id="faq" class="bg-white rounded-xl shadow-xl p-8 mb-8 transition duration-300 hover:shadow-2xl hover:scale-[1.005]">
+                <h2 class="text-3xl font-bold mb-6 text-blue-700 border-b-2 border-blue-200 pb-2">
+                    <i class="fas fa-question-circle mr-3"></i> 常见问题解答
+                </h2>
+                <div class="space-y-6">
+                    <div class="bg-blue-50 p-4 rounded-lg shadow-inner">
+                        <h3 class="font-bold text-lg text-blue-600 mb-1">如何查询航班状态？</h3>
+                        <p class="text-gray-700">您可以在首页的"航班动态"栏目输入航班号或出发/到达城市进行查询，或登录后在"我的订单"中查看已预订航班的状态。</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg shadow-inner">
+                        <h3 class="font-bold text-lg text-blue-600 mb-1">如何办理退票或改签？</h3>
+                        <p class="text-gray-700">登录账户后，进入"我的订单"页面，选择需要操作的航班，点击"退票"或"改签"按钮，按照提示完成操作。不同舱位和票价有不同的退改签政策。</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg shadow-inner">
+                        <h3 class="font-bold text-lg text-blue-600 mb-1">如何添加随行乘客？</h3>
+                        <p class="text-gray-700">在预订航班过程中，您可以点击"添加乘客"按钮添加同行人信息。您也可以提前在"个人中心"的"常用乘客"中添加经常随行的乘客信息。</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg shadow-inner">
+                        <h3 class="font-bold text-lg text-blue-600 mb-1">如何使用电子登机牌？</h3>
+                        <p class="text-gray-700">办理值机后，您可以在"我的订单"中查看并保存电子登机牌。您可以将其保存到手机钱包或截图保存，在安检和登机时出示。</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="policies" class="bg-white rounded-xl shadow-xl p-8 mb-8 transition duration-300 hover:shadow-2xl hover:scale-[1.005]">
+                <h2 class="text-3xl font-bold mb-6 text-blue-700 border-b-2 border-blue-200 pb-2">
+                    <i class="fas fa-file-alt mr-3"></i> 政策条款
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                        <h3 class="font-bold text-xl text-blue-600 mb-3">退票政策</h3>
+                        <p class="text-gray-700 mb-3">根据不同舱位和票价类型，退票手续费和规定有所不同：</p>
+                        <ul class="list-disc pl-5 text-gray-600 space-y-2">
+                            <li>全价票：起飞前24小时以上退票，收取票面价格5%的手续费；24小时内收取10%手续费。</li>
+                            <li>特价票：起飞前7天以上退票，收取票面价格20%的手续费；7天内收取30%手续费。</li>
+                            <li>超低价票：不可退票。</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                        <h3 class="font-bold text-xl text-blue-600 mb-3">改签政策</h3>
+                        <p class="text-gray-700 mb-3">改签规定如下：</p>
+                        <ul class="list-disc pl-5 text-gray-600 space-y-2">
+                            <li>全价票：起飞前可免费改签同等舱位航班一次，之后每次收取100元改签费。</li>
+                            <li>特价票：每次改签收取200元改签费，且只能改签同等或更高舱位。</li>
+                            <li>超低价票：不可改签。</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="baggage" class="bg-white rounded-xl shadow-xl p-8 mb-8 transition duration-300 hover:shadow-2xl hover:scale-[1.005]">
+                <h2 class="text-3xl font-bold mb-6 text-blue-700 border-b-2 border-blue-200 pb-2">
+                    <i class="fas fa-suitcase-rolling mr-3"></i> 行李规定
+                </h2>
+                <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-6">
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                        <h3 class="font-bold text-xl text-blue-600 mb-3">免费行李额</h3>
+                        <ul class="list-disc pl-5 text-gray-600 space-y-2">
+                            <li>头等舱：40kg</li>
+                            <li>商务舱：30kg</li>
+                            <li>经济舱：20kg</li>
+                            <li>超值经济舱：15kg</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                        <h3 class="font-bold text-xl text-blue-600 mb-3">随身行李</h3>
+                        <ul class="list-disc pl-5 text-gray-600 space-y-2">
+                            <li>头等舱/商务舱：2件，每件不超过10kg，总尺寸不超过115cm</li>
+                            <li>经济舱：1件，不超过5kg，总尺寸不超过105cm</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 lg:col-span-1 md:col-span-2">
+                        <h3 class="font-bold text-xl text-blue-600 mb-3">超重行李</h3>
+                        <p class="text-gray-700 mb-3">超出免费行李额的部分，按以下标准收费：</p>
+                        <ul class="list-disc pl-5 text-gray-600 space-y-2">
+                            <li>国内航线：每公斤30元</li>
+                            <li>国际航线：每公斤50元或等值外币</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="contact" class="bg-white rounded-xl shadow-xl p-8 transition duration-300 hover:shadow-2xl hover:scale-[1.005]">
+                <h2 class="text-3xl font-bold mb-6 text-blue-700 border-b-2 border-blue-200 pb-2">
+                    <i class="fas fa-headset mr-3"></i> 联系我们
+                </h2>
+                <div class="grid lg:grid-cols-4 md:grid-cols-2 gap-6">
+                    <div class="bg-gray-100 p-5 rounded-lg border-l-4 border-blue-500 shadow-md">
+                        <h3 class="font-bold text-lg mb-3 text-blue-700">客服热线</h3>
+                        <div class="flex items-center mb-2 text-gray-700">
+                            <i class="fas fa-phone-alt mr-3 text-blue-500"></i>
+                            <span class="text-sm">国内：400-123-4567（7×24小时）</span>
+                        </div>
+                        <div class="flex items-center text-gray-700">
+                            <i class="fas fa-globe-asia mr-3 text-blue-500"></i>
+                            <span class="text-sm">国际：+86-25-12345678</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-100 p-5 rounded-lg border-l-4 border-blue-500 shadow-md">
+                        <h3 class="font-bold text-lg mb-3 text-blue-700">电子邮件</h3>
+                        <div class="flex items-center text-gray-700">
+                            <i class="fas fa-envelope mr-3 text-blue-500"></i>
+                            <span class="text-sm break-all">service@seuairline.com</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 p-5 rounded-lg border-l-4 border-blue-700 shadow-lg">
+                        <h3 class="font-bold text-lg mb-3 text-blue-700">24/7 AI智能助手</h3>
+                        <p class="mb-4 text-sm text-gray-600">即时解答，无需等待</p>
+                        <button id="open-ai-chat" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold px-4 py-2 rounded-full transition duration-300 transform hover:scale-105">
+                            <i class="fas fa-robot mr-2"></i>立即咨询
+                        </button>
+                    </div>
+
+                    <div class="bg-gray-100 p-5 rounded-lg border-l-4 border-gray-500 shadow-md">
+                        <h3 class="font-bold text-lg mb-3 text-blue-700">提交工单</h3>
+                        <p class="mb-4 text-sm text-gray-600">复杂问题，24小时内回复</p>
+                        <button class="w-full bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-full transition duration-300">
+                            <i class="fas fa-ticket-alt mr-2"></i>提交工单
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div id="ai-chat-modal" class="ai-chat-overlay">
+        <div id="ai-chat-modal-content" class="ai-chat-modal-content">
+            <div class="ai-chat-header">
+                <div>
+                    <i class="fas fa-robot mr-2"></i>
+                    AI智能助手
+                </div>
+                <button id="close-ai-chat" class="text-white hover:opacity-80">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div id="ai-chat-messages" class="ai-chat-messages">
+                <div class="message ai-message">
+                    您好！我是SEU航空的AI智能助手。请问有什么可以帮助您的？您可以咨询航班状态、退改签政策、行李规定等问题。
+                </div>
+            </div>
+            <div class="ai-chat-input-container">
+                <input type="text" id="ai-chat-input" class="ai-chat-input" placeholder="请输入您的问题...">
+                <button id="ai-chat-send" class="ai-chat-send">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 侧边栏切换（主要针对移动端）
+        document.getElementById('sidebar-toggle').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
+
+        // AI聊天窗口元素
+        const aiChatOverlay = document.getElementById('ai-chat-modal'); // 整个遮罩层
+        const aiChatContent = document.getElementById('ai-chat-modal-content'); // 聊天框内容
+        const openAiChat = document.getElementById('open-ai-chat');
+        const closeAiChat = document.getElementById('close-ai-chat');
+        const aiChatMessages = document.getElementById('ai-chat-messages');
+        const aiChatInput = document.getElementById('ai-chat-input');
+        const aiChatSend = document.getElementById('ai-chat-send');
+
+        // 打开聊天窗口 (改为显示居中模态框)
+        openAiChat.addEventListener('click', function() {
+            aiChatOverlay.style.display = 'flex';
+            // 启用动画
+            setTimeout(() => {
+                aiChatContent.classList.add('active');
+            }, 10);
+        });
+
+        // 关闭聊天窗口 (改为隐藏居中模态框)
+        closeAiChat.addEventListener('click', function() {
+            // 禁用动画
+            aiChatContent.classList.remove('active');
+            // 延迟隐藏，等待动画完成
+            setTimeout(() => {
+                aiChatOverlay.style.display = 'none';
+            }, 300); 
+        });
+
+        // 发送消息
+        function sendMessage() {
+            const message = aiChatInput.value.trim();
+            if (message) {
+                addMessage(message, 'user');
+                aiChatInput.value = '';
+                showThinking();
+                setTimeout(() => {
+                    getAIResponse(message);
+                }, 1000);
+            }
+        }
+
+        // 发送按钮点击事件
+        aiChatSend.addEventListener('click', sendMessage);
+
+        // 输入框回车事件
+        aiChatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // 添加消息到聊天窗口
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(sender + '-message');
+            messageDiv.textContent = text;
+            aiChatMessages.appendChild(messageDiv);
+            aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+        }
+
+        // 显示AI正在思考的动画
+        function showThinking() {
+            const thinkingDiv = document.createElement('div');
+            thinkingDiv.classList.add('thinking');
+            thinkingDiv.id = 'ai-thinking';
+            
+            for (let i = 0; i < 3; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                thinkingDiv.appendChild(dot);
+            }
+            
+            aiChatMessages.appendChild(thinkingDiv);
+            aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+        }
+
+        // 隐藏AI正在思考的动画
+        function hideThinking() {
+            const thinkingDiv = document.getElementById('ai-thinking');
+            if (thinkingDiv) {
+                thinkingDiv.remove();
+            }
+        }
+
+        // 获取AI回复
+        async function getAIResponse(userMessage) {
+            try {
+                await new Promise(resolve => setTimeout(resolve, 800)); 
+                
+                const response = await fetchAIResponse(userMessage);
+                
+                hideThinking();
+                addMessage(response, 'ai');
+            } catch (error) {
+                console.error('获取AI回复出错:', error);
+                hideThinking();
+                addMessage('抱歉，我遇到了一些问题。请稍后再试。', 'ai');
+            }
+        }
+
+        // 模拟API调用获取AI回复
+        async function fetchAIResponse(userMessage) {
+            const mockDocs = [
+                { title: "航班状态查询", keywords: ["航班", "状态", "查询", "延误"], content: "查询航班状态，请前往主站“航班动态”输入航班号或城市。如果您已登录，可在“我的订单”中查看最新状态。" },
+                { title: "退票政策", keywords: ["退票", "退款", "取消"], content: "退票政策取决于您的舱位和票价类型：全价票收取5%或10%手续费；特价票收取20%或30%；超低价票不可退。" },
+                { title: "改签政策", keywords: ["改签", "更改", "变更"], content: "改签政策：全价票首次免费改签；特价票每次收取200元改签费；超低价票不可改签。" },
+                { title: "行李规定", keywords: ["行李", "托运", "随身", "超重"], content: "免费托运行李额：头等舱40kg，商务舱30kg，经济舱20kg。随身行李尺寸和重量也有不同限制，请参考行李规定部分。" },
+                { title: "联系方式", keywords: ["电话", "联系", "客服"], content: "我们的客服热线是400-123-4567（7×24小时），国际电话是+86-25-12345678，电子邮件是 service@seuairline.com。" },
+            ];
+
+            const lowerUserMessage = userMessage.toLowerCase();
+            
+            const scoredDocs = mockDocs.map(doc => {
+                let score = 0;
+                const keywords = doc.keywords || [];
+                keywords.forEach(keyword => {
+                    if (lowerUserMessage.includes(keyword.toLowerCase())) {
+                        score += 2;
+                    }
+                });
+                
+                if (lowerUserMessage.includes(doc.title.toLowerCase())) {
+                    score += 3;
+                }
+                
+                return {
+                    ...doc,
+                    score
+                };
+            });
+            
+            scoredDocs.sort((a, b) => b.score - a.score);
+            
+            if (scoredDocs.length > 0 && scoredDocs[0].score > 0) {
+                return scoredDocs[0].content;
+            }
+            
+            return "抱歉，我无法理解您的问题。您可以尝试询问关于航班状态、退改签政策、行李规定等问题，或者联系我们的人工客服获取更多帮助。";
+        }
+    </script>
+</body>
+</html>
